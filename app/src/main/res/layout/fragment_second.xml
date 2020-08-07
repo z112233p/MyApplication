@@ -4,24 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondFragment">
+    tools:context=".fragment.SecondFragment">
 
     <TextView
-        android:id="@+id/textview_second"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_id_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/button_second"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="end"
+        android:singleLine="true"
+
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/id_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_name"
+        app:layout_constraintEnd_toStartOf="@+id/tv_id"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toTopOf="@id/tv_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_id_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:gravity="end"
+        android:singleLine="true"
+
+        android:text="@string/name_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_birthday"
+        app:layout_constraintEnd_toStartOf="@+id/tv_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_id_title" />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:singleLine="true"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_birthday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_name_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_id_title" />
+
+    <TextView
+        android:id="@+id/tv_birthday_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:gravity="end"
+        android:singleLine="true"
+
+        android:text="@string/birthday_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_age"
+        app:layout_constraintEnd_toStartOf="@+id/tv_birthday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
+    <TextView
+        android:id="@+id/tv_birthday"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:singleLine="true"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_birthday_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
+
+    <TextView
+        android:id="@+id/tv_age_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:gravity="end"
+        android:singleLine="true"
+
+        android:text="@string/age_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_language_id"
+        app:layout_constraintEnd_toStartOf="@+id/tv_age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday_title" />
+    <TextView
+        android:id="@+id/tv_age"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:singleLine="true"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_language_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_age_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday_title" />
+
+    <TextView
+        android:id="@+id/tv_language_id_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:gravity="end"
+        android:singleLine="true"
+
+        android:text="@string/language_title"
+        app:layout_constraintBottom_toTopOf="@id/button_second"
+        app:layout_constraintEnd_toStartOf="@+id/tv_language_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_age_title" />
+    <TextView
+        android:id="@+id/tv_language_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:singleLine="true"
+
+        app:layout_constraintBottom_toTopOf="@id/button_second"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_language_id_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_age_title" />
 
     <Button
         android:id="@+id/button_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/previous"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_second" />
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 </androidx.constraintlayout.widget.ConstraintLayout>
