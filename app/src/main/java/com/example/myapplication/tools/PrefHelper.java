@@ -1,4 +1,4 @@
-package com.example.myapplication.Tools;
+package com.example.myapplication.tools;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -9,6 +9,8 @@ public class PrefHelper {
     final static String TAG = PrefHelper.class.getSimpleName();
 
     private static String API_HEADER = "sessionid";
+    private static String CHAT_TOKEN = "chat_token";
+
 
 
     static private SharedPreferences _preferences;
@@ -29,7 +31,12 @@ public class PrefHelper {
         return getInstance().getString(API_HEADER, "");
     }
 
+    //Chat Token
+    public static void setChatToken(String value){savePref(CHAT_TOKEN,value);}
 
+    public static String getChatToken(){
+        return getInstance().getString(CHAT_TOKEN,"");
+    }
     //===============
     static private void savePref(String key, String value) {
         SharedPreferences.Editor editor = getInstance().edit();

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.SecondFragment">
+    tools:context=".fragment.FragmentMyInfo">
 
     <TextView
         android:id="@+id/tv_id_title"
@@ -84,15 +84,16 @@
         android:id="@+id/tv_age_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="1"
         android:gravity="end"
         android:singleLine="true"
-
         android:text="@string/age_title"
+
         app:layout_constraintBottom_toTopOf="@id/tv_language_id"
         app:layout_constraintEnd_toStartOf="@+id/tv_age"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_title" />
+
     <TextView
         android:id="@+id/tv_age"
         android:layout_width="0dp"
@@ -135,7 +136,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/previous"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

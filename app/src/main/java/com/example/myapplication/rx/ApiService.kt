@@ -3,7 +3,7 @@ package com.example.myapplication.rx
 //import android.database.Observable
 import android.os.Build
 import com.example.myapplication.MyApp
-import com.example.myapplication.Tools.PrefHelper
+import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.datamodle.ErrorLogApi
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.LoginResponse

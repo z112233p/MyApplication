@@ -1,4 +1,4 @@
-package com.example.myapplication.Tools;
+package com.example.myapplication.tools;
 
 import android.util.Log;
 

@@ -6,12 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.example.myapplication.fragment.FirstFragment
+import com.example.myapplication.fragment.FragmentLogin
 
 import com.example.myapplication.viewmodle.MainActivityVM
 
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             if(navHostFragment != null) {
                 val childFragments = navHostFragment.childFragmentManager.fragments
                 childFragments.forEach { f ->
-                    if (f != null && f is FirstFragment){
+                    if (f != null && f is FragmentLogin){
                         Log.e("Peter","MAINACT Observe Loop  IN "+f.parentFragment)
                         f.test()
                         return@Observer

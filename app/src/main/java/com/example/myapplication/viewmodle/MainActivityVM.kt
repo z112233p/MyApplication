@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.Tools.SingleLiveEvent
+import com.example.myapplication.tools.SingleLiveEvent
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.LoginResponse
 import com.example.myapplication.datamodle.profile.MyInfo
