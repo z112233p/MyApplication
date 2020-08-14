@@ -1,8 +1,7 @@
-package com.example.myapplication.rx;
+package com.example.myapplication.network;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;

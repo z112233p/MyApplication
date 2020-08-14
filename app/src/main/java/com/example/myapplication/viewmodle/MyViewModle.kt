@@ -7,3 +7,10 @@ val MainActVM = module {
     viewModel { MainActivityVM(get()) }
 }
 
+val MatchActVM = module {
+    viewModel { MatchActivityVM(get()) }
+}
+
+val ChatRoomActVM = module {
+    viewModel { ChatRoomActivityVM(get()) }
+}

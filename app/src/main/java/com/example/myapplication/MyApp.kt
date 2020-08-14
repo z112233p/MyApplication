@@ -1,7 +1,9 @@
 package com.example.myapplication
 
 import android.app.Application
+import com.example.myapplication.viewmodle.ChatRoomActVM
 import com.example.myapplication.viewmodle.MainActVM
+import com.example.myapplication.viewmodle.MatchActVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -17,7 +19,8 @@ class MyApp : Application(){
             // Android context
             androidContext(this@MyApp)
             // modules
-            val list = listOf(MainActVM)
+            val list = listOf(MainActVM,
+                MatchActVM, ChatRoomActVM)
             modules(list)
         }
     }

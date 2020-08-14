@@ -44,9 +44,10 @@ class FragmentLogin : BaseFragment() {
 
     private fun initObserve(){
         mainActVM.getLoginResponse().observe(viewLifecycleOwner, Observer {
-            Log.e("Peter","Fragment Observe"+it.data.user_token)
             PrefHelper.setApiHeader(it.data.user_token)
             PrefHelper.setChatToken(it.data.chat_auth_token)
+            PrefHelper.setChatId(it.data.chat_user_id)
+            PrefHelper.setChatLable(it.data.label)
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         })
     }

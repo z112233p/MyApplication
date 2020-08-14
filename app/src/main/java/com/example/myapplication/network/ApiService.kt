@@ -1,13 +1,15 @@
-package com.example.myapplication.rx
+package com.example.myapplication.network
 
 //import android.database.Observable
 import android.os.Build
 import com.example.myapplication.MyApp
-import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.datamodle.ErrorLogApi
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.LoginResponse
+import com.example.myapplication.datamodle.dating.DatingSearch
+import com.example.myapplication.datamodle.dating.DatingSearchData
 import com.example.myapplication.datamodle.profile.MyInfo
+import com.example.myapplication.tools.PrefHelper
 import io.reactivex.Observable
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -21,6 +23,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -30,17 +33,22 @@ interface ApiService {
 
     //ErrorLogApi
     @POST("/api/report")
-    fun setErrorLog(@Body errorLogApi: ErrorLogApi?): Observable<String?>?
+    fun setErrorLog(@Body errorLogApi: ErrorLogApi?): Observable<String>
 
     //Login
     @POST("login")
-    fun login(@Body loginData: LoginData?): Observable<LoginResponse?>?
+    fun login(@Body loginData: LoginData?): Observable<LoginResponse>
 
     //Get Profile Information
     @GET("me/info")
     fun getMyInfo(): Observable<MyInfo>
 
-
+    //Dating Search
+    @GET("dating/search")
+    fun getDatingSearch(@Query("gender") gender: Int,
+                 @Query("min_age") minAge: Int,
+                 @Query("max_age") maxAge: Int,
+                 @Query("max_km") maxKm: Int): Observable<DatingSearch>?
 
 
 

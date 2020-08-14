@@ -11,10 +11,11 @@ android {
         minSdkVersion 16
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", 'RESTFUL_URL', '"https://live.illa.me/api/"'
         buildConfigField "String", 'CHATROOM_URL', '"https://live.illa.me:8443/"'
+        buildConfigField "String", 'IMAGE_URL', '"http://live.illa.me/images/"'
 
     }
 
@@ -67,5 +68,20 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
 
+    //swipecard dependency
+    implementation 'com.lorentzos.swipecards:library:1.0.9'
+    implementation 'in.arjsna:swipecardlib:1.0.2'
 
+    //Image Dealer
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
+    //
+    implementation 'com.github.stfalcon:chatkit:0.3.3'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
 }

@@ -1,6 +1,5 @@
-package com.example.myapplication.rx
+package com.example.myapplication.network
 
-import com.example.myapplication.rx.SSLSocketClient
 import okhttp3.OkHttpClient
 import java.security.cert.CertificateException
 import javax.net.ssl.SSLContext

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import com.example.myapplication.R
 import com.example.myapplication.fragment.FragmentLogin
 
 import com.example.myapplication.viewmodle.MainActivityVM
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        Log.e("Peter","MainActivity ")
+
 //        initObserve()
     }
 

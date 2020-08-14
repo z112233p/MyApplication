@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/FragmentChatRoom"
-        android:name="com.example.myapplication.fragment.FragmentChatRoom"
+        android:name="com.example.myapplication.fragment.FragmentChatRoomList"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_chatroom">
 
