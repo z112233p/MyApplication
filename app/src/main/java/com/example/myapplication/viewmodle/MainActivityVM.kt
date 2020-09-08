@@ -61,7 +61,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
-                Log.e("Peter222", "onError$e")
+                Log.e("Peter222", "onError${e.message}")
 
             }
 
@@ -131,6 +131,6 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
         }
-        ApiMethods.getChatHistory(chatHistoryObserve, rid)
+//        ApiMethods.getChatHistory(chatHistoryObserve, rid)
     }
 }

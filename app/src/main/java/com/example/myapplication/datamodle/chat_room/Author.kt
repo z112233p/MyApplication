@@ -6,7 +6,7 @@ import com.stfalcon.chatkit.commons.models.IUser
 class Author : IUser {
     /*...*/
     private var id = PrefHelper.getChatLable()
-    private var name = "PeterNAME"
+    private var name = PrefHelper.getChatName()
     private var avatar = "https://static.raccoontv.com/smtv//uploads/banner/19/6Ul4J8zah40BAUZn.jpeg"
 
     fun setId(id: String) {

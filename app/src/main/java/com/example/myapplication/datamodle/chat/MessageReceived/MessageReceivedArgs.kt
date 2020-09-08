@@ -1,5 +1,6 @@
 package com.example.myapplication.datamodle.chat.MessageReceived
 
+
 data class MessageReceivedArgs(
     val _id: String,
     val _updatedAt: UpdatedAt,
@@ -7,6 +8,7 @@ data class MessageReceivedArgs(
     val default: Boolean,
     val fname: String,
     val lastMessage: LastMessage,
+    val attachments: ArrayList<Attachment>,
     val lm: Lm,
     val name: String,
     val ro: Boolean,

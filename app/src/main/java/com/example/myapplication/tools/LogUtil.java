@@ -2,7 +2,13 @@ package com.example.myapplication.tools;
 
 import android.util.Log;
 
-public class LogUtil {
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+
+import com.stfalcon.chatkit.commons.models.MessageContentType;
+import com.stfalcon.chatkit.messages.MessageHolders;
+
+public class LogUtil extends MessageHolders {
     //规定每段显示的长度
     private static int LOG_MAXLENGTH = 2000;
 
@@ -23,5 +29,18 @@ public class LogUtil {
                 break;
             }
         }
+
+
     }
+
+
+    public <TYPE extends MessageContentType>
+    MessageHolders registerContentTypeQQ(
+            byte type,
+             Class<? extends MessageHolders.BaseMessageViewHolder<TYPE>> incomingHolder, @LayoutRes int incomingLayout,
+             Class<? extends MessageHolders.BaseMessageViewHolder<TYPE>> outcomingHolder, @LayoutRes int outcomingLayout,
+             MessageHolders.ContentChecker contentChecker) {
+        return this;
+    }
+
 }

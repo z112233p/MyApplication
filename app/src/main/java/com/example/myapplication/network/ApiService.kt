@@ -2,6 +2,7 @@ package com.example.myapplication.network
 
 //import android.database.Observable
 import android.os.Build
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.ErrorLogApi
 import com.example.myapplication.datamodle.authorization.LoginData
@@ -129,7 +130,7 @@ interface ApiService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
 //                .baseUrl("https://logcenter.zanstartv.com/")
-                .baseUrl("https://172.19.3.98/api/")
+                .baseUrl(BuildConfig.RESTFUL_URL)
                 .build()
 
             return retrofit.create(ApiService::class.java)

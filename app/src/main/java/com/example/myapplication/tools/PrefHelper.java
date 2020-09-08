@@ -12,6 +12,8 @@ public class PrefHelper {
     private static String CHAT_TOKEN = "chat_token";
     private static String CHAT_ID = "chat_id";
     private static String CHAT_LABLE = "chat_lable";
+    private static String CHAT_Name = "chat_name";
+
     private static String CHAT_ROOM_ID = "chat_room_id";
 
 
@@ -56,6 +58,15 @@ public class PrefHelper {
 
     public static String getChatLable(){
         return getInstance().getString(CHAT_LABLE,"");
+    }
+
+    //Chat Name
+    public static void setChatName(String value){
+        savePref(CHAT_Name,value);
+    }
+
+    public static String getChatName(){
+        return getInstance().getString(CHAT_Name,"");
     }
 
     //Chat Room ID

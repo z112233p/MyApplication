@@ -2,12 +2,10 @@ package com.example.myapplication.network
 
 import android.app.Activity
 import android.util.Log
-import com.example.myapplication.MyApp
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.`interface`.WebSocketModle
 import com.example.myapplication.datamodle.chat.*
-import com.example.myapplication.datamodle.chat.MessageReceived.MessageReceived
-import com.example.myapplication.datamodle.chat.MessageReceived.MessageReceivedArgs
-import com.example.myapplication.datamodle.chat_room.Message
+import com.example.myapplication.datamodle.chat.MessageReceived.message_received_args.MessageReceivedArgs2
 import com.example.myapplication.tools.LogUtil
 import com.example.myapplication.tools.PrefHelper
 import com.google.gson.Gson
@@ -20,38 +18,26 @@ import org.json.JSONObject
 
 
 object WebSocketHelper {
-
-    private lateinit var webSocketGeneral: WebSocket
+    private  var webSocketGeneral: WebSocket? = null
     private lateinit var jsonObject: JSONObject
-    private lateinit var callBack: WebSocketModle
+    private var callBack: WebSocketModle? = null
     private lateinit var mActivity: Activity
-
 
 
     private val webSocketListener: WebSocketListener = object : WebSocketListener(){
         override fun onOpen(webSocket: WebSocket, response: Response) {
-            Log.e("Peter", "onOpen:")
-
-            chatConnect(
-                webSocket
-            )
+            chatConnect(webSocket)
             chatLogin(webSocket)
-            subscribeMySelf(
-                webSocket
-            )
+            subscribeMySelf(webSocket)
         }
 
         override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-            Log.e("Peter", "onMessageB:  $bytes")
 
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             Log.e("Peter", "onMessageT:  $text")
-            dealJsonArray(
-                webSocket,
-                text
-            )
+            dealJsonArray(webSocket, text)
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
@@ -61,10 +47,7 @@ object WebSocketHelper {
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-            LogUtil.e(
-                "Peter",
-                "onFailure:  " + t.message + "  R:   " + response
-            )
+            LogUtil.e("Peter", "onFailure:  " + t.message + "  R:   " + response)
         }
     }
 
@@ -76,20 +59,15 @@ object WebSocketHelper {
                 "changed" -> {
                     when(jsonObject.get("collection")){
                         "stream-notify-user" ->{
-
                             val argsJSONString = jsonObject.getJSONObject("fields").getJSONArray("args").get(1)
-                            val messageReceivedArgs = Gson().fromJson(argsJSONString.toString(), MessageReceivedArgs::class.java)
+                            val messageReceivedArgs = Gson().fromJson(argsJSONString.toString(), MessageReceivedArgs2::class.java)
 
                             if(PrefHelper.getChatRoomId() == messageReceivedArgs.lastMessage.rid &&
                                 PrefHelper.getChatLable() != messageReceivedArgs.lastMessage.u.username){
-
-
                                 mActivity.runOnUiThread {
-                                    callBack.messageReceive(messageReceivedArgs.lastMessage.u.username,
-                                        messageReceivedArgs.lastMessage.msg)
+                                    callBack?.messageReceive(messageReceivedArgs)
                                     Log.e("peter","stream-notify-user   IN")
                                 }
-
 
                             } else {
                                 Log.e("peter","stream-notify-user   Out")
@@ -129,8 +107,9 @@ object WebSocketHelper {
     }
 
     fun connect(){
+        stop()
         val request = Request.Builder()
-            .url("wss://172.19.3.98:8443/websocket")
+            .url(BuildConfig.CHATROOM_URL+"websocket")
             .build()
         val client = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .retryOnConnectionFailure(true).build()
@@ -142,23 +121,22 @@ object WebSocketHelper {
     }
 
     fun stop() {
-        webSocketGeneral.cancel()
+        webSocketGeneral?.cancel()
     }
 
-    fun send(content: String) {
-        val data = Message()
-//        webSocketGeneral.send(text)
-    }
-
-    fun sendTest(rId: String, content: String) {
-        Log.e("Peter", "SEND TEST   $rId")
+    fun send(rId: String, content: String) {
+        Log.e("Peter", "SEND TEST   $content")
+        val Arry = ArrayList<String>()
+        Arry.add("QQ")
+        Arry.add("SSS")
         val messageSendParam = MessageSendParam(java.util.UUID.randomUUID().toString(), rId, content)
         val messageSend = MessageSend("method", "sendMessage", "1", listOf(messageSendParam))
 
-        webSocketGeneral.send(Gson().toJson(messageSend))
+        webSocketGeneral?.send(Gson().toJson(messageSend))
     }
 
     fun setCallBack(param: WebSocketModle){
+        callBack = null
         callBack = param
     }
 

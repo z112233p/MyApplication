@@ -1,23 +1,22 @@
 package com.example.myapplication.network
 
-//import android.database.Observable
 import android.os.Build
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.chat.ChatRoomList
 import com.example.myapplication.datamodle.chat.history.ChatHistory
+import com.example.myapplication.datamodle.chat.image_message.response.ImageResponse
+import com.example.myapplication.datamodle.chat.text_message.TextMessage
+import com.example.myapplication.datamodle.chat.text_message.response.TextResponse
 import com.example.myapplication.tools.PrefHelper
 import io.reactivex.Observable
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -33,12 +32,17 @@ interface ChatApiService {
     @GET("groups.history")
     fun getChatHistory(@Query("roomId") roomId: String?, @Query("count") count: Int?): Observable<ChatHistory>
 
+    //Post ImageMessage
+    @Multipart
+    @POST("rooms.upload/{roomId}")
+    fun postImageMessage(@Path("roomId")roomId: String?,
+                         @Part file: MultipartBody.Part): Observable<ImageResponse>
 
-
-
+    @POST("chat.sendMessage")
+    fun postTextMessage(@Body message: TextMessage?): Observable<TextResponse>
 
     companion object {
-        fun create(addHeader: Boolean): ChatApiService {
+        fun create(addHeader: Boolean, rId: String): ChatApiService {
             fun getSTUserAgent(): String? {
                 val sb = StringBuffer()
                 sb.append("Android ")
@@ -109,7 +113,7 @@ interface ChatApiService {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://172.19.3.98:8443/api/v1/")
+                .baseUrl(BuildConfig.CHATROOM_URL+"api/v1/")
                 .build()
 
             return retrofit.create(ChatApiService::class.java)

@@ -18,4 +18,6 @@
     <string name="birthday_title">生日：</string>
     <string name="age_title">年齡：</string>
     <string name="language_title">語言：</string>
+    <string name="copy">複製</string>
+    <string name="reply">回覆</string>
 </resources>

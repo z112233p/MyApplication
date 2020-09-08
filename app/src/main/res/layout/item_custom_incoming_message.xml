@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:gravity="bottom"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:id="@+id/chat_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_owner"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:visibility="visible"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="bottom"
+            card_view:cardCornerRadius="21dp">
+
+            <ImageView
+                android:id="@+id/messageUserAvatar"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                tool:src="@drawable/ic_add_attachment"
+                tool:ignore="ContentDescription" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+
+            android:orientation="vertical"
+            android:layout_marginRight="75dp"
+            android:layout_marginEnd="75dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_chat_message_sup"
+                    android:layout_width="30dp"
+                    android:layout_height="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="-24dp"
+                    android:visibility="visible"
+                    android:background="@color/transparent"
+                    card_view:srcCompat="@drawable/bg_chat_message_sup"
+                    android:layout_marginRight="-24dp"
+                    tool:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:id="@+id/ll_message_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/bg_chat_message_main"
+                    android:padding="14dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/ll_message_reply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+
+                        android:visibility="gone"
+                        tool:visibility="visible"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_reply_image"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_send"
+                            tool:visibility="visible"
+                            android:visibility="gone"
+                            tool:ignore="ContentDescription" />
+                        <TextView
+                            android:id="@+id/tv_reply_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:background="@color/transparent"
+
+                            android:singleLine="true"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tool:visibility="visible"
+                            tool:text="rest reptest reply test "/>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/v_divider_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/messageText"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        tool:text=".....!!!!!!!!!!!!.....!!!!!!!!!!!!.....!!!!!!!!!!!!.....!!!!!!!!!!!!.....!!!!!!!!!!!!.....!!!!!!!!!!!!"
+                        />
+
+                    <com.stfalcon.chatkit.utils.RoundedImageView
+                        android:id="@id/image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/messageTime"
+                android:background="@color/transparent"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_gravity="end"
+                tool:text="12345"
+                tool:ignore="SmallSp" />
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:layout_gravity="end"
+                android:textSize="12sp"
+                tool:ignore="SmallSp"
+                tool:text="12345" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,7 @@
 package com.example.myapplication.datamodle.chat.history
 
 data class Attachment(
-    val image_dimensions: ImageDimensions,
+//    val image_dimensions: ImageDimensions,
     val image_preview: String,
     val image_size: Int,
     val image_type: String,

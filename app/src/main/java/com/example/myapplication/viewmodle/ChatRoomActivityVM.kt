@@ -6,18 +6,19 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.datamodle.chat.history.ChatHistory
 import com.example.myapplication.datamodle.chat.history.Message
+import com.example.myapplication.datamodle.chat.image_message.response.ImageResponse
+import com.example.myapplication.datamodle.chat.message_update.MessageUpdate
+import com.example.myapplication.datamodle.chat.text_message.TextMessage
+import com.example.myapplication.datamodle.chat.text_message.response.TextResponse
 import io.reactivex.Observer
-import com.example.myapplication.datamodle.dating.DatingSearch
-import com.example.myapplication.datamodle.dating.DatingSearchData
 import com.example.myapplication.network.ApiMethods
 import com.example.myapplication.tools.LogUtil
-import com.example.myapplication.tools.SingleLiveEvent
-import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.json.JSONObject
+import java.io.File
 
 class ChatRoomActivityVM (application: Application) : AndroidViewModel(application){
     private val mContent: Context? = application.applicationContext
@@ -25,12 +26,16 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
 
     //set
     private val chatHistory: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
+    private val messageUpdate: MutableLiveData<com.example.myapplication.datamodle.chat_room.Message> = MutableLiveData()
 
     //get
     fun getChatHistoryData(): LiveData<List<Message>> {
         return chatHistory
     }
 
+    fun getMessageUpdate(): LiveData<com.example.myapplication.datamodle.chat_room.Message> {
+        return messageUpdate
+    }
 
     fun getChatHistory(rid: String){
         val chatHistoryObserve: Observer<ChatHistory> = object : Observer<ChatHistory>{
@@ -50,10 +55,70 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
                     LogUtil.e("PetergetChatHistory", "getChatHistory onNext:  ${i.u.name}"+"     "+i.t+"   "+i.msg)
                 }
             }
-
         }
         ApiMethods.getChatHistory(chatHistoryObserve, rid)
     }
 
+    fun postImageMessage(
+        file: File,
+        rId: String,
+        imgData: com.example.myapplication.datamodle.chat_room.Message
+    ){
+        val imageMessageObserve: Observer<ImageResponse> = object :Observer<ImageResponse>{
+            override fun onComplete() {
+                Log.e("Peter", "postImageMessage onComplete")
+            }
 
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onNext(t: ImageResponse) {
+//                imgData.setImageUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].image_url)
+                imgData.setSuccess(t.success.toString())
+                imgData.setImageUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].image_url)
+                messageUpdate.value = imgData
+                Log.e("Peter", "postImageMessage onNext:  "+t.success.toString())
+                Log.e("Peter", "postImageMessage onNext:  "+t.message._id)
+
+            }
+
+            override fun onError(e: Throwable) {
+                imgData.setSuccess("false")
+                messageUpdate.value = imgData
+                Log.e("Peter", "postImageMessage onError:  $e")
+            }
+
+        }
+        ApiMethods.postImageMessage(imageMessageObserve, file, rId)
+    }
+
+
+    fun postTextMessage(
+        dataBody: TextMessage,
+        rId: String,
+        data: com.example.myapplication.datamodle.chat_room.Message
+    ){
+        val textMessageObserve: Observer<TextResponse> = object :Observer<TextResponse>{
+            override fun onComplete() {
+                Log.e("Peter", "postTextMessage onComplete")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onNext(t: TextResponse) {
+                data.setSuccess(t.success.toString())
+                messageUpdate.value = data
+                Log.e("Peter", "postTextMessage onNext:  "+t.success.toString())
+            }
+
+            override fun onError(e: Throwable) {
+                data.setSuccess("false")
+                messageUpdate.value = data
+                Log.e("Peter", "postTextMessage onError:  $e")
+            }
+
+        }
+        ApiMethods.postTextMessage(textMessageObserve, dataBody, rId)
+    }
 }

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:layout_gravity="bottom"
+    android:paddingBottom="10dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_owner"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginBottom="10dp"
+        card_view:cardCornerRadius="21dp"
+        card_view:layout_constraintStart_toEndOf="@+id/linearLayout"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_goneMarginEnd="10dp"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/messageUserAvatar"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            tool:ignore="ContentDescription"
+            tool:src="@drawable/ic_add_attachment" />
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        card_view:layout_constraintHorizontal_weight="1"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="4dp"
+        android:gravity="right|bottom"
+        android:orientation="horizontal"
+        card_view:layout_constraintEnd_toStartOf="@+id/card_owner"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        tool:ignore="RtlHardcoded">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+
+            android:translationZ="1dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_message_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:background="@drawable/bg_chat_message_main">
+                <LinearLayout
+                    android:id="@+id/ll_message_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+
+                    android:visibility="gone"
+                    tool:visibility="visible"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_reply_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_send"
+                        tool:visibility="visible"
+                        android:visibility="gone"
+                        tool:ignore="ContentDescription" />
+                    <TextView
+                        android:id="@+id/tv_reply_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:background="@color/transparent"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tool:visibility="visible"
+                        tool:text="rest reptest reply test "/>
+
+                </LinearLayout>
+                <View
+                    android:id="@+id/v_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:id="@+id/messageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:textColor="@color/colorWhite"
+                    tool:text="Hi! Hoe are you~ I;m find thank you and you?"/>
+
+                <com.stfalcon.chatkit.utils.RoundedImageView
+                    android:id="@id/image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/messageTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    tool:ignore="SmallSp"
+                    tool:text="12345" />
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorBlack"
+                    tool:ignore="SmallSp"
+                    tool:text="12345" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_chat_message_sup"
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:background="@color/transparent"
+
+            android:layout_marginStart="-24dp"
+            android:layout_marginLeft="-24dp"
+            android:layout_marginBottom="25dp"
+            card_view:srcCompat="@drawable/bg_chat_message_sup"
+            tool:ignore="ContentDescription" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

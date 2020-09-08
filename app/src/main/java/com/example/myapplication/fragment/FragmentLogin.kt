@@ -35,6 +35,11 @@ class FragmentLogin : BaseFragment() {
         super.onDestroyView()
     }
 
+    private fun checkSession(): Boolean  {
+        return PrefHelper.getApiHeader() != ""
+    }
+
+
     private fun init(){
         button_first.setOnClickListener {
             mainActVM.login(loginData = LoginData(et_phone.text.toString().toInt(), et_verification.text.toString()))
@@ -43,6 +48,10 @@ class FragmentLogin : BaseFragment() {
     }
 
     private fun initObserve(){
+        if(checkSession()){
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            return
+        }
         mainActVM.getLoginResponse().observe(viewLifecycleOwner, Observer {
             PrefHelper.setApiHeader(it.data.user_token)
             PrefHelper.setChatToken(it.data.chat_auth_token)

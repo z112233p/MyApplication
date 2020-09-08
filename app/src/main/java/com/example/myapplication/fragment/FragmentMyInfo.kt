@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
+import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.viewmodle.MainActivityVM
 import kotlinx.android.synthetic.main.fragment_myinfo.*
 
@@ -42,6 +43,8 @@ class FragmentMyInfo : BaseFragment() {
             tv_id.text = it.user.id.toString()
             tv_language_id.text = it.user.language_id.toString()
             tv_name.text = it.user.name
+
+            PrefHelper.setChatName(it.user.name)
         })
     }
 }
