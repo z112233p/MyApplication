@@ -109,7 +109,7 @@ object WebSocketHelper {
     fun connect(){
         stop()
         val request = Request.Builder()
-            .url(BuildConfig.CHATROOM_URL+"websocket")
+            .url(BuildConfig.CHATROOM_URL+"/websocket")
             .build()
         val client = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .retryOnConnectionFailure(true).build()

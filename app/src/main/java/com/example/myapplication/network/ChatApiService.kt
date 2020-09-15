@@ -5,7 +5,7 @@ import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.chat.ChatRoomList
 import com.example.myapplication.datamodle.chat.history.ChatHistory
-import com.example.myapplication.datamodle.chat.image_message.response.ImageResponse
+import com.example.myapplication.datamodle.chat.image_message.response.FileResponse
 import com.example.myapplication.datamodle.chat.text_message.TextMessage
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse
 import com.example.myapplication.tools.PrefHelper
@@ -19,6 +19,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 import java.io.File
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -32,11 +33,21 @@ interface ChatApiService {
     @GET("groups.history")
     fun getChatHistory(@Query("roomId") roomId: String?, @Query("count") count: Int?): Observable<ChatHistory>
 
+    @GET("groups.history")
+    fun getChatHistory(@Query("roomId") roomId: String?, @Query("count") count: Int?, @Query("latest") latest: Date?): Observable<ChatHistory>
+
+
     //Post ImageMessage
     @Multipart
     @POST("rooms.upload/{roomId}")
     fun postImageMessage(@Path("roomId")roomId: String?,
-                         @Part file: MultipartBody.Part): Observable<ImageResponse>
+                         @Part file: MultipartBody.Part): Observable<FileResponse>
+
+    //Post AudioMessage
+    @Multipart
+    @POST("rooms.upload/{roomId}")
+    fun postAudioMessage(@Path("roomId")roomId: String?,
+                         @Part file: MultipartBody.Part): Observable<FileResponse>
 
     @POST("chat.sendMessage")
     fun postTextMessage(@Body message: TextMessage?): Observable<TextResponse>
@@ -113,7 +124,7 @@ interface ChatApiService {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.CHATROOM_URL+"api/v1/")
+                .baseUrl(BuildConfig.CHATROOM_URL+"/api/v1/")
                 .build()
 
             return retrofit.create(ChatApiService::class.java)

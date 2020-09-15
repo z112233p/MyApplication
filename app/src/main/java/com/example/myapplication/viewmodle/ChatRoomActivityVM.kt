@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.datamodle.chat.history.ChatHistory
 import com.example.myapplication.datamodle.chat.history.Message
-import com.example.myapplication.datamodle.chat.image_message.response.ImageResponse
+import com.example.myapplication.datamodle.chat.image_message.response.FileResponse
 import com.example.myapplication.datamodle.chat.message_update.MessageUpdate
 import com.example.myapplication.datamodle.chat.text_message.TextMessage
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse
@@ -19,6 +19,7 @@ import com.example.myapplication.tools.LogUtil
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.io.File
+import java.util.*
 
 class ChatRoomActivityVM (application: Application) : AndroidViewModel(application){
     private val mContent: Context? = application.applicationContext
@@ -59,12 +60,34 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
         ApiMethods.getChatHistory(chatHistoryObserve, rid)
     }
 
+    fun getChatHistory(rid: String, latest: Date){
+        val chatHistoryObserve: Observer<ChatHistory> = object : Observer<ChatHistory>{
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("Peter", "getChatHistory onError:  $e")
+            }
+
+            override fun onNext(t: ChatHistory) {
+                chatHistory.value = t.messages
+                for ((f, i) in t.messages.withIndex()){
+                    LogUtil.e("PetergetChatHistory", "getChatHistory onNext:  ${i.u.name}"+"     "+i.t+"   "+i.msg)
+                }
+            }
+        }
+        ApiMethods.getChatHistory(chatHistoryObserve, rid, latest)
+    }
+
     fun postImageMessage(
         file: File,
         rId: String,
         imgData: com.example.myapplication.datamodle.chat_room.Message
     ){
-        val imageMessageObserve: Observer<ImageResponse> = object :Observer<ImageResponse>{
+        val imageMessageObserve: Observer<FileResponse> = object :Observer<FileResponse>{
             override fun onComplete() {
                 Log.e("Peter", "postImageMessage onComplete")
             }
@@ -72,7 +95,7 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
             override fun onSubscribe(d: Disposable) {
             }
 
-            override fun onNext(t: ImageResponse) {
+            override fun onNext(t: FileResponse) {
 //                imgData.setImageUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].image_url)
                 imgData.setSuccess(t.success.toString())
                 imgData.setImageUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].image_url)
@@ -92,6 +115,38 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
         ApiMethods.postImageMessage(imageMessageObserve, file, rId)
     }
 
+    fun postAudioMessage(
+        file: File,
+        rId: String,
+        audioData: com.example.myapplication.datamodle.chat_room.Message
+    ){
+        val imageMessageObserve: Observer<FileResponse> = object :Observer<FileResponse>{
+            override fun onComplete() {
+                Log.e("Peter", "postImageMessage onComplete")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onNext(t: FileResponse) {
+//                audioData.setImageUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].image_url)
+                audioData.setSuccess(t.success.toString())
+                audioData.setAudioUrl(BuildConfig.CHATROOM_URL+t.message.attachments[0].title_link)
+                messageUpdate.value = audioData
+                Log.e("Peter", "postImageMessage onNext:  "+t.success.toString())
+                Log.e("Peter", "postImageMessage onNext:  "+t.message._id)
+
+            }
+
+            override fun onError(e: Throwable) {
+                audioData.setSuccess("false")
+                messageUpdate.value = audioData
+                Log.e("Peter", "postImageMessage onError:  $e")
+            }
+
+        }
+        ApiMethods.postAudioMessage(imageMessageObserve, file, rId)
+    }
 
     fun postTextMessage(
         dataBody: TextMessage,

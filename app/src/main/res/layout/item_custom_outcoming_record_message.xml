@@ -109,23 +109,10 @@
                     android:layout_marginBottom="3dp"
                     android:background="@color/white"/>
 
-                <TextView
-                    android:id="@+id/messageText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:textColor="@color/colorWhite"
-                    tool:text="Hi! Hoe are you~ I;m find thank you and you?"/>
-
-                <com.stfalcon.chatkit.utils.RoundedImageView
-                    android:id="@id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"/>
                 <com.example.myapplication.custom_view.AudioPlayerLayout
-                    android:id="@+id/ll_audio_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
 
             </LinearLayout>
             <LinearLayout

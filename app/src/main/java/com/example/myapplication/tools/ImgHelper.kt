@@ -79,7 +79,7 @@ object ImgHelper {
                         dataSource: DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.e("Peter","IMG err   ")
+                        Log.e("Peter","IMG onResourceReady   ")
                         return false
                     }
 

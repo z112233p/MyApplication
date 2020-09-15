@@ -5,7 +5,7 @@ data class LastMessage(
     val _updatedAt: UpdatedAtX,
     val attachments: List<Attachment>,
     val channels: List<Any>,
-    val `file`: File,
+    val `file`: File = File(),
     val groupable: Boolean,
     val mentions: List<Any>,
     val msg: String,

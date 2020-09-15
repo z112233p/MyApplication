@@ -14,7 +14,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", 'RESTFUL_URL', '"https://dev.illa.me/api/"'
-        buildConfigField "String", 'CHATROOM_URL', '"https://dev.illa.me:8443/"'
+        buildConfigField "String", 'CHATROOM_URL', '"https://dev.illa.me:8443"'
         buildConfigField "String", 'IMAGE_URL', '"https://dev.illa.me/images/"'
 
     }

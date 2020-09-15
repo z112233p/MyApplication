@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.R
+import com.example.myapplication.custom_view.AudioPlayerLayout
 import com.example.myapplication.datamodle.chat.text_message.message_entry.MessageEntry
 import com.example.myapplication.datamodle.chat_room.Message
 import com.example.myapplication.tools.ImgHelper
@@ -29,6 +30,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
     val image = itemView.findViewById<RoundedImageView>(R.id.image)
     val messageText = itemView.findViewById<TextView>(R.id.messageText)
     val messageTime = itemView.findViewById<TextView>(R.id.messageTime)
+    val llAudioLayout = itemView.findViewById<AudioPlayerLayout>(R.id.ll_audio_layout)
     val parent = itemView
 
     val llMessageReply = itemView.findViewById<LinearLayout>(R.id.ll_message_reply)
@@ -80,18 +82,37 @@ abstract class BaseMessageViewHolder(itemView: View) :
 
         Log.e("Peter","message.imageUrl:  randomReplyLayoutBool   "+randomReplyLayoutBool)
         Log.e("Peter","message.imageUrl:  randomReplyItemBool    "+randomReplyItemBool)
-
         Log.e("Peter","message.imageUrl:  name    "+message.author.name)
-
         Log.e("Peter","message.imageUrl:  img    "+message.imageUrl)
         Log.e("Peter","message.imageUrl:  reimg   "+messageEntry.recontent)
 
+        messageText.visibility = View.GONE
+        image.visibility = View.GONE
+        llAudioLayout.visibility = View.GONE
 
-        if (!TextUtils.isEmpty(message.imageUrl)){
-            ImgHelper.loadNormalImg(MyApp.get()?.applicationContext, message.imageUrl, this.image)
+        if (TextUtils.isEmpty(message.getFileType())){
+            messageText.text = messageEntry.content
+            messageText.visibility = View.VISIBLE
+
+        } else {
+            if (message.getFileType() == "image/jpg"){
+                if (!TextUtils.isEmpty(message.imageUrl)){
+                    ImgHelper.loadNormalImg(MyApp.get()?.applicationContext, message.imageUrl, this.image)
+                }
+                image.visibility = View.VISIBLE
+
+            } else if (message.getFileType() == "audio/m4a"){
+                message.getAudioUrl()?.let {
+                    Log.e("Peter","message.getAudioUrl:  audio    "+message.getAudioUrl())
+                    llAudioLayout.setAudioSource(it)
+                }
+                llAudioLayout.visibility = View.VISIBLE
+            }
         }
+
+
+
         ImgHelper.loadNormalImg(MyApp.get()?.applicationContext, message.author.avatar, messageUserAvatar)
-        messageText.text = messageEntry.content
         messageTime.text = DateFormatter.format(message.createdAt, DateFormatter.Template.TIME)
 
         //reply item(TEST)

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.example.myapplication.BuildConfig
@@ -32,6 +33,7 @@ import com.example.myapplication.datamodle.chat.text_message.message_entry.Messa
 import com.example.myapplication.datamodle.chat_room.Message
 import com.example.myapplication.network.WebSocketHelper
 import com.example.myapplication.tools.AudioRecordHelper
+import com.example.myapplication.tools.Config
 import com.example.myapplication.tools.ImgHelper
 import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.viewmodle.ChatRoomActivityVM
@@ -42,24 +44,27 @@ import com.stfalcon.chatkit.messages.MessageHolders.ContentChecker
 import com.stfalcon.chatkit.messages.MessagesListAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_chat_room.*
-import kotlinx.android.synthetic.main.item_custom_outcoming_message.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 
     private val chatRoomActVM: ChatRoomActivityVM by viewModel()
+    private var updateOption: Boolean = true
 
     private lateinit var rId: String
     private lateinit var adapter: Adapter_Chat_Room_Message<Message>
     private lateinit var dataList: ArrayList<Message>
+    private var latest: Date? = null
     private lateinit var imm: InputMethodManager
     private lateinit var popup: CardPopup
     private lateinit var replyMessageEntry: MessageEntry
     private lateinit var imgUrlMap:HashMap<String, String>
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -88,29 +93,36 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
 
-
-//        btn_start_record.setOnTouchListener { view, motionEvent ->
-//            when(motionEvent.action){
-//                MotionEvent.ACTION_DOWN ->{
-//                    AudioRecordHelper.startRecord()
-//                    AudioRecordHelper.countTime()
-//                }
-//                MotionEvent.ACTION_UP ->{
-//                    AudioRecordHelper.stopRecord()
-//
-//                }
-//            }
-//
-//            return@setOnTouchListener false
-//        }
-
         btn_start_record.setOnClickListener {
             AudioRecordHelper.startRecord()
-//            AudioRecordHelper.countTime()
         }
+
         btn_stop_record.setOnClickListener {
-            AudioRecordHelper.stopRecord()
+            val file = File(AudioRecordHelper.stopRecord())
+            val audioData = Message()
+            val messageID = java.util.UUID.randomUUID().toString()
+
+            audioData.author.avatar = BuildConfig.IMAGE_URL+"chatroom/dating/"+PrefHelper.getChatLable()+".jpg"
+            audioData.setImageUrl(AudioRecordHelper.stopRecord())
+            audioData.id = messageID
+            audioData.setFileType("audio/m4a")
+            audioData.setAudioUrl(AudioRecordHelper.stopRecord())
+
+            adapter.addToStart(audioData,true)
+            chatRoomActVM.postAudioMessage(file, rId, audioData)
+
         }
+
+        btn_play_record.setOnClickListener {
+            AudioRecordHelper.playLocalRecord()
+        }
+        fab_click_to_bottom.setOnClickListener {
+            messagesList.scrollToPosition(0)
+            fab_click_to_bottom.visibility = View.GONE
+
+        }
+
+
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -133,6 +145,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility", "WrongConstant")
     private fun init(){
+        AudioRecordHelper.setContext(this)
         replyMessageEntry = MessageEntry("","","","","")
         //set Socket Option
         WebSocketHelper.setCallBack(this)
@@ -246,6 +259,8 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
             })
         }
 
+//        adapter.onLoadMore()
+
         //init messagesList(Recycle View)
         messagesList.setAdapter(adapter)
         messagesList.setOnTouchListener { view, motionEvent ->
@@ -258,6 +273,33 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
             }
             return@setOnTouchListener false
         }
+
+        messagesList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.e("=====newState", "" + newState)
+
+                if (recyclerView.childCount > 0) {
+                    try {
+                        val currentPosition =(recyclerView.getChildAt (0).layoutParams as RecyclerView.LayoutParams).viewAdapterPosition
+                        Log.e("=====currentPosition", "" + currentPosition)
+                        var b = recyclerView.canScrollVertically(-1)
+                        Log.e("=====canScroll", "" + b)
+                        if (!b && !updateOption){
+                            updateOption = true
+                            latest?.let { chatRoomActVM.getChatHistory(rId, it) }
+                        }
+                        if (currentPosition == 0){
+                            fab_click_to_bottom.visibility = View.GONE
+                        } else {
+                            fab_click_to_bottom.visibility = View.VISIBLE
+                        }
+                    } catch (e: Exception) {
+                    }
+                }
+
+            }
+        } )
 
         //init input (editView)
         input.setInputListener {
@@ -304,7 +346,14 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         })
 
         chatRoomActVM.getChatHistoryData().observe(this, Observer { list  ->
-            list.forEach { it ->
+            if (list.size > 0){
+                latest = list[list.size -1]._updatedAt
+            } else {
+                latest = null
+
+            }
+            dataList.clear()
+                list.forEach { it ->
                 if(!TextUtils.isEmpty(it.u.name)){
                     val data = Message()
                     data.author.name = it.u.name
@@ -319,34 +368,45 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
                                 .addHeader("X-User-Id",PrefHelper.getChatId())
                                 .build())
                         data.setImageUrl(glideUrl.toString())
+                        data.setAudioUrl(BuildConfig.CHATROOM_URL+ it.attachments[0].title_link)
                         Log.e("Peter","CHATIMAGE:   "+glideUrl.toString())
                     }
-                    dataList.add(0,data)
+                    if (it.file != null){
+                        it.file.type?.let { it1 -> data.setFileType(it1) }
+                    }
+                    dataList.add(0 ,data)
                 }
             }
-            dataList.forEach{
-                adapter.addToStart(it,true)
+            if (updateOption){
+                adapter.addToEnd(dataList,true)
+
+//                dataList.forEach{
+//                    adapter.addToStart(it,true)
+//                }
+            } else {
+                adapter.addToEnd(dataList,true)
             }
+
+            updateOption = false
+
         })
     }
 
     override fun messageReceive(dataList: MessageReceivedArgs2) {
-//        Log.e("peter", "messageReceive   IN${dataList.lastMessage.u.username}")
-
         val data = Message()
         data.author.id = dataList.lastMessage.u.username
         data.author.name = dataList.lastMessage.u.name
         data.text = dataList.lastMessage.msg
         data.author.avatar = BuildConfig.IMAGE_URL+"chatroom/dating/"+dataList.lastMessage.u.username+".jpg"
 
-
-        if(dataList.lastMessage.attachments != null){
-            Log.e("Peter","messageReceive:  img    "+dataList.lastMessage.attachments[0].image_url)
-
-            data.setImageUrl(BuildConfig.CHATROOM_URL+ dataList.lastMessage.attachments[0].image_url)
-            Log.e("Peter","messageReceive:  data.setImageUrl    "+data.imageUrl)
-
+        if (dataList.lastMessage.file != null){
+            dataList.lastMessage.file.type?.let { data.setFileType(it) }
+            when(dataList.lastMessage.file.type){
+                Config.IMAGE_JPG -> data.setImageUrl(BuildConfig.CHATROOM_URL+ dataList.lastMessage.attachments[0].image_url)
+                Config.AUDIO_M4A -> data.setAudioUrl(BuildConfig.CHATROOM_URL+ dataList.lastMessage.attachments[0].title_link)
+            }
         }
+
         adapter.addToStart(data,true)
     }
 
@@ -362,7 +422,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
                 imgData.author.avatar = BuildConfig.IMAGE_URL+"chatroom/dating/"+PrefHelper.getChatLable()+".jpg"
                 imgData.setImageUrl(result.uri.toString())
                 imgData.id = messageID
-
+                imgData.setFileType("image/jpg")
                 adapter.addToStart(imgData,true)
                 chatRoomActVM.postImageMessage(file, rId, imgData)
             }

@@ -43,11 +43,11 @@ public class Adapter_Chat_Room_Message<MESSAGES extends IMessage > extends Messa
 
         if (payloads.isEmpty()){
             onBindViewHolder((ViewHolder) holder, position);
-            Log.e("Peter","Adapter_Chat_Room_Message onBindViewHolder  1");
+            Log.e("Peter","Adapter_Chat_Room_Message onBindViewHolder  1   "+position);
 
         } else {
             ((TextView)holder.itemView.findViewById(R.id.tv_status)).setText(responseString);
-            Log.e("Peter","Adapter_Chat_Room_Message onBindViewHolder  2");
+            Log.e("Peter","Adapter_Chat_Room_Message onBindViewHolder  2   "+position);
         }
     }
 

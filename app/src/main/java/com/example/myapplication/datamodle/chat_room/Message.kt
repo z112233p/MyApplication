@@ -12,7 +12,8 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
     private var createdAt = Calendar.getInstance().time
     private var imageUrl: String? = null
     private var success: String? = null
-
+    private var audioUrl: String? = null
+    private var fileType: String? = ""
 
 
 
@@ -32,8 +33,16 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
         this.imageUrl = url
     }
 
+    fun setAudioUrl(url: String){
+        this.audioUrl = url
+    }
+
     fun setSuccess(status: String){
         success = status
+    }
+
+    fun setFileType(type: String){
+        fileType = type
     }
 
 
@@ -62,4 +71,13 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
     fun getSuccess(): String? {
         return success
     }
+
+    fun getFileType(): String? {
+        return fileType
+    }
+
+    fun getAudioUrl(): String? {
+        return audioUrl
+    }
+
 }

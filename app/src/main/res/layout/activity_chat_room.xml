@@ -7,13 +7,29 @@
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.myapplication.custom_view.ContextMenuRecyclerView
-        android:id="@+id/messagesList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        app:textAutoLink="all"/>
+        android:layout_weight="1">
+        <com.example.myapplication.custom_view.ContextMenuRecyclerView
+            android:id="@+id/messagesList"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="match_parent"
+            app:textAutoLink="all"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_click_to_bottom"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp" />
+    </FrameLayout>
+
     <Button
         android:id="@+id/btn_start_record"
         android:text="START"
@@ -22,6 +38,11 @@
     <Button
         android:id="@+id/btn_stop_record"
         android:text="STOP"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"/>
+    <Button
+        android:id="@+id/btn_play_record"
+        android:text="PLAY"
         android:layout_width="wrap_content"
         android:layout_height="40dp"/>
     <LinearLayout
