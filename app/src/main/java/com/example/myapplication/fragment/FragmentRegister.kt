@@ -9,20 +9,19 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.tools.PrefHelper
-import com.example.myapplication.datamodle.authorization.LoginData
-import com.example.myapplication.datamodle.authorization.ResendSMS
+import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.viewmodle.MainActivityVM
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_register.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FragmentLogin : BaseFragment() {
+class FragmentRegister : BaseFragment() {
 
     val mainActVM: MainActivityVM by activityViewModels()
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_login
+        return R.layout.fragment_register
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,18 +41,18 @@ class FragmentLogin : BaseFragment() {
 
     private fun init(){
         button_first.setOnClickListener {
-            mainActVM.login(loginData = LoginData(et_phone.text.toString().toInt(), et_verification.text.toString()))
+            mainActVM.register(register = Register(et_phone.text.toString().toInt(), et_language_id.text.toString()))
             button_first.isClickable = false
+
         }
 
-        btn_resend.setOnClickListener {
-            mainActVM.resendSMS(resendSMS = ResendSMS(et_phone.text.toString().toInt()))
-            btn_resend.isClickable = false
-        }
-
-        btn_register.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_FragmentRegister)
-
+//        btn_resend.setOnClickListener {
+//            mainActVM.resendSMS(resendSMS = ResendSMS(et_phone.text.toString().toInt()))
+//            btn_resend.isClickable = false
+//        }
+//
+        btn_cancel.setOnClickListener {
+            findNavController().navigate(R.id.action_FragmentRegister_to_FirstFragment)
         }
     }
 
@@ -68,6 +67,11 @@ class FragmentLogin : BaseFragment() {
             PrefHelper.setChatId(it.data.chat_user_id)
             PrefHelper.setChatLable(it.data.label)
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        })
+
+        mainActVM.getRegisterResponse().observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(R.id.action_FragmentRegister_to_FirstFragment)
+//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         })
     }
 

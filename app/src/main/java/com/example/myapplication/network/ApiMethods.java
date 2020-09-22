@@ -5,15 +5,22 @@ import android.annotation.SuppressLint;
 import com.example.myapplication.datamodle.ErrorLogApi;
 import com.example.myapplication.datamodle.authorization.LoginData;
 import com.example.myapplication.datamodle.authorization.LoginResponse;
+import com.example.myapplication.datamodle.authorization.ResendResponse;
+import com.example.myapplication.datamodle.authorization.ResendSMS;
+import com.example.myapplication.datamodle.authorization.register.Register;
+import com.example.myapplication.datamodle.authorization.register.RegisterResponse;
 import com.example.myapplication.datamodle.chat.ChatRoomList;
 import com.example.myapplication.datamodle.chat.history.ChatHistory;
-import com.example.myapplication.datamodle.chat.image_message.ImageMessage;
 import com.example.myapplication.datamodle.chat.image_message.response.FileResponse;
 import com.example.myapplication.datamodle.chat.text_message.TextMessage;
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse;
 import com.example.myapplication.datamodle.dating.DatingSearch;
-import com.example.myapplication.datamodle.dating.DatingSearchData;
 import com.example.myapplication.datamodle.profile.MyInfo;
+import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto;
+import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse;
+import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse;
+import com.example.myapplication.datamodle.profile.update.UpdateMtInfo;
+import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse;
 
 import java.io.File;
 import java.util.Date;
@@ -26,8 +33,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-
-import static okhttp3.MediaType.*;
 
 public class ApiMethods {
     @SuppressLint("CheckResult")
@@ -43,9 +48,32 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).login(dataBody)), pbObserver);
     }
 
+    public static void register(Observer< RegisterResponse > pbObserver, Register dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).register(dataBody)), pbObserver);
+    }
+
+    public static void resendSMS(Observer<ResendResponse> pbObserver, ResendSMS dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).resendSMS(dataBody)), pbObserver);
+    }
 
     public static void getMyInfo(Observer<MyInfo> pbObserver){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getMyInfo()), pbObserver);
+    }
+
+    public static void updateMyInfo(Observer<UpdateMyInfoResponse> pbObserver, UpdateMtInfo updateMtInfo){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateMyInfo(updateMtInfo)), pbObserver);
+    }
+
+    public static void updateMyPhoto(Observer<UpdatePhotoResponse> pbObserver, String sort, File file){
+        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/jpg"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("photos", file.getName(), fileReqBody);
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), sort);
+
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateMyPhoto(part, description)), pbObserver);
+    }
+
+    public static void deleteMyInfo(Observer< DeleteMyPhotoResponse > pbObserver, DeleteMyPhoto deleteMyPhoto){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).deleteMyPhoto(deleteMyPhoto)), pbObserver);
     }
 
     public static void getChatRoomList(Observer<ChatRoomList> pbObserver){

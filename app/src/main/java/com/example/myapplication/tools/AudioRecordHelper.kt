@@ -110,6 +110,9 @@ object AudioRecordHelper{
         }
     }
 
+    fun init(){
+
+    }
     fun setCallBack(param: AudioInterface){
         Log.e("Peter","setAudioSource    setCallBack  ")
 

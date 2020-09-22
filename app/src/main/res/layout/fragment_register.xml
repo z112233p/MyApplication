@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/input_phone"
-        app:layout_constraintBottom_toTopOf="@id/tv_input_verification"
+        app:layout_constraintBottom_toTopOf="@id/tv_language_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,31 +23,31 @@
         android:layout_height="wrap_content"
         android:hint="@string/phone"
         android:inputType="phone"
-        android:text="77888"
+        android:text="777888"
         app:layout_constraintStart_toEndOf="@+id/tv_input_phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv_input_verification"
+        app:layout_constraintBottom_toTopOf="@id/tv_language_id"
         android:autofillHints="@string/app_name" />
 
     <TextView
-        android:id="@+id/tv_input_verification"
+        android:id="@+id/tv_language_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/input_verification"
+        android:text="輸入語言ＩＤ"
         app:layout_constraintBottom_toTopOf="@id/button_first"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/et_verification"
+        android:id="@+id/et_language_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/verification"
         android:inputType="phone"
         android:text="5555"
-        app:layout_constraintStart_toEndOf="@+id/tv_input_verification"
+        app:layout_constraintStart_toEndOf="@+id/tv_language_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/button_first"
@@ -61,26 +61,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_resend"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_input_verification" />
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 
     <Button
         android:id="@+id/btn_resend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="重新發送驗證碼"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_register"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
         app:layout_constraintStart_toEndOf="@+id/button_first"
-        app:layout_constraintTop_toBottomOf="@id/tv_input_verification" />
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 
     <Button
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="註冊"
+        android:text="取消"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_resend"
-        app:layout_constraintTop_toBottomOf="@id/tv_input_verification" />
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

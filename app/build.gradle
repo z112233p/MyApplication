@@ -95,5 +95,9 @@ dependencies {
 
     implementation 'cn.trinea.android.common:trinea-android-common:4.2.15'
 
+    //Scale Image View
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+
+
 
 }

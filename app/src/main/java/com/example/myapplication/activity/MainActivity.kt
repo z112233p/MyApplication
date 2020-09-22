@@ -1,18 +1,24 @@
 package com.example.myapplication.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
+import com.example.myapplication.datamodle.chat_room.Message
 import com.example.myapplication.fragment.FragmentLogin
+import com.example.myapplication.tools.PrefHelper
 
 import com.example.myapplication.viewmodle.MainActivityVM
+import com.theartofdev.edmodo.cropper.CropImage
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 
 @Suppress("CAST_NEVER_SUCCEEDS", "UNREACHABLE_CODE")

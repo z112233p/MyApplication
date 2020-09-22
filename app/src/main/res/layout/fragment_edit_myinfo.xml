@@ -14,30 +14,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_id_title"/>
+        app:layout_constraintBottom_toTopOf="@+id/tv_name_title"/>
 
-    <TextView
-        android:id="@+id/tv_id_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:singleLine="true"
-        android:text="@string/id_title"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/tv_name"
-        app:layout_constraintEnd_toStartOf="@+id/tv_id"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_profile_photo" />
-    <TextView
-        android:id="@+id/tv_id"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/tv_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_id_title"
-        app:layout_constraintTop_toBottomOf="@+id/rv_profile_photo" />
 
     <TextView
         android:id="@+id/tv_name_title"
@@ -48,21 +26,21 @@
         android:singleLine="true"
 
         android:text="@string/name_title"
-        app:layout_constraintBottom_toTopOf="@id/tv_birthday"
-        app:layout_constraintEnd_toStartOf="@+id/tv_name"
+        app:layout_constraintBottom_toTopOf="@id/ed_birthday"
+        app:layout_constraintEnd_toStartOf="@+id/ed_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_id_title" />
-    <TextView
-        android:id="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/rv_profile_photo" />
+    <EditText
+        android:id="@+id/ed_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="1"
         android:singleLine="true"
 
-        app:layout_constraintBottom_toTopOf="@id/tv_birthday"
+        app:layout_constraintBottom_toTopOf="@id/ed_birthday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_id_title" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_profile_photo" />
 
     <TextView
         android:id="@+id/tv_birthday_title"
@@ -71,23 +49,24 @@
         app:layout_constraintHorizontal_weight="1"
         android:gravity="end"
         android:singleLine="true"
-
         android:text="@string/birthday_title"
         app:layout_constraintBottom_toTopOf="@id/tv_age"
-        app:layout_constraintEnd_toStartOf="@+id/tv_birthday"
+        app:layout_constraintEnd_toStartOf="@+id/ed_birthday"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
-    <TextView
-        android:id="@+id/tv_birthday"
+    <EditText
+        android:id="@+id/ed_birthday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="1"
         android:singleLine="true"
-
+        android:clickable="true"
+        android:editable="false"
         app:layout_constraintBottom_toTopOf="@id/tv_age"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_birthday_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_title"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/tv_age_title"
@@ -103,7 +82,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_title" />
 
-    <TextView
+    <EditText
         android:id="@+id/tv_age"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -122,9 +101,10 @@
         app:layout_constraintHorizontal_weight="1"
         android:gravity="end"
         android:singleLine="true"
+        android:visibility="invisible"
 
         android:text="@string/language_title"
-        app:layout_constraintBottom_toTopOf="@id/button_second"
+        app:layout_constraintBottom_toTopOf="@id/btn_confirm"
         app:layout_constraintEnd_toStartOf="@+id/tv_language_id"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_age_title" />
@@ -134,29 +114,20 @@
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="1"
         android:singleLine="true"
+        android:visibility="invisible"
 
-        app:layout_constraintBottom_toTopOf="@id/button_second"
+        app:layout_constraintBottom_toTopOf="@id/btn_confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_language_id_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_age_title" />
 
     <Button
-        android:id="@+id/button_second"
+        android:id="@+id/btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_edit_my_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
-
-    <Button
-        android:id="@+id/btn_edit_my_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="編輯"
+        android:text="確定"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_second"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 </androidx.constraintlayout.widget.ConstraintLayout>

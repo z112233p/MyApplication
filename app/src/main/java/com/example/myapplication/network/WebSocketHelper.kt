@@ -132,6 +132,7 @@ object WebSocketHelper {
         val messageSendParam = MessageSendParam(java.util.UUID.randomUUID().toString(), rId, content)
         val messageSend = MessageSend("method", "sendMessage", "1", listOf(messageSendParam))
 
+
         webSocketGeneral?.send(Gson().toJson(messageSend))
     }
 

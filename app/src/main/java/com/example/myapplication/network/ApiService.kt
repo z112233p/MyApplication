@@ -7,24 +7,26 @@ import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.ErrorLogApi
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.LoginResponse
+import com.example.myapplication.datamodle.authorization.ResendResponse
+import com.example.myapplication.datamodle.authorization.ResendSMS
+import com.example.myapplication.datamodle.authorization.register.Register
+import com.example.myapplication.datamodle.authorization.register.RegisterResponse
 import com.example.myapplication.datamodle.dating.DatingSearch
-import com.example.myapplication.datamodle.dating.DatingSearchData
 import com.example.myapplication.datamodle.profile.MyInfo
+import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
+import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
+import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse
+import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
+import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
 import com.example.myapplication.tools.PrefHelper
 import io.reactivex.Observable
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -39,6 +41,27 @@ interface ApiService {
     //Login
     @POST("login")
     fun login(@Body loginData: LoginData?): Observable<LoginResponse>
+
+    //Resend captcha
+    @POST("resendSMS")
+    fun resendSMS(@Body resendSMS: ResendSMS?): Observable<ResendResponse>
+
+    //register
+    @POST("register")
+    fun register(@Body register: Register?): Observable<RegisterResponse>
+
+    //Update MyInfo
+    @POST("me/info")
+    fun updateMyInfo(@Body updateMtInfo: UpdateMtInfo?): Observable<UpdateMyInfoResponse>
+
+    //Update Profile Photo
+    @Multipart
+    @POST("me/create_photos")
+    fun updateMyPhoto(@Part photos: MultipartBody.Part, @Part("sort")sort: RequestBody?): Observable<UpdatePhotoResponse>
+
+    //Delete Photo
+    @POST("me/delete_photo")
+    fun deleteMyPhoto(@Body deleteMyPhoto: DeleteMyPhoto?): Observable<DeleteMyPhotoResponse>
 
     //Get Profile Information
     @GET("me/info")

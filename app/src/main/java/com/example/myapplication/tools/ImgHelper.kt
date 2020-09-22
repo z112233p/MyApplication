@@ -58,7 +58,7 @@ object ImgHelper {
         if (addHeader){
             Glide.with(ctx!!).load(GlideUrl(url,headers))
                 .diskCacheStrategy(cacheStrategy)
-                .centerCrop()
+//                .centerCrop()
 //            .placeholder(errorImg)
                 .error(errorImg)
                 .skipMemoryCache(skipCache)
@@ -88,7 +88,7 @@ object ImgHelper {
         } else {
             Glide.with(ctx!!).load(url)
                 .diskCacheStrategy(cacheStrategy)
-                .centerCrop()
+//                .centerCrop()
 //            .placeholder(errorImg)
                 .error(errorImg)
                 .skipMemoryCache(skipCache)

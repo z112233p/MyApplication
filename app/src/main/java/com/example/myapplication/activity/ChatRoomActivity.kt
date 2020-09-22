@@ -24,6 +24,7 @@ import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
 import com.example.myapplication.`interface`.WebSocketModle
 import com.example.myapplication.adapter.Adapter_Chat_Room_Message
+import com.example.myapplication.adapter.holder.BaseMessageViewHolder
 import com.example.myapplication.adapter.holder.CustomOutComingTextMessageViewHolder
 import com.example.myapplication.custom_view.CardPopup
 import com.example.myapplication.datamodle.chat.MessageReceived.message_received_args.MessageReceivedArgs2
@@ -31,6 +32,7 @@ import com.example.myapplication.datamodle.chat.text_message.TMessage
 import com.example.myapplication.datamodle.chat.text_message.TextMessage
 import com.example.myapplication.datamodle.chat.text_message.message_entry.MessageEntry
 import com.example.myapplication.datamodle.chat_room.Message
+import com.example.myapplication.dialog.DialogFullScreenImage
 import com.example.myapplication.network.WebSocketHelper
 import com.example.myapplication.tools.AudioRecordHelper
 import com.example.myapplication.tools.Config
@@ -56,11 +58,11 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 
     private val chatRoomActVM: ChatRoomActivityVM by viewModel()
     private var updateOption: Boolean = true
+    private var latest: Date? = null
 
     private lateinit var rId: String
     private lateinit var adapter: Adapter_Chat_Room_Message<Message>
     private lateinit var dataList: ArrayList<Message>
-    private var latest: Date? = null
     private lateinit var imm: InputMethodManager
     private lateinit var popup: CardPopup
     private lateinit var replyMessageEntry: MessageEntry
@@ -119,10 +121,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         fab_click_to_bottom.setOnClickListener {
             messagesList.scrollToPosition(0)
             fab_click_to_bottom.visibility = View.GONE
-
         }
-
-
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -162,13 +161,24 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
             Log.e("ss","ss")
             false
         }
+        
+        val payload = BaseMessageViewHolder.Payload()
+        val iii = object : BaseMessageViewHolder.OnImageClickListener{
+            override fun onImageClick(message: Message) {
+                val dialog = DialogFullScreenImage(this@ChatRoomActivity, message)
+                Log.e("Peter","onImageClick OMG LIL")
+                dialog.show()
+            }
+        }
+        payload.setAvatarClickListener(iii)
 
         val holdersConfig = MessagesListAdapter.HoldersConfig()
-        holdersConfig.setOutcoming(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message)
-        holdersConfig.setIncoming(CustomOutComingTextMessageViewHolder::class.java,R.layout.item_custom_incoming_message)
-        holdersConfig.setOutcomingImageConfig(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message)
+//        holdersConfig.setOutcoming(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message)
+//        holdersConfig.setIncoming(CustomOutComingTextMessageViewHolder::class.java,R.layout.itemc_custom_incoming_message)
+        holdersConfig.setOutcomingImageConfig(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message )
         holdersConfig.setIncomingImageConfig(CustomOutComingTextMessageViewHolder::class.java,R.layout.item_custom_incoming_message)
-
+        holdersConfig.setOutcomingTextConfig(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message)
+        holdersConfig.setIncomingTextConfig(CustomOutComingTextMessageViewHolder::class.java,R.layout.item_custom_incoming_message)
 
 //        holdersConfig.setOutcomingLayout(R.layout.item_custom_outcoming_message)
 //        holdersConfig.registerContentType(
@@ -179,8 +189,8 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 //            R.layout.item_custom_outcoming_message,
 //            test)
 
-        adapter = Adapter_Chat_Room_Message<Message>(PrefHelper.getChatLable(), holdersConfig, imageLoader)
-
+        adapter = Adapter_Chat_Room_Message(PrefHelper.getChatLable(), holdersConfig, imageLoader)
+        adapter.payload = payload
         adapter.setOnMessageViewClickListener { view, message ->
             imm.hideSoftInputFromWindow(currentFocus?.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
         }
@@ -330,7 +340,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         }
 
         input.setAttachmentsListener {
-            CropImage.activity().setAspectRatio(250,250).start(this)
+            CropImage.activity().start(this)
         }
 
         iv_close.setOnClickListener {

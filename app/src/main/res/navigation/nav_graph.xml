@@ -5,6 +5,30 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+
+    <fragment
+        android:id="@+id/FragmentEditMyInfo"
+        android:name="com.example.myapplication.fragment.FragmentEditMyInfo"
+        android:label="FragmentEditMyInfo"
+        tools:layout="@layout/fragment_edit_myinfo">
+
+        <action
+            android:id="@+id/action_FragmentEditMyInfo_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentRegister"
+        android:name="com.example.myapplication.fragment.FragmentRegister"
+        android:label="FragmentRegister"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_FragmentRegister_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+
+
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.myapplication.fragment.FragmentLogin"
@@ -14,7 +38,11 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_FragmentRegister"
+            app:destination="@id/FragmentRegister" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.myapplication.fragment.FragmentMyInfo"
@@ -24,6 +52,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_FragmentChatRoom"
             app:destination="@id/FragmentChatRoom" />
+        <action
+            android:id="@+id/action_SecondFragment_to_FragmentEditMyInfo"
+            app:destination="@id/FragmentEditMyInfo" />
     </fragment>
 
     <fragment

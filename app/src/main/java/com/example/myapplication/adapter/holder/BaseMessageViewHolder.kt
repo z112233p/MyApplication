@@ -9,9 +9,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.R
+import com.example.myapplication.adapter.Adapter_Chat_Room_Message
 import com.example.myapplication.custom_view.AudioPlayerLayout
 import com.example.myapplication.datamodle.chat.text_message.message_entry.MessageEntry
 import com.example.myapplication.datamodle.chat_room.Message
@@ -20,7 +20,6 @@ import com.google.gson.Gson
 import com.stfalcon.chatkit.messages.MessagesListAdapter
 import com.stfalcon.chatkit.utils.DateFormatter
 import com.stfalcon.chatkit.utils.RoundedImageView
-import okhttp3.internal.lockAndWaitNanos
 
 
 abstract class BaseMessageViewHolder(itemView: View) :
@@ -66,7 +65,11 @@ abstract class BaseMessageViewHolder(itemView: View) :
 
     override fun onBind(message: Message) {
 
-        val payload = Payload()
+        Log.e("Peter", "onBind.payload?     $payload")
+        Log.e("Peter", "onBind.payload?     $")
+        val payload2 :Adapter_Chat_Room_Message<Message> = Adapter_Chat_Room_Message()
+
+        val payload = payload2.payload
         var messageEntry = MessageEntry("","","","", message.text)
 
         try {
@@ -130,11 +133,14 @@ abstract class BaseMessageViewHolder(itemView: View) :
         tvReplyText.visibility = if (randomReplyItemBool) View.GONE else View.VISIBLE
 
         messageUserAvatar?.setOnClickListener {
-            payload.avatarClickListener?.onAvatarClick()
+            payload?.avatarClickListener?.onAvatarClick()
         }
 
         llMessageReply?.setOnClickListener {
-            payload.replyClickListener?.onReplyClick()
+            payload?.replyClickListener?.onReplyClick()
+        }
+        image.setOnClickListener {
+            payload?.imageClickListener?.onImageClick(message)
         }
 
         if (message.getSuccess() == "true"){
@@ -145,6 +151,13 @@ abstract class BaseMessageViewHolder(itemView: View) :
         }
     }
 
+    private fun setClick(){
+        image.setOnClickListener {
+            payload
+        }
+    }
+
+
     //Item Onclick Interface
     interface OnAvatarClickListener {
         fun onAvatarClick()
@@ -154,18 +167,31 @@ abstract class BaseMessageViewHolder(itemView: View) :
         fun onReplyClick()
     }
 
+    interface OnImageClickListener {
+        fun onImageClick(message: Message)
+    }
+
     class Payload {
         var avatarClickListener: OnAvatarClickListener? = object : OnAvatarClickListener{
             override fun onAvatarClick() {
                 Log.e("BaseMessageViewHolder","onAvatarClick")
             }
-
         }
         var replyClickListener: OnReplyClickListener? = object : OnReplyClickListener{
             override fun onReplyClick() {
                 Log.e("BaseMessageViewHolder","onReplyClick")
             }
-
         }
+        var imageClickListener: OnImageClickListener? = object : OnImageClickListener{
+            override fun onImageClick(message: Message) {
+
+                Log.e("BaseMessageViewHolder","onImageClick")
+            }
+        }
+
+        fun setAvatarClickListener(iii: OnImageClickListener) {
+            imageClickListener = iii
+        }
+
     }
 }

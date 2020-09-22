@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.holder.BaseMessageViewHolder;
 import com.example.myapplication.datamodle.chat_room.Message;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.commons.ViewHolder;
@@ -23,7 +24,14 @@ public class Adapter_Chat_Room_Message<MESSAGES extends IMessage > extends Messa
     private PeterHolder holders;
     private ImageLoader imageLoader;
     private String responseString = "false";
+    private static com.example.myapplication.adapter.holder.BaseMessageViewHolder.Payload payload;
 
+
+
+    public Adapter_Chat_Room_Message() {
+        super(null, null);
+
+    }
 
 
     public Adapter_Chat_Room_Message(String senderId, ImageLoader imageLoader) {
@@ -98,6 +106,14 @@ public class Adapter_Chat_Room_Message<MESSAGES extends IMessage > extends Messa
             }
         }
         return -1;
+    }
+
+    public void setPayload(com.example.myapplication.adapter.holder.BaseMessageViewHolder.Payload payload){
+        this.payload = payload;
+    }
+
+    public com.example.myapplication.adapter.holder.BaseMessageViewHolder.Payload getPayload(){
+        return payload;
     }
 
 }
