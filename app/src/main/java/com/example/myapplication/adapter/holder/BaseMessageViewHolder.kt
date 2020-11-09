@@ -1,6 +1,7 @@
 package com.example.myapplication.adapter.holder
 
 import android.os.Build
+import android.os.Environment
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
@@ -15,20 +16,25 @@ import com.example.myapplication.adapter.Adapter_Chat_Room_Message
 import com.example.myapplication.custom_view.AudioPlayerLayout
 import com.example.myapplication.datamodle.chat.text_message.message_entry.MessageEntry
 import com.example.myapplication.datamodle.chat_room.Message
+import com.example.myapplication.tools.AudioRecordHelper
 import com.example.myapplication.tools.ImgHelper
+import com.example.myapplication.tools.Tools
 import com.google.gson.Gson
 import com.stfalcon.chatkit.messages.MessagesListAdapter
 import com.stfalcon.chatkit.utils.DateFormatter
-import com.stfalcon.chatkit.utils.RoundedImageView
+import me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+import java.io.File
 
 
 abstract class BaseMessageViewHolder(itemView: View) :
     MessagesListAdapter.BaseMessageViewHolder<Message>(itemView),View.OnLongClickListener {
     val messageUserAvatar = itemView.findViewById<ImageView>(R.id.messageUserAvatar)
     val llMessageMain = itemView.findViewById<LinearLayout>(R.id.ll_message_main)
-    val image = itemView.findViewById<RoundedImageView>(R.id.image)
+    val image = itemView.findViewById<ImageView>(R.id.image)
     val messageText = itemView.findViewById<TextView>(R.id.messageText)
     val messageTime = itemView.findViewById<TextView>(R.id.messageTime)
+    val name = itemView.findViewById<TextView>(R.id.tv_name)
+
     val llAudioLayout = itemView.findViewById<AudioPlayerLayout>(R.id.ll_audio_layout)
     val parent = itemView
 
@@ -37,6 +43,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
     val tvReplyText = itemView.findViewById<TextView>(R.id.tv_reply_text)
     val vDividerLine = itemView.findViewById<View>(R.id.v_divider_line)
     val tvStatus = itemView.findViewById<TextView>(R.id.tv_status)
+
     var width = 0
 
     init {
@@ -47,6 +54,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
         println("heigth2 : " + dm2.heightPixels)
         println("width2 : " + dm2.widthPixels)
         width = dm2.widthPixels
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -64,7 +72,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
     }
 
     override fun onBind(message: Message) {
-
+        llAudioLayout.initSeekBar()
         Log.e("Peter", "onBind.payload?     $payload")
         Log.e("Peter", "onBind.payload?     $")
         val payload2 :Adapter_Chat_Room_Message<Message> = Adapter_Chat_Room_Message()
@@ -92,6 +100,9 @@ abstract class BaseMessageViewHolder(itemView: View) :
         messageText.visibility = View.GONE
         image.visibility = View.GONE
         llAudioLayout.visibility = View.GONE
+//        voicePlayerView
+
+        name.text = message.author.name
 
         if (TextUtils.isEmpty(message.getFileType())){
             messageText.text = messageEntry.content
@@ -101,6 +112,9 @@ abstract class BaseMessageViewHolder(itemView: View) :
             if (message.getFileType() == "image/jpg"){
                 if (!TextUtils.isEmpty(message.imageUrl)){
                     ImgHelper.loadNormalImg(MyApp.get()?.applicationContext, message.imageUrl, this.image)
+                    llMessageMain.background = null
+
+
                 }
                 image.visibility = View.VISIBLE
 
@@ -108,6 +122,31 @@ abstract class BaseMessageViewHolder(itemView: View) :
                 message.getAudioUrl()?.let {
                     Log.e("Peter","message.getAudioUrl:  audio    "+message.getAudioUrl())
                     llAudioLayout.setAudioSource(it)
+//                    voicePlayerView.setAudio(it)
+                    when {
+                        it.contains("https://") -> {
+                            Log.e("Peter","audioPlayer play")
+                            Tools.downloadFile3(it, object : Tools.AudioDownListener{
+                                override fun success() {
+                                    Log.e("Peter","DOWNLOAD AUDIO success")
+                                    llAudioLayout.setWaveSeekBar(File(Tools.getLocalSavedAudioPath()+it.substring(it.lastIndexOf("/") + 1)).path)
+
+                                }
+
+                            })
+
+                        }
+                        it.contains(Environment.getExternalStorageDirectory().toString()) -> {
+                            Log.e("Peter","audioPlayer play1")
+
+                        }
+                        else -> {
+
+                            AudioRecordHelper.playLocalRecord()
+
+                        }
+                    }
+
                 }
                 llAudioLayout.visibility = View.VISIBLE
             }
@@ -148,6 +187,15 @@ abstract class BaseMessageViewHolder(itemView: View) :
         } else if (message.getSuccess() == "false"){
             tvStatus.text = "faile"
 
+        }
+
+        itemView.setOnClickListener {
+            Log.e("peter", "itemView.setOnClickListener??"+  message.getFileType())
+            if (message.getFileType() == "audio/m4a"){
+                llAudioLayout.playAudio(message.getAudioUrl()!!)
+
+
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.myapplication.network
 
-//import android.database.Observable
 import android.os.Build
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
@@ -12,6 +11,11 @@ import com.example.myapplication.datamodle.authorization.ResendSMS
 import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse
 import com.example.myapplication.datamodle.dating.DatingSearch
+import com.example.myapplication.datamodle.event.Events
+import com.example.myapplication.datamodle.event.detail.EventDetail
+import com.example.myapplication.datamodle.event.list.TypeLists
+import com.example.myapplication.datamodle.event.review.EventReview
+import com.example.myapplication.datamodle.event.review_member.ReviewMember
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
@@ -67,15 +71,63 @@ interface ApiService {
     @GET("me/info")
     fun getMyInfo(): Observable<MyInfo>
 
+    //Check Events
+    @GET("event")
+    fun getEvents(@Query("page") page: Int,
+                  @Query("limit") limit: Int,
+                  @Query("country_id") countryId: Int, @Query("label") label: String): Observable<Events>
+
+    //Create Event
+    @POST("event/create")
+    fun createEvent(@Body body: RequestBody): Observable<String>
+
+    //Update Event
+    @POST("event/update/{event_id}")
+    fun updateEvent(@Path("event_id") eventId: String, @Body body: RequestBody): Observable<String>
+
+    //Event Detail
+    @GET("event/detail/{label}")
+    fun getEventDetail(@Path("label") label: String): Observable<EventDetail>
+
+    //Cancel Join Event
+    @POST("event/cancel/{id}")
+    fun cancelJoinEvent(@Path ("id") id: String): Observable<String>
+
+    //Join Event
+    @POST("event/join/{id}")
+    fun joinEvent(@Path ("id") id: String): Observable<String>
+
+    //Review Sign Up Member
+    @GET("event/review/{id}")
+    fun getReviewList(@Path ("id") id: String): Observable<EventReview>
+
+    //Pass Sign Up Member
+    @POST("event/review")
+    fun postEventReview(@Body body: ReviewMember?): Observable<String>
+
+    //rollCall Sign Up Member
+    @POST("event/rollCall")
+    fun postEventRollCall(@Body body: ReviewMember?): Observable<String>
+
+
+    //list paymentMethod 消費模式
+    @GET("list/paymentMethod")
+    fun getPaymentMethod(): Observable<TypeLists>
+
+    //list currency 幣種
+    @GET("list/currency")
+    fun getCurrencyType(): Observable<TypeLists>
+
+    //list eventCategory 開團種類
+    @GET("list/eventCategory")
+    fun getEventCategory(): Observable<TypeLists>
+
     //Dating Search
     @GET("dating/search")
     fun getDatingSearch(@Query("gender") gender: Int,
                  @Query("min_age") minAge: Int,
                  @Query("max_age") maxAge: Int,
                  @Query("max_km") maxKm: Int): Observable<DatingSearch>?
-
-
-
 
 
 
@@ -108,7 +160,7 @@ interface ApiService {
                         if(addHeader){
                             chain.request()
                                 .newBuilder()
-                                .addHeader("Authorization","Bearer "+PrefHelper.getApiHeader())
+                                .addHeader("Authorization","Bearer "+PrefHelper.apiHeader)
                                 .removeHeader("User-Agent") //移除旧的
                                 .addHeader("User-Agent", it) //添加真正的头部
                                 .build()

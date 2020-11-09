@@ -62,8 +62,8 @@ object WebSocketHelper {
                             val argsJSONString = jsonObject.getJSONObject("fields").getJSONArray("args").get(1)
                             val messageReceivedArgs = Gson().fromJson(argsJSONString.toString(), MessageReceivedArgs2::class.java)
 
-                            if(PrefHelper.getChatRoomId() == messageReceivedArgs.lastMessage.rid &&
-                                PrefHelper.getChatLable() != messageReceivedArgs.lastMessage.u.username){
+                            if(PrefHelper.chatRoomId == messageReceivedArgs.lastMessage.rid &&
+                                PrefHelper.chatLable != messageReceivedArgs.lastMessage.u.username){
                                 mActivity.runOnUiThread {
                                     callBack?.messageReceive(messageReceivedArgs)
                                     Log.e("peter","stream-notify-user   IN")
@@ -91,7 +91,7 @@ object WebSocketHelper {
 
     private fun chatLogin(webSocket: WebSocket){
         val chatLoginParams = ArrayList<ChatLoginParams>()
-        chatLoginParams.add(ChatLoginParams(PrefHelper.getChatToken()))
+        chatLoginParams.add(ChatLoginParams(PrefHelper.chatToken))
         val chatLoginData = ChatLogin("method","login",chatLoginParams,"id")
 
         webSocket.send(Gson().toJson(chatLoginData))
@@ -99,7 +99,7 @@ object WebSocketHelper {
 
     private fun subscribeMySelf(webSocket: WebSocket){
         val params: MutableList<Any>  = mutableListOf()
-        params.add(PrefHelper.getChatId() +"/rooms-changed")
+        params.add(PrefHelper.chatId +"/rooms-changed")
         params.add(false)
         val chatSubscribe = ChatSubscribe("sub","idd","stream-notify-user",params)
 

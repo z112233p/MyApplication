@@ -14,3 +14,11 @@ val MatchActVM = module {
 val ChatRoomActVM = module {
     viewModel { ChatRoomActivityVM(get()) }
 }
+
+val EventsActVM = module {
+    viewModel { EventsActivityVM(get()) }
+}
+
+val MapsActVM = module {
+    viewModel { MapsActivityVM(get()) }
+}

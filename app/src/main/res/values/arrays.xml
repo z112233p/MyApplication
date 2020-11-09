@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="chat_room_menu">
+        <item>查看個人檔案</item>
+        <item>查看對方正在開團的活動</item>
+        <item>檢舉對方</item>
+        <item>封鎖對方</item>
+        <item>退出聊天室</item>
+    </array>
+</resources>

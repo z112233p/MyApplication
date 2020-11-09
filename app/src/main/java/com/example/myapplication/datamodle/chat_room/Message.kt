@@ -14,6 +14,7 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
     private var success: String? = null
     private var audioUrl: String? = null
     private var fileType: String? = ""
+    private var fileDownload: String = ""
 
 
 
@@ -45,6 +46,9 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
         fileType = type
     }
 
+    fun setFileDownload(fileDownload: String){
+        this.fileDownload = fileDownload
+    }
 
     override fun getImageUrl(): String? {
 //        return "https://static.raccoontv.com/smtv//uploads/banner/19/6Ul4J8zah40BAUZn.jpeg"
@@ -80,4 +84,7 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
         return audioUrl
     }
 
+    fun getFileDownload(): String{
+        return fileDownload
+    }
 }

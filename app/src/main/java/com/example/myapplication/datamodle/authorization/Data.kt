@@ -1,5 +1,5 @@
 package com.example.myapplication.datamodle.authorization
 
 data class Data(
-    val resend: Boolean
+    val resend: Boolean = false
 )

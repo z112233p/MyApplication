@@ -46,7 +46,7 @@ class CardPopup(
 
         // Disable default animation for circular reveal
         animationStyle = 0
-        contentView.findViewById<TextView>(R.id.tv_copy).setOnClickListener {
+        contentView.findViewById<TextView>(R.id.tv_reply).setOnClickListener {
             copyListener?.onCopyButtonClick(message)
         }
     }

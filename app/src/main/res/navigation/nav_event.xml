@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_event"
+    app:startDestination="@id/FragmentMain">
+
+
+
+
+    <fragment
+        android:id="@+id/FragmentChooseLocation"
+        android:name="com.example.myapplication.fragment.FragmentChooseLocation"
+        tools:layout="@layout/fragment_choose_location">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/FragmentMain"
+        android:name="com.example.myapplication.fragment.FragmentMain"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_FragmentMain_to_FragmentEventDetail"
+            app:destination="@id/FragmentEventDetail" />
+        <action
+            android:id="@+id/action_FragmentMain_to_FragmentChooseLocation"
+            app:destination="@id/FragmentChooseLocation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentEventsMain"
+        android:name="com.example.myapplication.fragment.FragmentEventsMain"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_events_main">
+
+        <action
+            android:id="@+id/action_FragmentEventsMain_to_FragmentEventDetail"
+            app:destination="@id/FragmentEventDetail" />
+        <action
+            android:id="@+id/action_FragmentEventsMain_to_FragmentCreateEvent"
+            app:destination="@id/FragmentCreateEvent" />
+        <action
+            android:id="@+id/action_FragmentEventsMain_to_FragmentMyEvents"
+            app:destination="@id/FragmentMyEvents" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentEventDetail"
+        android:name="com.example.myapplication.fragment.FragmentEventDetail"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_event_detial">
+        <action
+            android:id="@+id/action_FragmentEventDetail_to_FragmentEventReview"
+            app:destination="@id/FragmentEventReview" />
+        <action
+            android:id="@+id/action_FragmentEventDetail_to_FragmentEventUpdate"
+            app:destination="@id/FragmentEventUpdate" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentEventReview"
+        android:name="com.example.myapplication.fragment.FragmentEventReview"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_event_review">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/FragmentCreateEvent"
+        android:name="com.example.myapplication.fragment.FragmentCreateEvent"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_create_event">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentMyEvents"
+        android:name="com.example.myapplication.fragment.FragmentMyEvents"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_my_events">
+
+        <action
+            android:id="@+id/action_FragmentMyEvents_to_FragmentEventDetail"
+            app:destination="@id/FragmentEventDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentEventUpdate"
+        android:name="com.example.myapplication.fragment.FragmentEventUpdate"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_event_detial">
+
+        <action
+            android:id="@+id/action_FragmentEventUpdate_to_FragmentEventDetail"
+            app:destination="@id/FragmentEventDetail" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/FragmentChatRoom"
+        android:name="com.example.myapplication.fragment.FragmentChatRoomList"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_chatroom">
+
+<!--        <action-->
+<!--            android:id="@+id/action_FragmentChatRoom_to_FirstFragment"-->
+<!--            app:destination="@id/FirstFragment" />-->
+    </fragment>
+
+</navigation>

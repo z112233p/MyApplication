@@ -36,7 +36,7 @@ class FragmentRegister : BaseFragment() {
     }
 
     private fun checkSession(): Boolean  {
-        return PrefHelper.getApiHeader() != ""
+        return PrefHelper.apiHeader != ""
     }
 
     private fun init(){

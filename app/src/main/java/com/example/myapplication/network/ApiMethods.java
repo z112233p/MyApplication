@@ -1,6 +1,10 @@
 package com.example.myapplication.network;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
+import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.myapplication.datamodle.ErrorLogApi;
 import com.example.myapplication.datamodle.authorization.LoginData;
@@ -9,12 +13,17 @@ import com.example.myapplication.datamodle.authorization.ResendResponse;
 import com.example.myapplication.datamodle.authorization.ResendSMS;
 import com.example.myapplication.datamodle.authorization.register.Register;
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse;
-import com.example.myapplication.datamodle.chat.ChatRoomList;
+import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList;
 import com.example.myapplication.datamodle.chat.history.ChatHistory;
 import com.example.myapplication.datamodle.chat.image_message.response.FileResponse;
 import com.example.myapplication.datamodle.chat.text_message.TextMessage;
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse;
 import com.example.myapplication.datamodle.dating.DatingSearch;
+import com.example.myapplication.datamodle.event.Events;
+import com.example.myapplication.datamodle.event.detail.EventDetail;
+import com.example.myapplication.datamodle.event.list.TypeLists;
+import com.example.myapplication.datamodle.event.review.EventReview;
+import com.example.myapplication.datamodle.event.review_member.ReviewMember;
 import com.example.myapplication.datamodle.profile.MyInfo;
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto;
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse;
@@ -23,7 +32,10 @@ import com.example.myapplication.datamodle.profile.update.UpdateMtInfo;
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -76,6 +88,82 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).deleteMyPhoto(deleteMyPhoto)), pbObserver);
     }
 
+    public static void getEvents(Observer<Events> pbObserver, String label){
+        String labelValue = TextUtils.isEmpty(label)? null: label;
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEvents(1,10, 1,labelValue)), pbObserver);
+    }
+
+    public static void joinEvent(Observer<String> pbObserver, String id){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).joinEvent(id)), pbObserver);
+    }
+
+    public static void cancelJoinEvent(Observer<String> pbObserver, String id){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).cancelJoinEvent(id)), pbObserver);
+    }
+
+    public static void getReviewList(Observer<EventReview> pbObserver, String id){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getReviewList(id)), pbObserver);
+    }
+
+    public static void getEventDetail(Observer<EventDetail> pbObserver, String label){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetail(label)), pbObserver);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void createEvent(Observer<String> pbObserver, Map<String, String> dataBody, File file){
+        String[] keySet = dataBody.keySet().toArray(new String[0]);
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
+        MultipartBody.Builder builder = bodyBuilder.setType(MultipartBody.FORM);
+        Arrays.stream(keySet)
+                .forEach(key -> builder.addFormDataPart(key, Objects.requireNonNull(dataBody.get(key))));
+
+        RequestBody fileRQ = RequestBody.create(MediaType.parse("mage/jpg"), file);
+        builder.addFormDataPart("image",file.getName(),fileRQ);
+        RequestBody body = builder.build();
+
+       ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).createEvent(body)), pbObserver);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void updateEvent(Observer<String> pbObserver, Map<String, String> dataBody, File file, String eventID){
+        String[] keySet = dataBody.keySet().toArray(new String[0]);
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
+        MultipartBody.Builder builder = bodyBuilder.setType(MultipartBody.FORM);
+        Arrays.stream(keySet)
+                .forEach(key -> builder.addFormDataPart(key, Objects.requireNonNull(dataBody.get(key))));
+
+        if(file.exists()){
+            RequestBody fileRQ = RequestBody.create(MediaType.parse("mage/jpg"), file);
+            builder.addFormDataPart("image",file.getName(),fileRQ);
+        }
+
+        RequestBody body = builder.build();
+
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateEvent(eventID, body)), pbObserver);
+    }
+
+    public static void postEventReview(Observer<String> pbObserver, ReviewMember dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).postEventReview(dataBody)), pbObserver);
+    }
+
+    public static void postEventRollCall(Observer<String> pbObserver, ReviewMember dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).postEventRollCall(dataBody)), pbObserver);
+    }
+
+    public static void getPaymentMethod(Observer<TypeLists> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getPaymentMethod()), pbObserver);
+    }
+
+    public static void getCurrencyType(Observer<TypeLists> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getCurrencyType()), pbObserver);
+    }
+
+    public static void getEventCategory(Observer<TypeLists> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventCategory()), pbObserver);
+    }
+
     public static void getChatRoomList(Observer<ChatRoomList> pbObserver){
         ApiSubscribe(Objects.requireNonNull(ChatApiService.Companion.create(true, "").getChatRoom()), pbObserver);
     }
@@ -111,6 +199,11 @@ public class ApiMethods {
     public static void postTextMessage(Observer<TextResponse> pbObserver, TextMessage dataBody, String rId){
         ApiSubscribe(Objects.requireNonNull(ChatApiService.Companion.create(true, rId).postTextMessage(dataBody)), pbObserver);
     }
+
+    public static void getMapAddress(Observer<String> pbObserver, ArrayList<Double> latlng, String key){
+        ApiSubscribe(Objects.requireNonNull(GoogleApiService.Companion.create(false).getMapAddress(latlng, key)), pbObserver);
+    }
+
 
     public static void setErrorLog(Observer<String> pbObserver, ErrorLogApi dataBody){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).setErrorLog(dataBody)),pbObserver);

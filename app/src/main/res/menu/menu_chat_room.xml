@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.myapplication.activity.ChatRoomActivity">
+
+    <item
+        android:id="@+id/action_member"
+        android:orderInCategory="50"
+        android:icon="@mipmap/ic_personal"
+        app:showAsAction="ifRoom"
+        android:title="ic_personal" />
+
+    <item
+        android:id="@+id/action_option"
+        android:orderInCategory="50"
+        android:icon="@mipmap/ic_triple_dot"
+        app:showAsAction="ifRoom"
+        android:title="ic_triple_dot" />
+</menu>

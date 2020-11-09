@@ -19,6 +19,7 @@ import com.example.myapplication.adapter.Adapter_Profile_Photo
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.tools.PrefHelper
+import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.MainActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_edit_myinfo.*
@@ -149,7 +150,9 @@ class FragmentEditMyInfo : BaseFragment() {
             if (resultCode == AppCompatActivity.RESULT_OK){
                 Log.e("Peter", "updateMyPhoto onError:  $sort")
                 val result = CropImage.getActivityResult(data)
-                val file = File(result.uri.path)
+                Tools.saveCropImage(result.uri)
+                val file = Tools.dealCropImage()
+                Tools.deleteCropImage()
                 mainActVM.updateMyPhoto(sort.toString(), file)
             }
         }

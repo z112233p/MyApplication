@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_photo_login"
+    tools:context=".fragment.FragmentLogin">
+
+    <ImageView
+        android:id="@+id/iv_login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="115dp"
+        android:src="@mipmap/ic_login_logo"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_login_slogan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_slogan"
+        android:textSize="18sp"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_login_logo"/>
+
+    <include
+        android:id="@+id/btn_login_phone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_slogan"
+        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/item_login_button"/>
+    <include
+        android:id="@+id/btn_login_facebook"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_phone"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/item_login_button"/>
+    <include
+        android:id="@+id/btn_login_apple"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_facebook"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/item_login_button"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:text="@string/registered_as_a_member"/>
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:textColor="@color/colorTextButton"
+                android:text="@string/login"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="35dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:text="@string/Accept_after_login"/>
+            <TextView
+                android:id="@+id/tv_terms_of_Service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:textColor="@color/colorTextButton"
+                android:text="@string/terms_of_Service"/>
+            <TextView
+                android:id="@+id/tv_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:textColor="@color/colorTextButton"
+                android:text="@string/privacy_policy"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,7 +64,7 @@ object AudioRecordHelper{
         override fun run() {
             while (!exit) {
                 if (audioPlayer?.isPlaying!!){
-                    sleep(500)
+                    sleep(150)
                     audioPlayer?.currentPosition?.let { callbacks?.setCurrentPosition(it) }
                 }
             }
@@ -128,6 +128,9 @@ object AudioRecordHelper{
         mContext = context
     }
 
+    fun getContext(): Context{
+        return mContext
+    }
     fun get(): MediaRecorder? {
         return audioRecord
     }
@@ -191,20 +194,21 @@ object AudioRecordHelper{
             filePath = url
             audioPlayer?.stop()
         }
+        Log.e("Peter","audioPlayer play ININ    $url")
 
         when {
             url.contains("https://") -> {
-                Log.e("Peter","audioPlayer play")
+                Log.e("Peter","audioPlayer ININ play0")
 
                 playRecord()
             }
             url.contains(Environment.getExternalStorageDirectory().toString()) -> {
-                Log.e("Peter","audioPlayer play1")
+                Log.e("Peter","audioPlayer ININ play1")
 
                 playLocalRecord()
             }
             else -> {
-                Log.e("Peter","audioPlayer play2")
+                Log.e("Peter","audioPlayer ININ play2")
 
                 playLocalRecord()
 
@@ -258,8 +262,8 @@ object AudioRecordHelper{
                 Uri.parse(filePath)
             }
             val headers: HashMap<String, String> = HashMap()
-            headers["X-Auth-Token"] = PrefHelper.getChatToken()
-            headers["X-User-Id"] = PrefHelper.getChatId()
+            headers["X-Auth-Token"] = PrefHelper.chatToken
+            headers["X-User-Id"] = PrefHelper.chatId
 
 
 //            this.filePath = filepath2
@@ -335,8 +339,8 @@ object AudioRecordHelper{
                 Uri.parse(filepath2)
             }
             val headers: HashMap<String, String> = HashMap()
-            headers["X-Auth-Token"] = PrefHelper.getChatToken()
-            headers["X-User-Id"] = PrefHelper.getChatId()
+            headers["X-Auth-Token"] = PrefHelper.chatToken
+            headers["X-User-Id"] = PrefHelper.chatId
 
 
 //            this.filePath = filepath2

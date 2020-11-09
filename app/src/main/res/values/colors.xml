@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimary">#ec663c</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorSecondPrimary">#D17512</color>
+
     <color name="colorBlack">#000000</color>
+    <color name="colorGrayAA">#dddddd</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorWhiteF8">#f8f8f8</color>
+    <color name="colorMainBackground">#171818</color>
+    <color name="color4DWhite">#4DFFFFFF</color>
+    <color name="colorPinkOrange">#f7bf9d</color>
+    <color name="colorGrayA8">#a8a8a8</color>
+    <color name="colorNavBtnBar">#323136</color>
+    <color name="colorNavBtn">#96959b</color>
+    <color name="colorYellowD1">#d1c087</color>
+    <color name="colorGray71">#717171</color>
+    <color name="colorMsgBubble">#333232</color>
+    <color name="colorTextButton">#5ddce2</color>
+    <color name="colorFacebookBlue">#1778f2</color>
 
 </resources>

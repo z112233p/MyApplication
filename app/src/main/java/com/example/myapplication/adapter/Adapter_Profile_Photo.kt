@@ -38,11 +38,13 @@ class Adapter_Profile_Photo(): RecyclerView.Adapter<Adapter_Profile_Photo.ViewHo
     }
 
     fun setData(dealData: List<MyInfoPhoto>?) {
-        if (dealData == null || dealData.isEmpty()) {
-            return
-        }
         dataList.clear()
-        dataList.addAll(dealData)
+
+        if (dealData == null || dealData.isEmpty()) {
+            dataList.add(0,MyInfoPhoto("", 0))
+        } else {
+            dataList.addAll(dealData)
+        }
         if (isEditMode){
             for (i in dataList.size .. 6){
                 dataList.add(i,MyInfoPhoto("", i))

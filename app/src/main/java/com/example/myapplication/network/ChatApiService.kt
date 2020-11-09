@@ -3,7 +3,7 @@ package com.example.myapplication.network
 import android.os.Build
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
-import com.example.myapplication.datamodle.chat.ChatRoomList
+import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList
 import com.example.myapplication.datamodle.chat.history.ChatHistory
 import com.example.myapplication.datamodle.chat.image_message.response.FileResponse
 import com.example.myapplication.datamodle.chat.text_message.TextMessage
@@ -79,8 +79,8 @@ interface ChatApiService {
                         if(addHeader){
                             chain.request()
                                 .newBuilder()
-                                .addHeader("X-Auth-Token",PrefHelper.getChatToken())
-                                .addHeader("X-User-Id",PrefHelper.getChatId())
+                                .addHeader("X-Auth-Token",PrefHelper.chatToken)
+                                .addHeader("X-User-Id", PrefHelper.chatId!!)
                                 .removeHeader("User-Agent") //移除旧的
                                 .addHeader("User-Agent", it) //添加真正的头部
                                 .build()

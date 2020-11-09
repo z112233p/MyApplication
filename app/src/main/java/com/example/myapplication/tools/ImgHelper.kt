@@ -34,8 +34,21 @@ object ImgHelper {
         this.loadImage(ctx, url, addHeader, ivHolder, nullDrawableID, DiskCacheStrategy.ALL, false)
     }
 
+    //Normal Loads Customized
+    fun loadOriginalImage(
+        ctx: Context?,
+        url: String?,
+        ivHolder: ImageView?) {
+        //drawable int = 0 代表空的drawable
+        val nullDrawableID = R.drawable.crop_image_menu_rotate_right
+        val addHeader: Boolean = url?.contains(BuildConfig.CHATROOM_URL, true)!!
+        Log.e("Peter","IMAGECHECK")
+
+        this.loadOriginalImage(ctx, url, addHeader, ivHolder, nullDrawableID, DiskCacheStrategy.ALL, false)
+    }
+
     //Normal Load
-    private fun loadImage(
+    private fun loadOriginalImage(
         ctx: Context?,
         url: String?,
         addHeader: Boolean,
@@ -51,14 +64,13 @@ object ImgHelper {
 
         val headers: LazyHeaders =
             LazyHeaders.Builder()
-                .addHeader("X-Auth-Token",PrefHelper.getChatToken())
-                .addHeader("X-User-Id",PrefHelper.getChatId())
+                .addHeader("X-Auth-Token",PrefHelper.chatToken)
+                .addHeader("X-User-Id",PrefHelper.chatId)
                 .build()
 
         if (addHeader){
             Glide.with(ctx!!).load(GlideUrl(url,headers))
                 .diskCacheStrategy(cacheStrategy)
-//                .centerCrop()
 //            .placeholder(errorImg)
                 .error(errorImg)
                 .skipMemoryCache(skipCache)
@@ -88,7 +100,90 @@ object ImgHelper {
         } else {
             Glide.with(ctx!!).load(url)
                 .diskCacheStrategy(cacheStrategy)
-//                .centerCrop()
+//            .placeholder(errorImg)
+                .error(errorImg)
+                .skipMemoryCache(skipCache)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("Peter", "IMG err    $e")
+                        return true
+                    }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("Peter","IMG err   ")
+                        return false
+                    }
+
+                })
+                .into(ivHolder!!)
+        }
+
+    }
+    //Normal Load
+    private fun loadImage(
+        ctx: Context?,
+        url: String?,
+        addHeader: Boolean,
+        ivHolder: ImageView?,
+        errorImg: Int,
+        cacheStrategy: DiskCacheStrategy,
+        skipCache: Boolean) {
+
+        if (this.isDestroy(ctx)) {
+            return
+        }
+        Log.e("Peter","IMAGECHECK?   "+url)
+
+        val headers: LazyHeaders =
+            LazyHeaders.Builder()
+                .addHeader("X-Auth-Token",PrefHelper.chatToken)
+                .addHeader("X-User-Id",PrefHelper.chatId)
+                .build()
+
+        if (addHeader){
+            Glide.with(ctx!!).load(GlideUrl(url,headers))
+                .diskCacheStrategy(cacheStrategy)
+                .centerCrop()
+//            .placeholder(errorImg)
+                .error(errorImg)
+                .skipMemoryCache(skipCache)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("Peter", "IMG err    $e")
+                        return true
+                    }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("Peter","IMG onResourceReady   ")
+                        return false
+                    }
+
+                })
+                .into(ivHolder!!)
+        } else {
+            Glide.with(ctx!!).load(url)
+                .diskCacheStrategy(cacheStrategy)
+                .centerCrop()
 //            .placeholder(errorImg)
                 .error(errorImg)
                 .skipMemoryCache(skipCache)

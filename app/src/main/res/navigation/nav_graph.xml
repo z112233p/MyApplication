@@ -3,8 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/FragmentLoginMain">
 
+    <fragment
+        android:id="@+id/FragmentInputVerify"
+        android:name="com.example.myapplication.fragment.FragmentInputVerify"
+        tools:layout="@layout/fragment_input_verify">
+        <action
+            android:id="@+id/action_FragmentInputVerify_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentInputPhone"
+        android:name="com.example.myapplication.fragment.FragmentInputPhone"
+        tools:layout="@layout/fragment_input_phone">
+        <action
+            android:id="@+id/action_FragmentInputPhone_to_FragmentInputVerify"
+            app:destination="@id/FragmentInputVerify" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentLoginMain"
+        android:name="com.example.myapplication.fragment.FragmentLoginMain"
+        tools:layout="@layout/fragment_login_main">
+        <action
+            android:id="@+id/action_FragmentLoginMain_to_FragmentInputPhone"
+            app:destination="@id/FragmentInputPhone" />
+    </fragment>
 
     <fragment
         android:id="@+id/FragmentEditMyInfo"
@@ -33,7 +59,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.myapplication.fragment.FragmentLogin"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/fragment_login_main">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -55,6 +81,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_FragmentEditMyInfo"
             app:destination="@id/FragmentEditMyInfo" />
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
 
     <fragment

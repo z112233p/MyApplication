@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.FragmentMyInfo">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_profile_photo"
         android:layout_width="wrap_content"
@@ -141,13 +140,23 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_age_title" />
 
     <Button
+        android:id="@+id/btn_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_second"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
+
+    <Button
         android:id="@+id/button_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
+        android:text="@string/chat_room"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_edit_my_info"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_events"
         app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 
     <Button
@@ -156,7 +165,17 @@
         android:layout_height="wrap_content"
         android:text="編輯"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
         app:layout_constraintStart_toEndOf="@+id/button_second"
+        app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登出"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_edit_my_info"
         app:layout_constraintTop_toBottomOf="@id/tv_language_id" />
 </androidx.constraintlayout.widget.ConstraintLayout>

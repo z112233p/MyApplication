@@ -36,7 +36,7 @@ class DialogFullScreenImage(
     private fun init(){
         Log.e("Peter","DialogFullScreenImage    "+message.imageUrl)
         tv_close.setOnClickListener(onClick)
-        ImgHelper.loadNormalImg(context, message.imageUrl, iv_photo)
+        ImgHelper.loadOriginalImage(context, message.imageUrl, iv_photo)
 
 //        iv_photo.setImage(ImageSource.uri(message.imageUrl.toString()))
     }

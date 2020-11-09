@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Jo Life</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -20,4 +20,21 @@
     <string name="language_title">語言：</string>
     <string name="copy">複製</string>
     <string name="reply">回覆</string>
+    <string name="event_title">活動名稱</string>
+    <string name="event_time">活動時間</string>
+    <string name="chat_room">聊天室</string>
+    <string name="event_list">活動列表</string>
+    <string name="show_all">顯示全部</string>
+    <string name="event_location">活動地點</string>
+    <string name="event_description">活動說明</string>
+    <string name="search">搜尋</string>
+    <string name="messages">Messages</string>
+    <string name="input_message">輸入訊息</string>
+    <string name="send">傳送</string>
+    <string name="login_slogan">揪你所愛！一起揪更好玩</string>
+    <string name="registered_as_a_member">已經註冊為會員</string>
+    <string name="login">Login</string>
+    <string name="Accept_after_login">登入後表示接受</string>
+    <string name="terms_of_Service">服務條款</string>
+    <string name="privacy_policy">隱私權政策</string>
 </resources>

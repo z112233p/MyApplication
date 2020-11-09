@@ -6,15 +6,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.datamodle.authorization.*
 import com.example.myapplication.tools.SingleLiveEvent
-import com.example.myapplication.datamodle.authorization.LoginData
-import com.example.myapplication.datamodle.authorization.LoginResponse
-import com.example.myapplication.datamodle.authorization.ResendResponse
-import com.example.myapplication.datamodle.authorization.ResendSMS
 import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse
-import com.example.myapplication.datamodle.chat.ChatRoomList
-import com.example.myapplication.datamodle.chat.history.ChatHistory
+import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.MyInfoData
 import com.example.myapplication.datamodle.profile.MyInfoPhoto
@@ -24,7 +20,6 @@ import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoRespo
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
 import com.example.myapplication.network.ApiMethods
-import com.example.myapplication.tools.LogUtil
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -39,6 +34,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val loginResponse : SingleLiveEvent<LoginResponse> = SingleLiveEvent<LoginResponse>()
     private val registerResponse : SingleLiveEvent<RegisterResponse> = SingleLiveEvent<RegisterResponse>()
     private val updateMyInfoResponse: SingleLiveEvent<UpdateMyInfoResponse> = SingleLiveEvent<UpdateMyInfoResponse>()
+    private val resendSMSCheck: SingleLiveEvent<Boolean> = SingleLiveEvent<Boolean>()
 
     private val myInfoData: MutableLiveData<MyInfoData> = MutableLiveData<MyInfoData>()
     private val myPhoto: MutableLiveData<List<MyInfoPhoto>> = MutableLiveData<List<MyInfoPhoto>>()
@@ -76,6 +72,10 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         return chatRoomList
     }
 
+    fun getResendSMSCheck(): LiveData<Boolean>{
+        return resendSMSCheck
+    }
+
     fun getChatHistoryData(): LiveData<String> {
         return chatHistory
     }
@@ -97,7 +97,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onNext(t: ResendResponse) {
-                Log.e("Peter2", "onNext:  "+t.data)
+                Log.e("Peter2", "onNext:  "+t)
+                resendSMSCheck.value = t.data.resend
             }
         }
         resendSMS.let { ApiMethods.resendSMS(resendSMSObserver,it) }
@@ -138,12 +139,14 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
-                Log.e("Peter222", "onError${e.message}")
+                Log.e("Peterlogin", "onError${e.localizedMessage}")
+                val data = LoginResponse()
+                loginResponse.value = data
 
             }
 
             override fun onNext(t: LoginResponse) {
-                Log.e("Peter2", "onNext:  "+t.data.user_token)
+                Log.e("Peterlogin", "onNext:  "+t)
                 loginResponse.value = t
             }
         }
@@ -168,6 +171,10 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
         }
         ApiMethods.getMyInfo(myInfoObserver)
+    }
+
+    fun clearMyInfo(){
+        myInfoData.value = null
     }
 
     fun updateMyInfo(updateMtInfo: UpdateMtInfo){
@@ -262,23 +269,4 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         ApiMethods.getChatRoomList(chatRoomList)
     }
 
-    fun getChatHistory(rid: String){
-        val chatHistoryObserve: Observer<ChatHistory> = object : Observer<ChatHistory>{
-            override fun onComplete() {
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e("Peter", "getChatHistory onError:  $e")
-            }
-
-            override fun onNext(t: ChatHistory) {
-                LogUtil.e("PetergetChatHistory", "getChatHistory onNext:  $t")
-            }
-
-        }
-//        ApiMethods.getChatHistory(chatHistoryObserve, rid)
-    }
 }

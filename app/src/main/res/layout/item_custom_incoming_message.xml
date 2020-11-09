@@ -136,6 +136,27 @@
                         android:id="@+id/ll_audio_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+                    <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+                        android:id="@+id/voicePlayerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        card_view:enableVisualizer="true"
+                        card_view:visualizationPlayedColor="#ff7700"
+                        card_view:visualizationNotPlayedColor="#727171"
+                        card_view:playPauseBackgroundColor="#ff7700"
+                        card_view:timingBackgroundColor="#6AFF7700"
+                        card_view:seekBarProgressColor="#000"
+                        card_view:showShareButton="true"
+                        card_view:shareCornerRadius="100"
+                        card_view:playPauseCornerRadius="100"
+                        card_view:showTiming="true"
+                        card_view:viewCornerRadius="100"
+                        card_view:viewBackground="#C6C4CF"
+                        card_view:progressTimeColor="#000"
+                        card_view:seekBarThumbColor="#FFC107"
+                        card_view:shareBackgroundColor="#ff7700"
+                        card_view:playProgressbarColor="#ff7700"
+                        card_view:shareText="SHARE ME"/>
                 </LinearLayout>
 
             </LinearLayout>
