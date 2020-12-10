@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_edit_my_info"
+    app:startDestination="@id/FragmentEditMyInfoV2">
+
+    <fragment
+        android:id="@+id/FragmentEditMyInfoV2"
+        android:name="com.example.myapplication.fragment.FragmentEditMyInfoV2"
+        tools:layout="@layout/fragment_edit_my_info">
+
+    </fragment>
+
+
+</navigation>

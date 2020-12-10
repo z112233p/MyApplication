@@ -2,6 +2,7 @@ package com.example.myapplication.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +17,7 @@ import com.example.myapplication.R
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.ResendSMS
 import com.example.myapplication.tools.Config
+import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.MainActivityVM
@@ -153,7 +155,8 @@ class FragmentInputVerify : BaseFragment() {
             PrefHelper.setChatToken(it.data.chat_auth_token)
             PrefHelper.setChatId(it.data.chat_user_id)
             PrefHelper.setChatLable(it.data.label)
-            findNavController().navigate(R.id.action_FragmentInputVerify_to_SecondFragment)
+//            findNavController().navigate(R.id.action_FragmentInputVerify_to_SecondFragment)
+            getMContext().get()?.let { it1 -> IntentHelper.gotoProfileActivity(it1) }
         })
 
         mainActVM.getResendSMSCheck().observe(viewLifecycleOwner, Observer {

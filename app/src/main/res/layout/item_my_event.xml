@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="@drawable/ripple_gray_color"
+    android:background="@color/transparent"
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="0dp">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        app:cardCornerRadius="20dp">
+        <ImageView
+            android:id="@+id/iv_owner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_event_detail_location"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_owner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        tools:text="Peter Wu" />
+
+
+    <ImageView
+        android:id="@+id/iv_event_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:alpha="0.9"
+        tools:ignore="ContentDescription" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:layout_marginBottom="10dp"
+            android:lineSpacingExtra="3sp"
+            tools:text="11月27日  3:00 PM (五)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:background="@color/transparent"
+                android:layout_width="160dp"
+                android:layout_height="104dp"
+                app:cardBackgroundColor="@color/transparent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/iv_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_create_event"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/ll_event_information"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_event_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/colorYellowD1"
+                    android:textSize="14sp"
+                    android:text="@string/event_title"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="2dp"
+                        android:src="@mipmap/ic_event_detail_location"/>
+                    <TextView
+                        android:id="@+id/tv_event_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:visibility="visible"
+                        android:text="@string/event_location"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_event_title3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:text="@string/event_title"/>
+
+                <TextView
+                    android:id="@+id/tv_event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGrayA8"
+                    android:textSize="11sp"
+                    android:text="@string/event_description"
+                    android:layout_marginBottom="5dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorBlack10"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_event_title2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:text="@string/event_title"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp" />
+
+</androidx.cardview.widget.CardView>
+

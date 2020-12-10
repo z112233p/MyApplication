@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:fillViewport="true"
+    android:paddingTop="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_event_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_event_name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="活動名稱" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/ed_event_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_event_name"
+            android:layout_marginTop="11dp"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/colorNavBtn"
+            android:lineSpacingExtra="6sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:hint="一起揪更好玩！"
+            android:textColorHint="@color/colorNavBtn"
+            android:background="@drawable/bg_editview_search"/>
+
+        <LinearLayout
+            android:id="@+id/ll_choose_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ed_event_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_event_location"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="選擇地點" />
+            <TextView
+                android:id="@+id/tv_fix_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="修改地點" />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/ed_event_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_choose_location"
+            android:layout_marginTop="11dp"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/colorNavBtn"
+            android:lineSpacingExtra="6sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:hint="要去哪裡呢？"
+            android:textColorHint="@color/colorNavBtn"
+            android:background="@drawable/bg_editview_search"/>
+
+        <EditText
+            android:id="@+id/ed_event_location_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ed_event_location"
+            android:layout_marginTop="11dp"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/colorNavBtn"
+            android:lineSpacingExtra="6sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColorHint="@color/colorNavBtn"
+            android:background="@drawable/bg_editview_search"/>
+
+        <View
+            android:id="@+id/v_divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray43"
+            android:layout_marginTop="14dp"
+            app:layout_constraintTop_toBottomOf="@+id/ed_event_location_address"/>
+
+        <LinearLayout
+            android:id="@+id/ll_event_people"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_event_people"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="活動人數" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"/>
+            <EditText
+                android:id="@+id/ed_event_users_limit"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorNavBtn"
+                android:lineSpacingExtra="6sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="@color/colorNavBtn"
+                android:background="@drawable/bg_editview_search"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_event_cost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ll_event_people"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_event_cost"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="活動費用" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"/>
+            <EditText
+                android:id="@+id/ed_event_budget"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorNavBtn"
+                android:lineSpacingExtra="6sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="@color/colorNavBtn"
+                android:background="@drawable/bg_editview_search"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_join_reward"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ll_event_cost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_event_reward"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="參加獎勵" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"/>
+            <EditText
+                android:id="@+id/ed_award_count"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorNavBtn"
+                android:lineSpacingExtra="6sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="@color/colorNavBtn"
+                android:background="@drawable/bg_editview_search"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:layout_marginBottom="34dp"
+            android:gravity="center"
+            android:background="@drawable/bg_unclickable_btn"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="6sp"
+            android:text="下一步"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

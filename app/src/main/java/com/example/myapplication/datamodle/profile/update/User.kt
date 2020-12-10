@@ -18,6 +18,7 @@ data class User(
     val label: String,
     val language_id: Int,
     val name: String,
+    val nickname: String,
     val phone: String,
     val role_id: Int,
     val stamina: Int,

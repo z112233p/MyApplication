@@ -10,6 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList
+import com.example.myapplication.datamodle.chat_room.Token.ChatRoomToken
 import com.example.myapplication.datamodle.event.Events
 import com.example.myapplication.datamodle.event.detail.EventDetail
 import com.example.myapplication.datamodle.event.list.TypeLists
@@ -34,6 +36,11 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     private val currencyType: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
     private val eventCategory: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
+    private val chatRoomList: MutableLiveData<ChatRoomList> = MutableLiveData<ChatRoomList>()
+    private val chatRoomToken: MutableLiveData<ChatRoomToken> = MutableLiveData<ChatRoomToken>()
+
+    private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
 
     fun getEvents(): LiveData<Events> {
         return events
@@ -53,16 +60,27 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getEventCategoryData(): LiveData<TypeLists> {
         return eventCategory
     }
+    fun getChatRoomListData(): LiveData<ChatRoomList> {
+        return chatRoomList
+    }
+    fun getChatRoomTokenData(): LiveData<ChatRoomToken> {
+        return chatRoomToken
+    }
     fun getErrorMsg(): LiveData<String> {
         return errorMsg
+    }
+    fun getProgressStatus(): LiveData<Boolean> {
+        return progressStatus
     }
 
     fun getEventsApi(label: String?){
         val getEventsObserver = object : Observer<Events>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
             }
 
             override fun onNext(t: Events) {
@@ -71,6 +89,8 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter","getEventsApi  onError    "+e.message)
             }
 
@@ -81,9 +101,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getEventDetail(label: String?){
         val getEventDetailObserver = object : Observer<EventDetail>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: EventDetail) {
@@ -92,6 +115,8 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter","getEventDetail  onError    "+e.message)
             }
         }
@@ -101,17 +126,23 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getReviewList(eventID: String?){
         val getReviewListObserver = object : Observer<EventReview>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: EventReview) {
+
                 eventReview.value = t
                 Log.e("Peter","getReviewList  onNext    $t")
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter","getReviewList  onError    "+e.message)
             }
         }
@@ -121,9 +152,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun joinEvent(id: String){
         val joinEventObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
@@ -136,6 +170,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","joinEvent  onError    "+e.message)
             }
 
@@ -146,17 +181,22 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun cancelJoinEvent(id: String){
         val cancelJoinEventObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
+
                 Log.e("Peter","cancelJoinEvent  onNext    $t")
 
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","cancelJoinEvent  onError    "+e.message)
             }
 
@@ -167,9 +207,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun postEventReview(dataBody: ReviewMember){
         val eventReviewObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
@@ -185,6 +228,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","postEventReview  onError    "+e.message)
             }
 
@@ -195,9 +239,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun postEventRollCall(dataBody: ReviewMember){
         val eventReviewObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
@@ -213,6 +260,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","postEventReview  onError    "+e.message)
             }
 
@@ -223,9 +271,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getPaymentMethod(){
         val paymentMethodObserver = object : Observer<TypeLists>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: TypeLists) {
@@ -234,6 +285,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","getPaymentMethod  onError    "+e.message)
             }
 
@@ -244,9 +296,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getCurrencyType(){
         val currencyTypeObserver = object : Observer<TypeLists>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: TypeLists) {
@@ -256,6 +311,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","getCurrencyType  onError    "+e.message)
             }
 
@@ -266,17 +322,22 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getEventCategory(){
         val eventCategoryObserver = object : Observer<TypeLists>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: TypeLists) {
                 eventCategory.value = t
-                Log.e("Peter","getEventCategory  onNext    $t")
+                Log.e("Peter","getEventCategory22  onNext    $t")
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter","getEventCategory  onError    "+e.message)
             }
 
@@ -291,9 +352,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
 
         val createEventObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
@@ -302,6 +366,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","createEvent  onError    $e")
 
             }
@@ -316,9 +381,12 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
 
         val createEventObserver = object : Observer<String>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
             }
 
             override fun onNext(t: String) {
@@ -338,11 +406,61 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
                 Log.e("Peter","updateEvent  onError    $e")
 
             }
 
         }
         ApiMethods.updateEvent(createEventObserver, dataBody, file, eventID)
+    }
+
+
+    fun getChatRoomList(){
+        val chatRoomList: Observer<ChatRoomList> = object : Observer<ChatRoomList>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "chatRoomList onError:  $e")
+
+            }
+
+            override fun onNext(t: ChatRoomList) {
+                chatRoomList.value = t
+            }
+
+        }
+        ApiMethods.getChatRoomList(chatRoomList)
+    }
+
+    fun getChatRoomToken(){
+        val chatRoomToken: Observer<ChatRoomToken> = object  : Observer<ChatRoomToken>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onNext(t: ChatRoomToken) {
+                chatRoomToken.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+            }
+
+        }
+        ApiMethods.getChatRoomToken(chatRoomToken)
+
     }
 }

@@ -4,10 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="@drawable/ripple_main_color"
     android:background="@color/transparent"
     android:layout_marginEnd="20dp"
-    android:layout_width="210dp"
-    android:layout_height="135dp"
+    android:layout_width="160dp"
+    android:layout_height="104dp"
     app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="15dp"
     app:cardElevation="0dp">
@@ -44,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="15sp"
+                android:textSize="11sp"
                 android:text="@string/event_title"
                 android:layout_marginBottom="5dp"
                 android:paddingLeft="5dp" />
@@ -55,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="15sp"
+                android:textSize="11sp"
                 android:text="@string/event_time"
                 android:paddingLeft="5dp"/>
             <TextView
@@ -65,7 +66,7 @@
                 android:singleLine="true"
                 android:textColor="@color/colorWhite"
                 android:visibility="gone"
-                android:textSize="15sp"
+                android:textSize="11sp"
                 android:text="@string/event_description"
                 android:layout_marginBottom="5dp"/>
         </LinearLayout>

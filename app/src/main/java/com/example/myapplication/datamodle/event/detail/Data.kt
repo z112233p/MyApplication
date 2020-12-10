@@ -33,5 +33,6 @@ data class Data(
     val title: String,
     val updated_at: String,
     val user_id: Int,
-    val users_limit: Int
+    val users_limit: Int,
+    val location_address: String
 ): Parcelable

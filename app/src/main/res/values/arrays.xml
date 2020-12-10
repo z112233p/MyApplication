@@ -7,4 +7,24 @@
         <item>封鎖對方</item>
         <item>退出聊天室</item>
     </array>
+
+    <array name="my_info_pager">
+        <item>個人資訊</item>
+        <item>活動紀錄</item>
+    </array>
+
+    <array name="constellation_cn">
+        <item>牡羊座</item>
+        <item>金牛座</item>
+        <item>雙子座</item>
+        <item>巨蟹座</item>
+        <item>獅子座</item>
+        <item>處女座</item>
+        <item>天秤座</item>
+        <item>天蠍座</item>
+        <item>射手座</item>
+        <item>摩羯座</item>
+        <item>水瓶座</item>
+        <item>雙魚座</item>
+    </array>
 </resources>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_my_photos"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_nickname"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/rv_my_photos"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_birth"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_nickname"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_gender"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_birth"/>
+  <Spinner
+      android:alpha="0"
+      android:id="@+id/sp_gender"
+      android:layout_gravity="end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/cl_edit_location"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_location"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_gender"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_interest"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_location"/>
+
+  <include
+      layout="@layout/item_edit_my_info"
+      android:id="@+id/cl_edit_job"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_interest"/>
+
+
+  <TextView
+      android:id="@+id/tv_about_me"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textStyle="normal"
+      android:textSize="16sp"
+      android:paddingStart="15dp"
+      android:paddingTop="10dp"
+      android:layout_marginTop="30dp"
+      android:paddingEnd="15dp"
+      android:textColor="@color/colorWhite"
+      android:lineSpacingExtra="1sp"
+      android:background="@color/colorBlack2B"
+      android:text="關於我"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cl_edit_job"/>
+
+  <EditText
+      android:id="@+id/ed_about_me"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textStyle="normal"
+      android:textSize="16sp"
+      android:paddingStart="15dp"
+      android:paddingEnd="15dp"
+      android:paddingTop="15dp"
+      android:paddingBottom="30dp"
+      android:textColor="@color/colorWhite"
+      android:lineSpacingExtra="1sp"
+      android:background="@color/colorBlack2B"
+      tools:text="Friends are life!
+And sometimes when your dear friend feels
+rejected from life and feels completely
+discourages then you must explain him the
+importance and wonderful aspects of life."
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tv_about_me"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

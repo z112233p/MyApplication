@@ -1,6 +1,10 @@
 package com.example.myapplication.fragment
 
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +13,10 @@ import androidx.core.os.persistableBundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
 import com.example.myapplication.datamodle.event.detail.Data
@@ -54,6 +62,7 @@ class FragmentEventDetail : BaseFragment(), View.OnClickListener {
             eventID = eventDetailData.id.toString()
 
             ImgHelper.loadNormalImg(getMContext().get(),BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
+
             tv_event_title.text = eventDetailData.title
             tv_event_description.text = eventDetailData.description
             tv_event_restriction_time.text = eventDetailData.review_time

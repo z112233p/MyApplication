@@ -109,13 +109,13 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 //            startActivity(intent)
         }
         mBlurringView = BlurringView(this)
-        mImageView = ImageView(this)
         title = ""
         tv_toolbar_title.text = "聊天室"
+
+        mImageView = ImageView(this)
         mImageView.setImageDrawable(this.resources.getDrawable(R.drawable.ic_send))
         val drawable :BitmapDrawable = mImageView.drawable as BitmapDrawable
         transactionBitmap = drawable.bitmap
-
 
         animLayout = MenuItemLayout3(this)
         animLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,1500)
@@ -326,7 +326,15 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.e("Peter","onRequestPermissionsResult")
 
+
+    }
 
     private fun getIntentData(){
         rId = ""
@@ -358,10 +366,13 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 
         val payload = BaseMessageViewHolder.Payload()
         val iii = object : BaseMessageViewHolder.OnImageClickListener{
-            override fun onImageClick(message: Message) {
-                val dialog = DialogFullScreenImage(this@ChatRoomActivity, message)
-                Log.e("Peter","onImageClick OMG LIL")
-                dialog.show()
+            override fun onImageClick(message: Message, itemView: View) {
+//                val dialog = DialogFullScreenImage(this@ChatRoomActivity, message)
+//                Log.e("Peter","onImageClick OMG LIL")
+//                dialog.show()
+//
+                IntentHelper.gotoFullScreenImageActivity(this@ChatRoomActivity,
+                    message.imageUrl!!, itemView.findViewById(R.id.image))
             }
         }
         payload.setAvatarClickListener(iii)
@@ -666,7 +677,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     }
 
     override fun onResume() {
-        messagesList.scrollToPosition(0)
+//        messagesList.scrollToPosition(0)
 
         super.onResume()
     }

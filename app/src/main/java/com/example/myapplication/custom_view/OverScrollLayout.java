@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
@@ -19,8 +20,11 @@ public class OverScrollLayout extends LinearLayout {
     private RecyclerView childView;
 
     private Rect original = new Rect();
+    private Rect rect;    // Variable rect to hold the bounds of the view
 
     private boolean isMoved = false;
+    private WindowManager.LayoutParams mParams;
+
 
     private float startYpos;
     private float startXpos;
@@ -36,14 +40,34 @@ public class OverScrollLayout extends LinearLayout {
 
     public OverScrollLayout(Context context) {
         this(context, null);
+        init();
     }
 
     public OverScrollLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init();
+
     }
 
     public OverScrollLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+
+    }
+
+    private void init(){
+
+//        mParams = new WindowManager.LayoutParams();
+//
+//        //总是出现在应用程序窗口之上
+//        //设置图片格式，效果为背景透明
+//        mParams.flags = WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+//        mParams.width = LayoutParams.MATCH_PARENT;
+//        mParams.height = LayoutParams.WRAP_CONTENT;
+//
+//        this.setLayoutParams(mParams);
+//        Log.e("Peter","canPullDownMotionEvent.initinitinit"+isMoved);
+
     }
 
     @Override
@@ -64,9 +88,17 @@ public class OverScrollLayout extends LinearLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.e("Peter","canPullDownMotionEvent.dispatchTouchEvent   "+ev.getAction());
+
         float touchYpos = ev.getY();
         float touchXpos = ev.getY();
 
+        if(ev.getAction() == MotionEvent.ACTION_CANCEL){
+            if (isMoved) {
+                recoverLayout();
+            }
+            return super.dispatchTouchEvent(ev);
+        }
         if (touchXpos >= original.right || touchXpos <= original.left) {
             if (isMoved) {
                 recoverLayout();
@@ -86,8 +118,11 @@ public class OverScrollLayout extends LinearLayout {
                 if (isMoved) {
                     recoverLayout();
                 }
+                return super.dispatchTouchEvent(ev);
+
             case MotionEvent.ACTION_DOWN:
-                Log.e("Peter","canPullDownMotionEvent.ACTION_DOWN"+isMoved);
+                rect = new Rect(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
+                Log.e("Peter","canPullDownMotionEvent.WWWTTFFFACTION_DOWN   "+rect.left+" "+rect.top+" "+rect.right+" "+rect.bottom);
 
                 if (isMoved) {
                     recoverLayout();
@@ -105,6 +140,14 @@ public class OverScrollLayout extends LinearLayout {
 
                 boolean pullLeft = scrollXpos > 5 && canPullDown();
                 boolean pullRight = scrollXpos < -5 && canPullUp();
+                Log.e("Peter","canPullDownMotionEvent.WWWTTFFF       "+(this.getLeft() + (int) ev.getX())+" ???:   "+ (this.getTop() + (int) ev.getY()));
+
+                if(!rect.contains(this.getLeft() + (int) ev.getX(), this.getTop() + (int) ev.getY())){
+                    Log.e("Peter","canPullDownMotionEvent.WWWTTFFF    QQQ   "+this.getLeft() + (int) ev.getX()+" ???:   "+ this.getTop() + (int) ev.getY());
+
+                    return true;
+                }
+                Log.e("Peter","canPullDownMotionEvent.WWWTTFFF    OUT   "+(this.getLeft() + (int) ev.getX())+" ???:   "+ (this.getTop() + (int) ev.getY()));
 
 
                 if (pullLeft || pullRight) {
@@ -114,7 +157,7 @@ public class OverScrollLayout extends LinearLayout {
                     if (mScrollListener != null) {
                         mScrollListener.onScroll();
                     }
-                    Log.e("Peter","canPullDownMotionEvent.ACTION_UP   111"+pullLeft+"   "+pullRight+"  "+scrollXpos);
+                    Log.e("Peter","canPullDownMotionEvent.ACTION_MOVE   111"+pullLeft+"   "+pullRight+"  "+scrollXpos);
 
                     isMoved = true;
                     isSuccess = false;
@@ -123,13 +166,13 @@ public class OverScrollLayout extends LinearLayout {
                     startXpos = ev.getX();
                     isMoved = false;
                     isSuccess = true;
-                    Log.e("Peter","canPullDownMotionEvent.ACTION_UP   222"+pullLeft+"   "+pullRight+"  "+scrollXpos);
+                    Log.e("Peter","canPullDownMotionEvent.ACTION_MOVE   222"+pullLeft+"   "+pullRight+"  "+scrollXpos);
 
                     return super.dispatchTouchEvent(ev);
                 }
 
             case MotionEvent.ACTION_UP:
-                Log.e("Peter","canPullDownMotionEvent.ACTION_UP"+isMoved);
+                Log.e("Peter","canPullDownMotionEvent.ACTION_UPZ"+isMoved);
 
                 if (isMoved) {
                     recoverLayout();

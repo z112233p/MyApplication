@@ -5,6 +5,9 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:foreground="@drawable/ripple_gray_color"
     android:layout_marginBottom="16dp">
 
     <androidx.cardview.widget.CardView
@@ -31,7 +34,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:singleLine="true"
-        android:text="0000000"
+        tools:text="0000000"
         app:layout_constraintStart_toEndOf="@+id/cv_chat_room_photo"
         app:layout_constraintEnd_toStartOf="@+id/tv_chat_last_msg_time"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +49,7 @@
         android:padding="5dp"
         android:textColor="@color/colorGray71"
         android:textSize="12sp"
-        android:text="0000000"
+        tools:text="0000000"
         app:layout_constraintStart_toEndOf="@+id/cv_chat_room_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/transparent"
@@ -60,7 +63,7 @@
         android:padding="5dp"
         android:textColor="@color/colorGray71"
         android:textSize="12sp"
-        android:text="0000000"
+        tools:text="0000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/transparent"

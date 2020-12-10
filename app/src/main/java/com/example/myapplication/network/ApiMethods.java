@@ -18,15 +18,19 @@ import com.example.myapplication.datamodle.chat.history.ChatHistory;
 import com.example.myapplication.datamodle.chat.image_message.response.FileResponse;
 import com.example.myapplication.datamodle.chat.text_message.TextMessage;
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse;
+import com.example.myapplication.datamodle.chat_room.Token.ChatRoomToken;
 import com.example.myapplication.datamodle.dating.DatingSearch;
 import com.example.myapplication.datamodle.event.Events;
 import com.example.myapplication.datamodle.event.detail.EventDetail;
+import com.example.myapplication.datamodle.event.detailv2.EventDetailV2;
 import com.example.myapplication.datamodle.event.list.TypeLists;
 import com.example.myapplication.datamodle.event.review.EventReview;
 import com.example.myapplication.datamodle.event.review_member.ReviewMember;
 import com.example.myapplication.datamodle.profile.MyInfo;
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto;
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse;
+import com.example.myapplication.datamodle.profile.interest.interest;
+import com.example.myapplication.datamodle.profile.job.job;
 import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse;
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo;
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse;
@@ -35,6 +39,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -76,6 +81,22 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateMyInfo(updateMtInfo)), pbObserver);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void updateMyInfo_v2(Observer<UpdateMyInfoResponse> pbObserver, HashMap<String, String> dataBody){
+        String[] keySet = dataBody.keySet().toArray(new String[0]);
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
+        MultipartBody.Builder builder = bodyBuilder.setType(MultipartBody.FORM);
+        Arrays.stream(keySet)
+                .forEach(key -> builder.addFormDataPart(key, Objects.requireNonNull(dataBody.get(key))));
+
+        RequestBody body = builder.build();
+
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateMyInfo_v2(body)), pbObserver);
+    }
+
+
+
     public static void updateMyPhoto(Observer<UpdatePhotoResponse> pbObserver, String sort, File file){
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/jpg"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("photos", file.getName(), fileReqBody);
@@ -107,6 +128,10 @@ public class ApiMethods {
 
     public static void getEventDetail(Observer<EventDetail> pbObserver, String label){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetail(label)), pbObserver);
+    }
+
+    public static void getEventDetailV2(Observer< EventDetailV2 > pbObserver, String label){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetailV2(label)), pbObserver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -180,6 +205,15 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getDatingSearch(gender,minAge,maxAge,maxKm)), pbObserver);
     }
 
+    public static void getJobList(Observer<job> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).getJobList()), pbObserver);
+    }
+
+    public static void getInterestList(Observer<interest> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).getInterestList()), pbObserver);
+    }
+
+
     public static void postImageMessage(Observer<FileResponse> pbObserver, File file, String rId){
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/jpg"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), fileReqBody);
@@ -207,6 +241,11 @@ public class ApiMethods {
 
     public static void setErrorLog(Observer<String> pbObserver, ErrorLogApi dataBody){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(false).setErrorLog(dataBody)),pbObserver);
+    }
+
+
+    public static void getChatRoomToken(Observer< ChatRoomToken > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getChatRoomToken()), pbObserver);
     }
 
 

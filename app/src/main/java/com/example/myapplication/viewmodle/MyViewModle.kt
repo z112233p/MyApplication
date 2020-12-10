@@ -21,4 +21,16 @@ val EventsActVM = module {
 
 val MapsActVM = module {
     viewModel { MapsActivityVM(get()) }
+}//CreateEventsActivityVM ProfileActivityVM
+
+val CreateEventsActVM = module {
+    viewModel { CreateEventsActivityVM(get()) }
+}
+
+val ProfileAcVM = module {
+    viewModel { ProfileActivityVM(get()) }
+}//EventDetailActivityVM
+
+val EventDetailActVM = module {
+    viewModel { EventDetailActivityVM(get()) }
 }

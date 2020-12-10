@@ -13,9 +13,11 @@ import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
 import com.example.myapplication.datamodle.chat.ChatRoomListUpdate
 import com.example.myapplication.datamodle.chat.chatroom_list.Update
+import com.example.myapplication.datamodle.chat.text_message.message_entry.MessageEntry
 import com.example.myapplication.tools.ImgHelper
 import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.tools.PrefHelper
+import com.google.gson.Gson
 import com.stfalcon.chatkit.utils.DateFormatter
 import org.json.JSONObject
 import org.w3c.dom.Text
@@ -122,12 +124,20 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
             IntentHelper.gotoChatRoom(mContext, data._id)
         }
 
+        if(data.lastMessage == null){
+            holder.tvChatLastMsg.text = ""
 
+            return
+        }
 
-        val username = if(data.lastMessage.u.username == PrefHelper.chatLable){
+        val username = if(data.lastMessage?.u?.username == PrefHelper.chatLable){
             "你"
         } else {
-            data.lastMessage.u.name
+            if(data.lastMessage != null){
+                data.lastMessage.u.name
+            } else {
+                ""
+            }
         }
 
         if(data.lastMessage.attachments != null){
@@ -138,18 +148,29 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
 
             }
         } else {
-            holder.tvChatLastMsg.text = username+":"+data.lastMessage.msg
+            var messageEntry = MessageEntry("","","","", data.lastMessage.msg)
+
+            try {
+                messageEntry = Gson().fromJson(data.lastMessage.msg, MessageEntry::class.java)
+            } catch (e: Exception){
+
+            }
+
+            holder.tvChatLastMsg.text = username+":"+messageEntry.content
 
         }
 
-        if (DateFormatter.isToday(data.lastMessage._updatedAt)) {
-            holder.tvChatLastMsgTime.text = customTodayFormat.format(data.lastMessage._updatedAt)
-        } else if (DateFormatter.isYesterday(data.lastMessage._updatedAt)) {
-            holder.tvChatLastMsgTime.text = "昨天"
-        } else {
-            holder.tvChatLastMsgTime.text = customDateFormat.format(data.lastMessage._updatedAt)
+        when {
+            DateFormatter.isToday(data.lastMessage._updatedAt) -> {
+                holder.tvChatLastMsgTime.text = customTodayFormat.format(data.lastMessage._updatedAt)
+            }
+            DateFormatter.isYesterday(data.lastMessage._updatedAt) -> {
+                holder.tvChatLastMsgTime.text = "昨天"
+            }
+            else -> {
+                holder.tvChatLastMsgTime.text = customDateFormat.format(data.lastMessage._updatedAt)
+            }
         }
-
     }
 
 }

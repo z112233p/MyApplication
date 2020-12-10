@@ -111,7 +111,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
         } else {
             if (message.getFileType() == "image/jpg"){
                 if (!TextUtils.isEmpty(message.imageUrl)){
-                    ImgHelper.loadNormalImg(MyApp.get()?.applicationContext, message.imageUrl, this.image)
+                    ImgHelper.loadOriginalImage(MyApp.get()?.applicationContext, message.imageUrl, this.image)
                     llMessageMain.background = null
 
 
@@ -179,7 +179,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
             payload?.replyClickListener?.onReplyClick()
         }
         image.setOnClickListener {
-            payload?.imageClickListener?.onImageClick(message)
+            payload?.imageClickListener?.onImageClick(message, itemView)
         }
 
         if (message.getSuccess() == "true"){
@@ -216,7 +216,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
     }
 
     interface OnImageClickListener {
-        fun onImageClick(message: Message)
+        fun onImageClick(message: Message, itemView: View)
     }
 
     class Payload {
@@ -231,7 +231,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
             }
         }
         var imageClickListener: OnImageClickListener? = object : OnImageClickListener{
-            override fun onImageClick(message: Message) {
+            override fun onImageClick(message: Message, itemView: View) {
 
                 Log.e("BaseMessageViewHolder","onImageClick")
             }

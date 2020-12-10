@@ -2,14 +2,20 @@
 
 package com.example.myapplication.tools
 
+
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.PendingIntent
+import android.app.PendingIntent.CanceledException
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -19,27 +25,15 @@ import android.view.ViewConfiguration
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.myapplication.MyApp
+import com.example.myapplication.R
 import okhttp3.*
 import okio.BufferedSink
 import okio.Sink
 import okio.buffer
+import okio.sink
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-
-import okhttp3.Call
-
-import okhttp3.Callback
-
-import okhttp3.OkHttpClient
-
-import okhttp3.Request
-
-import okhttp3.Response
-
-
-import okio.*
-
 
 
 object Tools {
@@ -277,7 +271,7 @@ object Tools {
                 var bufferedSink: BufferedSink? = null
                 try {
                     val mSDCardPath =Environment.getExternalStorageDirectory().path + File.separatorChar + Environment.DIRECTORY_DCIM + File.separatorChar
-                        //Environment.getExternalStorageDirectory().absolutePath
+                    //Environment.getExternalStorageDirectory().absolutePath
                     val dest = File(mSDCardPath, url.substring(url.lastIndexOf("/") + 1))
 //                    val dest = File(getLocalSavedAudioPath())
 
@@ -300,4 +294,81 @@ object Tools {
             }
         })
     }
+
+
+
+    fun getConstellation(month: String,day: String): String {
+        val constellationTitle = mutableListOf<String>(*MyApp.get()!!.resources.getStringArray(R.array.constellation_cn))
+        var point = -1;
+        var date = ("$month.$day").toDouble()
+
+        if (3.21 <= date && 4.19 >= date) {
+            point = 0
+        } else if (4.20 <= date && 5.20 >= date) {
+            point = 1
+        } else if (5.21 <= date && 6.21 >= date) {
+            point = 2
+        } else if (6.22 <= date && 7.22 >= date) {
+            point = 3
+        } else if (7.23 <= date && 8.22 >= date) {
+            point = 4
+        } else if (8.23 <= date && 9.22 >= date) {
+            point = 5
+        } else if (9.23 <= date && 10.23 >= date) {
+            point = 6
+        } else if (10.24 <= date && 11.22 >= date) {
+            point = 7
+        } else if (11.23 <= date && 12.21 >= date) {
+            point = 8
+        } else if (12.22 <= date && 12.31 >= date) {
+            point = 9
+        } else if (1.01 <= date && 1.19 >= date) {
+            point = 9
+        } else if (1.20 <= date && 2.18 >= date) {
+            point = 10
+        } else if (2.19 <= date && 3.20 >= date) {
+            point = 11
+        }
+        if (point == -1) {
+            return constellationTitle[0]
+        }
+        return constellationTitle[point]
+    }
+
+
+    fun isGPSEnabled(context: Context): Boolean {
+        val locationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    fun openGPS(context: Context){
+        Log.e("Peter","ISOPGPS   openGPS")
+
+        val GPSIntent = Intent()
+        GPSIntent.setClassName(
+            "com.android.settings",
+            "com.android.settings.widget.SettingsAppWidgetProvider"
+        )
+        GPSIntent.addCategory("android.intent.category.ALTERNATIVE")
+        GPSIntent.data = Uri.parse("custom:3")
+        try {
+            PendingIntent.getBroadcast(context, 0, GPSIntent, 0).send()
+        } catch (e: CanceledException) {
+            e.printStackTrace()
+        }
+    }
+
+
+    fun checkGPS(context: Context){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setMessage("請打開ＧＰＳ")
+        builder.setPositiveButton("確定") {
+                p0, p1 ->
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 }

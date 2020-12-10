@@ -3,6 +3,7 @@ package com.example.myapplication.datamodle.profile
 data class MyInfoUser(
     var id:Int = 0,
     var name:String = "",
+    var nickname: String = "",
     var phone: String = "",
     var code:Int = 0,
     var gender:Int = 0,

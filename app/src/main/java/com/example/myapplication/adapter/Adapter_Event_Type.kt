@@ -1,25 +1,20 @@
 package com.example.myapplication.adapter
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
-import com.example.myapplication.datamodle.event.Event
-import com.example.myapplication.tools.ImgHelper
+import com.example.myapplication.datamodle.event.list.Data
 
 class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>() {
-    private lateinit var dataList: ArrayList<String>
+    private lateinit var dataList: ArrayList<Data>
     private lateinit var mContext: Context
     private var mOnItemClickListener: OnItemClickListener? = null
-
+    private var currentPosition: Int = -1
+    private var oldHighLight: Int = 0
 
     constructor(context: Context?) : this(){
         dataList = ArrayList()
@@ -29,14 +24,21 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
     }
 
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(Id: String)
+    }
+
+    fun setType(typeId: Int){
+        currentPosition = typeId
+        notifyDataSetChanged()
+
     }
 
     fun setOnItemClickListener(listener: Adapter_Event_Type.OnItemClickListener) {
         mOnItemClickListener = listener
+
     }
 
-    fun setData(dealData: List<String>?) {
+    fun setData(dealData: List<Data>) {
         if (dealData == null || dealData.isEmpty()) {
             return
         }
@@ -59,9 +61,23 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(dataList.size == 0){return}
         val data = dataList[position]
-        holder.tvEventType.text = data
-        holder.itemView.setOnClickListener {
-            mOnItemClickListener?.onItemClick()
+        holder.tvEventType.text = data.i18n
+
+        if(position == currentPosition){
+            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn_selected)
+//            holder.tvEventType.setTextColor(mContext.resources.getColor(R.color))
+        } else {
+            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn)
+
+        }
+
+
+            holder.itemView.setOnClickListener {
+            mOnItemClickListener?.onItemClick(data.id.toString())
+            oldHighLight = currentPosition
+            currentPosition = position
+            notifyItemChanged(oldHighLight)
+            notifyItemChanged(currentPosition)
         }
     }
 

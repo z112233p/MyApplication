@@ -35,13 +35,15 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
     }
 
     fun setData(dealData: List<User>?) {
-        if (dealData == null || dealData.isEmpty()) {
-            return
-        }
         dataList.clear()
-        dataList.addAll(dealData.filter {
-            it.id.toString() != PrefHelper.userID
-        })
+
+        if (dealData == null || dealData.isEmpty()) {
+        } else {
+            dataList.addAll(dealData.filter {
+                it.id.toString() != PrefHelper.userID
+            })
+        }
+
         notifyDataSetChanged()
     }
 
@@ -64,7 +66,7 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         val data = dataList[position]
 
         ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+ data.photos[0].url, holder.ivProfilePhoto)
-        holder.tvUserName.text = data.name
+        holder.tvUserName.text = data.nickname
 
         when(data.status){
             0 -> holder.btnReview.text = "未審核"
@@ -72,7 +74,7 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
             2 -> holder.btnReview.text = "已點名"
         }
 
-        holder.btnReview.setOnClickListener {
+        holder.itemView.setOnClickListener {
             mOnItemClickListener?.onItemClick(holder.itemView, data.status, data.id)
         }
 

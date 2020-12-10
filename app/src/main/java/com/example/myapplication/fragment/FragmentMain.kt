@@ -3,10 +3,8 @@ package com.example.myapplication.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -15,10 +13,9 @@ import com.example.myapplication.adapter.Adapter_Events
 import com.example.myapplication.adapter.CircleViewPager
 import com.example.myapplication.controller.BannerController
 import com.example.myapplication.dialog.DialogChooseCountry
-import com.example.myapplication.tools.Config
+import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.layout_input_rv.view.*
 
 class FragmentMain : BaseFragment() {
 
@@ -44,7 +41,6 @@ class FragmentMain : BaseFragment() {
         expandToolbar(true)
         hideToolBar()
         hideTitle()
-        callApis()
         init()
         initObserve()
         initHotEvents()
@@ -55,6 +51,15 @@ class FragmentMain : BaseFragment() {
             val dialog = getMContext().get()?.let { it1 -> DialogChooseCountry(it1) }
             dialog?.show()
         }
+        iv_create_event.setOnClickListener {
+            getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callApis()
+
     }
 
     private fun callApis(){
@@ -83,6 +88,7 @@ class FragmentMain : BaseFragment() {
 
         })
         vp_banner_view_pager.adapter = adapter
+//        vp_banner_view_pager.setPageTransformer(true, object : )
         vp_banner_view_pager.setController(bannerController)
 
         eventTypeAdapter = Adapter_Event_Type(getMContext().get())
@@ -100,8 +106,12 @@ class FragmentMain : BaseFragment() {
     private fun initHotEvents(){
         hotEventAdapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
-                val bundle = bundleOf(Config.EVENT_LABEL to label)
-                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+//                val bundle = bundleOf(Config.EVENT_LABEL to label)
+//                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label)
+                }
             }
         })
 
@@ -114,8 +124,11 @@ class FragmentMain : BaseFragment() {
     private fun initComingEvents(){
         comingEventAdapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
-                val bundle = bundleOf(Config.EVENT_LABEL to label)
-                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+//                val bundle = bundleOf(Config.EVENT_LABEL to label)
+//                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label)
+                }
             }
         })
 
@@ -128,8 +141,11 @@ class FragmentMain : BaseFragment() {
     private fun initMayLikeEvents(){
         mayLikeEventAdapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
-                val bundle = bundleOf(Config.EVENT_LABEL to label)
-                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+//                val bundle = bundleOf(Config.EVENT_LABEL to label)
+//                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label)
+                }
             }
         })
 
@@ -149,10 +165,13 @@ class FragmentMain : BaseFragment() {
         })
 
         eventsActivityVM.getEventCategoryData().observe(viewLifecycleOwner, Observer {
+            eventCategoryList.clear()
             it.data.forEach {
+                Log.e("Peter","getEventCategory22  eventCategoryList    $eventCategoryList")
+
                 eventCategoryList.add(it.i18n)
             }
-            eventTypeAdapter.setData(eventCategoryList)
+            eventTypeAdapter.setData(it.data)
         })
     }
 

@@ -14,10 +14,12 @@ import com.example.myapplication.R
 import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.datamodle.authorization.LoginData
 import com.example.myapplication.datamodle.authorization.ResendSMS
+import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.tools.Config
 import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.MainActivityVM
 import kotlinx.android.synthetic.main.fragment_input_phone.*
+import kotlinx.android.synthetic.main.fragment_register.*
 import kotlin.properties.Delegates
 
 /**
@@ -37,6 +39,7 @@ class FragmentInputPhone : BaseFragment() {
         showToolBar()
         setToolbarTitle("請輸入手機號碼")
         clickAble = true
+        initObserve()
         init()
     }
 
@@ -59,9 +62,16 @@ class FragmentInputPhone : BaseFragment() {
             R.id.ll_send_code_btn -> {
                 Log.e("Peter","ed_phone_number   ${ed_phone_number.text}")
 
-                val bundle = bundleOf(Config.INPUT_NUMBER to ed_phone_number.text)
-                findNavController().navigate(R.id.action_FragmentInputPhone_to_FragmentInputVerify, bundle)
+                mainActVM.register(register = Register(ed_phone_number.text.toString().toInt(), "1"))
+
             }
         }
+    }
+
+    private fun initObserve(){
+        mainActVM.getRegisterResponse().observe(viewLifecycleOwner, Observer {
+            val bundle = bundleOf(Config.INPUT_NUMBER to ed_phone_number.text)
+            findNavController().navigate(R.id.action_FragmentInputPhone_to_FragmentInputVerify, bundle)
+        })
     }
 }

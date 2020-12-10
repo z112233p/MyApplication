@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_create_event"
+    app:startDestination="@id/FragmentCreateProfile_step1">
+
+
+
+    <fragment
+        android:id="@+id/FragmentCreateProfile_step1"
+        android:name="com.example.myapplication.fragment.FragmentCreateProfile_step1"
+        tools:layout="@layout/fragment_creat_profile_step_1">
+        <action
+            android:id="@+id/action_FragmentCreateProfile_step1_to_FragmentCreateProfile_step2"
+            app:destination="@id/FragmentCreateProfile_step2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentCreateProfile_step2"
+        android:name="com.example.myapplication.fragment.FragmentCreateProfile_step2"
+        tools:layout="@layout/fragment_creat_profile_step_2">
+        <action
+            android:id="@+id/action_FragmentCreateProfile_step2_to_FragmentCreateProfile_step3"
+            app:destination="@id/FragmentCreateProfile_step3" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/FragmentCreateProfile_step3"
+        android:name="com.example.myapplication.fragment.FragmentCreateProfile_step3"
+        tools:layout="@layout/fragment_creat_profile_step_3">
+
+    </fragment>
+
+</navigation>

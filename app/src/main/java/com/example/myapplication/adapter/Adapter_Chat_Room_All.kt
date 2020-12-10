@@ -120,7 +120,9 @@ class Adapter_Chat_Room_All() : RecyclerView.Adapter<Adapter_Chat_Room_All.ViewH
         holder.itemView.setOnClickListener {
             IntentHelper.gotoChatRoom(mContext, data._id)
         }
-
+        holder.ivChatRoomPhoto.setOnClickListener {
+            IntentHelper.gotoChatRoom(mContext, data._id)
+        }
 
 //
 //        val username = if(data.lastMessage.u.username == PrefHelper.chatLable){

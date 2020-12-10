@@ -1,20 +1,18 @@
 package com.example.myapplication.fragment
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.tools.PrefHelper
-import com.example.myapplication.datamodle.authorization.LoginData
-import com.example.myapplication.datamodle.authorization.ResendSMS
-import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.MainActivityVM
+import kotlinx.android.synthetic.main.fragment_login_main.*
 import kotlin.properties.Delegates
 
 /**
@@ -24,6 +22,9 @@ class FragmentLogin : BaseFragment() {
 
     val mainActVM: MainActivityVM by activityViewModels()
     private var clickAble by Delegates.notNull<Boolean>()
+    private var nowPicPos = 0
+    private val imgRes = intArrayOf(R.mipmap.ph_tokyo, R.mipmap.ph_taipei)
+
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_login_main
@@ -43,6 +44,7 @@ class FragmentLogin : BaseFragment() {
     private fun checkSession(): Boolean  {
         return PrefHelper.apiHeader != ""
     }
+
 //
 //    private fun init(){
 //        btn_send.setOnClickListener(onClick)

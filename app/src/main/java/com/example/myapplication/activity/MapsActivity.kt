@@ -11,8 +11,12 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.adapter.CustomInfoWindowAdapter
+import com.example.myapplication.custom_view.CardPopup
+import com.example.myapplication.datamodle.chat_room.Message
 import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.MapsActivityVM
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -25,7 +29,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,12 +51,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mLocationPermissionGranted: Boolean = true
     private val DEFAULT_ZOOM = 15.0F
     private var getLocation = ""
+    private var getLocationAddress = ""
     private var getLatitude = ""
     private var getLongitude = ""
+    private var confirmLocation: Boolean = false
+
+    private lateinit var popup: CardPopup
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+        tv_toolbar_title.text = "地點"
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+        getIntentData()
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -61,9 +79,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        btn_confirm.setOnClickListener {
+        tv_confirm.setOnClickListener {
             val mIntent = Intent()
-            //                .position(LatLng(it.latLng.latitude, it.latLng.longitude))
             getLocation = tv_location.text as String
             getLatitude = tv_latitude.text as String
             getLongitude = tv_longitude.text as String
@@ -75,17 +92,48 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             mIntent.putExtra("location", getLocation)
             mIntent.putExtra("latitude", getLatitude)
             mIntent.putExtra("longitude", getLongitude)
+            mIntent.putExtra("locationAddress", getLocationAddress)
 
             this.setResult(RESULT_OK, mIntent)
             finish()
         }
+        tv_confirm.isClickable = false
     }
+
+    private fun getIntentData(){
+        val b = intent.extras
+
+        getLatitude = b?.getString("Latitude")!!
+        getLongitude = b.getString("Longitude")!!
+        getLocation= b.getString("Location")!!
+    }
+
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        updateLocationUI();
+        updateLocationUI()
+        if(TextUtils.isEmpty(getLatitude) || TextUtils.isEmpty(getLongitude)){return}
+
+        val matches: List<Address> = geoCoder.getFromLocation(getLatitude.toDouble(), getLongitude.toDouble(), 1)
+        val bestMatch: Address? = if (matches.isEmpty()) null else matches[0]
+
+
+        val markerOptions = MarkerOptions()
+            .position(LatLng(getLatitude.toDouble(), getLongitude.toDouble()))
+            .title(getLocation)
+            .snippet(bestMatch?.getAddressLine(0))
+
+
+        mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
+        mMap.addMarker(markerOptions).showInfoWindow()
+
+        tv_confirm.setTextColor(this.resources.getColor(R.color.white))
+        tv_confirm.background = this.resources.getDrawable(R.drawable.bg_blue_confirm)
+        tv_confirm.isClickable = true
+
     }
+
 
     private fun updateLocationUI() {
         try {
@@ -112,29 +160,47 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mLastKnownLocation = LatLng(lat, lng)
         Log.e("Peter","mLastKnownLocation    $mLastKnownLocation")
 
-        getDeviceLocation()
+        if(!TextUtils.isEmpty(getLatitude) && !TextUtils.isEmpty(getLongitude)){
+            val choseLocation = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
+
+            mMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(choseLocation, DEFAULT_ZOOM))
+        } else {
+            getDeviceLocation()
+        }
 
         mMap.setOnPoiClickListener {
             mMap.clear()
-            val markerOptions = MarkerOptions()
-                .position(LatLng(it.latLng.latitude, it.latLng.longitude))
-                .title(it.name)
-            mMap.addMarker(markerOptions)
 
             val matches: List<Address> =
                 geoCoder.getFromLocation(it.latLng.latitude, it.latLng.longitude, 1)
             val bestMatch: Address? = if (matches.isEmpty()) null else matches[0]
+
             tv_latitude.text = it.latLng.latitude.toString()
             tv_location.text = it.name
             tv_longitude.text = it.latLng.longitude.toString()
             tv_address.text = bestMatch?.getAddressLine(0)
+            getLocationAddress = bestMatch?.getAddressLine(0).toString()
+
+            val markerOptions = MarkerOptions()
+                .position(LatLng(it.latLng.latitude, it.latLng.longitude))
+                .title(it.name)
+                .snippet(bestMatch?.getAddressLine(0))
+
+
+            mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
+            mMap.addMarker(markerOptions).showInfoWindow()
 
             Log.e("Peter","setOnMapClickListener bestMatch    $bestMatch")
+            val viewLocation = IntArray(2)
+            tv_confirm.setTextColor(this.resources.getColor(R.color.white))
+            tv_confirm.background = this.resources.getDrawable(R.drawable.bg_blue_confirm)
+            tv_confirm.isClickable = true
+
         }
 
         mMap.setOnMapClickListener {
             mMap.clear()
-            mMap.addMarker(MarkerOptions().position(it).title("點選位置").draggable(true))
 
             tv_location.text = ""
             tv_latitude.text = it.latitude.toString()
@@ -143,7 +209,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val matches: List<Address> =
                 geoCoder.getFromLocation(it.latitude, it.longitude, 1)
             val bestMatch: Address? = if (matches.isEmpty()) null else matches[0]
+            getLocationAddress = bestMatch?.getAddressLine(0).toString()
             tv_address.text = bestMatch?.getAddressLine(0)
+            tv_location.text = bestMatch?.getAddressLine(0)
+
+
+            val markerOptions = MarkerOptions()
+                .position(it)
+                .title(bestMatch?.getAddressLine(0))
+                .snippet(bestMatch?.getAddressLine(0))
+
+            mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
+            mMap.addMarker(markerOptions).showInfoWindow()
+            tv_confirm.setTextColor(this.resources.getColor(R.color.white))
+            tv_confirm.background = this.resources.getDrawable(R.drawable.bg_blue_confirm)
+            tv_confirm.isClickable = true
             Log.e("Peter","setOnMapClickListener bestMatch    $bestMatch")
         }
     }

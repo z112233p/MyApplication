@@ -15,6 +15,7 @@ import com.example.myapplication.adapter.Adapter_Chat_Room_All
 import com.example.myapplication.datamodle.chat.chatroom_list.Update
 import com.example.myapplication.network.WebSocketHelper
 import com.example.myapplication.tools.PrefHelper
+import com.example.myapplication.viewmodle.EventsActivityVM
 import com.example.myapplication.viewmodle.MainActivityVM
 import io.reactivex.Observable
 import io.reactivex.SingleObserver
@@ -27,7 +28,7 @@ import org.json.JSONObject
 
 class FragmentChatRoomList : BaseFragment() {
 
-    val mainActVM: MainActivityVM by activityViewModels()
+    val eventsActivityVM: EventsActivityVM by activityViewModels()
     private lateinit var adapter : Adapter_Chat_Room
     private lateinit var adapterAll : Adapter_Chat_Room_All
 
@@ -50,7 +51,7 @@ class FragmentChatRoomList : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        mainActVM.getChatRoomList()
+        eventsActivityVM.getChatRoomToken()
 
     }
     private fun init(){
@@ -72,7 +73,16 @@ class FragmentChatRoomList : BaseFragment() {
     }
 
     private fun initObserve(){
-        mainActVM.getChatRoomListData().observe(viewLifecycleOwner, Observer {
+        eventsActivityVM.getChatRoomTokenData().observe(viewLifecycleOwner, Observer {
+            if(it != null){
+                PrefHelper.setChatToken(it.data.chat_auth_token)
+                PrefHelper.setChatId(it.data.chat_user_id)
+                eventsActivityVM.getChatRoomList()
+
+            }
+        })
+
+        eventsActivityVM.getChatRoomListData().observe(viewLifecycleOwner, Observer {
 
             Observable
                 .fromIterable(it.update)
@@ -107,7 +117,7 @@ class FragmentChatRoomList : BaseFragment() {
                     override fun onSuccess(t: List<Update>) {
                         Log.e("Peter", "FragmentChatRoom getChatRoom FINISH2  ${t}")
                         val dataList = t.sortedByDescending { data ->
-                            data.lastMessage._updatedAt
+                            data.lastMessage?._updatedAt
                         }
                         adapter.setData(dataList)
                         adapterAll.setData(t)

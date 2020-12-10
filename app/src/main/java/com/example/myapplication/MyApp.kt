@@ -1,6 +1,9 @@
 package com.example.myapplication
 
 import android.app.Application
+import com.example.myapplication.datamodle.profile.interest.Data
+import com.example.myapplication.datamodle.profile.interest.interest
+import com.example.myapplication.datamodle.profile.job.job
 import com.example.myapplication.viewmodle.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -9,7 +12,8 @@ import java.util.HashMap
 
 class MyApp : Application(){
     val location: HashMap<String, Int> = HashMap()
-
+    var interestDataList:interest = interest(0, ArrayList<Data>(), "")
+    var jobDataList: job = job(0, ArrayList<com.example.myapplication.datamodle.profile.job.Data>(), "")
 
     override fun onCreate() {
         super.onCreate()
@@ -28,9 +32,28 @@ class MyApp : Application(){
             androidContext(this@MyApp)
             // modules
             val list = listOf(MainActVM,
-                MatchActVM, ChatRoomActVM, EventsActVM, MapsActVM)
+                MatchActVM, ChatRoomActVM, EventsActVM,
+                MapsActVM, CreateEventsActVM, ProfileAcVM, EventDetailActVM)
             modules(list)
         }
+    }
+
+    fun getInterest(id: Int): String{
+        interestDataList.data.forEach {
+            if(id == it.id){
+                return it.i18n
+            }
+        }
+        return ""
+    }
+
+    fun getJob(id: Int): String{
+        jobDataList.data.forEach {
+            if(id == it.id){
+                return it.i18n
+            }
+        }
+        return ""
     }
 
     companion object {

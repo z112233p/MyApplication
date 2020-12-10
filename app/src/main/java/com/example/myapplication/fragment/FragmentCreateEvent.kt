@@ -198,9 +198,9 @@ class FragmentCreateEvent : BaseFragment() {
                 dataBody.location_title = ed_event_location.text.toString()
                 dataBody.location_gps_latitude = getLatitude
                 dataBody.location_gps_longitude = getLongitude
-                dataBody.meeting_title = ed_event_location.text.toString()
-                dataBody.metting_gps_latitude = getLatitude
-                dataBody.metting_gps_longitude = getLongitude
+//                dataBody.meeting_title = ed_event_location.text.toString()
+//                dataBody.metting_gps_latitude = getLatitude
+//                dataBody.metting_gps_longitude = getLongitude
                 dataBody.users_limit = ed_event_users_limit.text.toString()
                 dataBody.start_time = ed_event_start_date.text.toString()+" "+ed_event_start_time.text.toString()
                 dataBody.end_time = ed_event_end_date.text.toString()+" "+ed_event_end_time.text.toString()

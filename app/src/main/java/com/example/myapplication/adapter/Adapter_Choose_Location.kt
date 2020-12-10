@@ -100,9 +100,6 @@ class Adapter_Choose_Location() :RecyclerView.Adapter<Adapter_Choose_Location.Vi
         lateinit var llMain: LinearLayout
         lateinit var parent: View
 
-
-
-
     }
 
 }

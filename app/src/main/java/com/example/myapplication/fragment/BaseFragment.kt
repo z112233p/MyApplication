@@ -22,6 +22,8 @@ import java.lang.ref.WeakReference
 
 @Suppress("CAST_NEVER_SUCCEEDS")
 abstract class BaseFragment : Fragment(){
+    protected var isNavigationViewInit = false//记录是否已经初始化过一次视图
+    private var lastView: View? = null//记录上次创建的view
 
     private lateinit var mContext: WeakReference<Context>
     private lateinit var toolbarMain: Toolbar
@@ -50,7 +52,24 @@ abstract class BaseFragment : Fragment(){
         tvTitle = requireActivity().findViewById(R.id.tv_title)
         appBarLayout = (container.parent as ViewGroup).findViewById(R.id.appbar)
         actionBar = (activity as AppCompatActivity).supportActionBar
-        return inflater.inflate(getLayoutId(),container,false)
+
+
+        if (lastView == null) {
+            lastView = inflater.inflate(getLayoutId(),container,false)
+
+//            lastView = super.onCreateView(inflater, container, savedInstanceState)
+        }
+        return lastView
+
+//        return inflater.inflate(getLayoutId(),container,false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if(!isNavigationViewInit){//初始化过视图则不再进行view和data初始化
+            super.onViewCreated(view, savedInstanceState)
+            isNavigationViewInit = true
+            return
+        }
     }
 
     fun getMContext(): WeakReference<Context> {

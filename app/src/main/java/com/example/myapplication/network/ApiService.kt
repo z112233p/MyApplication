@@ -1,6 +1,7 @@
 package com.example.myapplication.network
 
 import android.os.Build
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.ErrorLogApi
@@ -10,15 +11,19 @@ import com.example.myapplication.datamodle.authorization.ResendResponse
 import com.example.myapplication.datamodle.authorization.ResendSMS
 import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse
+import com.example.myapplication.datamodle.chat_room.Token.ChatRoomToken
 import com.example.myapplication.datamodle.dating.DatingSearch
 import com.example.myapplication.datamodle.event.Events
 import com.example.myapplication.datamodle.event.detail.EventDetail
+import com.example.myapplication.datamodle.event.detailv2.EventDetailV2
 import com.example.myapplication.datamodle.event.list.TypeLists
 import com.example.myapplication.datamodle.event.review.EventReview
 import com.example.myapplication.datamodle.event.review_member.ReviewMember
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
+import com.example.myapplication.datamodle.profile.interest.interest
+import com.example.myapplication.datamodle.profile.job.job
 import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
@@ -58,6 +63,10 @@ interface ApiService {
     @POST("me/info")
     fun updateMyInfo(@Body updateMtInfo: UpdateMtInfo?): Observable<UpdateMyInfoResponse>
 
+    @POST("me/info")
+    fun updateMyInfo_v2(@Body body: RequestBody): Observable<UpdateMyInfoResponse>
+
+
     //Update Profile Photo
     @Multipart
     @POST("me/create_photos")
@@ -88,6 +97,11 @@ interface ApiService {
     //Event Detail
     @GET("event/detail/{label}")
     fun getEventDetail(@Path("label") label: String): Observable<EventDetail>
+
+    //Event Detail V2
+    @GET("event/detail/{label}")
+    fun getEventDetailV2(@Path("label") label: String): Observable<EventDetailV2>
+
 
     //Cancel Join Event
     @POST("event/cancel/{id}")
@@ -129,9 +143,17 @@ interface ApiService {
                  @Query("max_age") maxAge: Int,
                  @Query("max_km") maxKm: Int): Observable<DatingSearch>?
 
+    //Job List
+    @GET("list/job")
+    fun getJobList(): Observable<job>
 
+    //Job List
+    @GET("list/interest")
+    fun getInterestList(): Observable<interest>
 
-
+    //Refresh Chat Token
+    @POST("chatroom/getToken")
+    fun getChatRoomToken(): Observable<ChatRoomToken>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

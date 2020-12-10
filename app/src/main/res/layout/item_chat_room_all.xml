@@ -26,6 +26,7 @@
         <ImageView
             android:id="@+id/iv_chat_room_photo"
             android:layout_width="match_parent"
+            android:foreground="@drawable/ripple_gray_color"
             android:layout_height="match_parent"
             tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>

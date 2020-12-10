@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:textSize="19sp"
+            android:textSize="14sp"
             android:gravity="top"
             tools:text="分類名稱"/>
 
@@ -38,7 +38,7 @@
             android:gravity="top"
             android:text="@string/show_all"
             android:textColor="@color/colorWhite"
-            android:textSize="15sp" />
+            android:textSize="11sp" />
 
     </LinearLayout>
 <com.example.myapplication.custom_view.OverScrollLayout

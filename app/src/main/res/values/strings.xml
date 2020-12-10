@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jo Life</string>
+    <string name="app_name">Jo Live</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -37,4 +37,19 @@
     <string name="Accept_after_login">登入後表示接受</string>
     <string name="terms_of_Service">服務條款</string>
     <string name="privacy_policy">隱私權政策</string>
+
+
+    <string name="constellation_aries">牡羊座</string>
+    <string name="constellation_taurus">金牛座</string>
+    <string name="constellation_gemini">雙子座</string>
+    <string name="constellation_cancer">巨蟹座</string>
+    <string name="constellation_leo">獅子座</string>
+    <string name="constellation_virgo">處女座</string>
+    <string name="constellation_libra">天秤座</string>
+    <string name="constellation_scorpio">天蠍座</string>
+    <string name="constellation_sagittarius">射手座</string>
+    <string name="constellation_capricorn">摩羯座</string>
+    <string name="constellation_aquarius">水瓶座</string>
+    <string name="constellation_pisces">雙魚座</string>
+
 </resources>

@@ -38,6 +38,7 @@ object AudioRecordHelper{
     private lateinit var mContext: Context
     private lateinit var fileName: String
     private lateinit var filePath: String
+    private lateinit var localFilePath: String
 
     class CountTread : Thread() {
         @Volatile  var exit: Boolean = false
@@ -196,6 +197,15 @@ object AudioRecordHelper{
         }
         Log.e("Peter","audioPlayer play ININ    $url")
 
+        val file = File(Tools.getLocalSavedAudioPath()+filePath.substring(filePath.lastIndexOf("/") + 1))
+        if(file.exists()){
+
+            localFilePath = Tools.getLocalSavedAudioPath()+filePath.substring(filePath.lastIndexOf("/") + 1)
+            playLocalRecord()
+
+            return
+        }
+
         when {
             url.contains("https://") -> {
                 Log.e("Peter","audioPlayer ININ play0")
@@ -228,11 +238,11 @@ object AudioRecordHelper{
             } else {
                 hadDataFirstSet = true
             }
-            audioPlayer?.setDataSource(filePath)
+            audioPlayer?.setDataSource(localFilePath)
             audioPlayer?.prepare()
             audioPlayer?.setOnPreparedListener(OnPreparedListener { mp ->
-                Log.e("Peter ", "audioPlayer   setOnPreparedListener  开始播放1"+audioPlayer?.duration)
-                Log.e("Peter ", "audioPlayer   setOnPreparedListener  开始播放2"+mp.duration)
+                Log.e("Peter ", "audioPlayer   setOnPreparedListener  LOCAL 开始播放1"+audioPlayer?.duration)
+                Log.e("Peter ", "audioPlayer   setOnPreparedListener LOCAL 开始播放2"+mp.duration)
                 callbacks?.setAudioDuration(mp.duration)
                 mp.start()
             })
@@ -240,7 +250,7 @@ object AudioRecordHelper{
                 Log.e("Peter","audioPlayer in5  reset")
 
             }
-            Log.e("Peter","audioPlayer in6   $filePath")
+            Log.e("Peter","audioPlayer LocalRecord in6   $localFilePath")
 
         } catch (e: IOException){
             e.printStackTrace()
@@ -264,10 +274,13 @@ object AudioRecordHelper{
             val headers: HashMap<String, String> = HashMap()
             headers["X-Auth-Token"] = PrefHelper.chatToken
             headers["X-User-Id"] = PrefHelper.chatId
+            headers["Cache-control"] = "no-cache"
 
 
 //            this.filePath = filepath2
             //设置数据源
+            audioPlayer?.reset()
+
             if(hadDataFirstSet){
                 audioPlayer?.reset()
             } else {

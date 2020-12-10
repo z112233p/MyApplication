@@ -7,6 +7,7 @@ data class User(
     val id: Int,
     val label: String,
     val name: String,
+    val nickname: String,
     val photos: List<Photo>,
     val status: Int
 )

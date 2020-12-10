@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:fillViewport="true"
+    android:paddingTop="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_my_photo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintDimensionRatio="h,345:224"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_my_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_upload_photo"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/ll_my_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/cv_my_photo">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="-1sp"
+            android:text="Geoffrey Stark"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:src="@mipmap/ic_star_dark_yellow"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:src="@mipmap/ic_star_dark_yellow"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:src="@mipmap/ic_star_dark_yellow"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_my_birth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/ll_my_name">
+
+        <TextView
+            android:id="@+id/tv_birth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="2sp"
+            android:text="Taipei City, 32, 獅子座"/>
+        <ImageView
+            android:id="@+id/iv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@mipmap/ic_gender_man"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="end"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="3sp"
+            android:text="65 (Reviews)" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_my_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ll_my_birth">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="4sp"
+                android:text="1,000" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="11sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="5sp"
+                android:text="聚會總數" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="4sp"
+                android:text="320" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="11sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="5sp"
+                android:text="參與社團" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="4sp"
+                android:text="980" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="11sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="5sp"
+                android:text="追蹤" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="4sp"
+                android:text="2,310" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="11sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="5sp"
+                android:text="人氣度" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_follow_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:gravity="center"
+        android:background="@drawable/bg_clickable_btn"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        android:text="Follow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_my_detail"/>
+
+    <TextView
+        android:id="@+id/tv_divider_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorGray70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_follow_btn"/>
+
+    <TextView
+        android:id="@+id/tv_my_interest_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="1sp"
+        android:text="興趣"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_divider_line"/>
+
+    <TextView
+        android:id="@+id/tv_my_interest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        android:text="Live House, Games, Diving, Food, Language"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_interest_title"/>
+
+    <TextView
+        android:id="@+id/tv_my_job_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="1sp"
+        android:text="職業"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_interest"/>
+
+    <TextView
+        android:id="@+id/tv_my_job"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        android:text="kldmla"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_job_title"/>
+
+
+    <TextView
+        android:id="@+id/tv_divider_line_two"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorGray70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_job"/>
+
+
+    <TextView
+        android:id="@+id/tv_my_event"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="1sp"
+        android:text="開團中"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_divider_line_two"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_my_events"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_my_event"/>
+
+    <TextView
+        android:id="@+id/tv_divider_line_three"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorGray70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_my_events"/>
+    <TextView
+        android:id="@+id/tv_about_me"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="1sp"
+        android:text="關於我"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_divider_line_three"/>
+
+    <TextView
+        android:id="@+id/tv_about_me_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="30dp"
+
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        android:text="Friends are life!
+And sometimes when your dear friend feels
+rejected from life and feels completely
+discourages then you must explain him the
+importance and wonderful aspects of life …more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_about_me"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

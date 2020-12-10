@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.example.myapplication.activity.ChatRoomActivity
-import com.example.myapplication.activity.EventsActivity
-import com.example.myapplication.activity.MainActivity
-import com.example.myapplication.activity.MapsActivity
+import android.widget.ImageView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import com.example.myapplication.activity.*
+
 
 object IntentHelper {
 
@@ -28,7 +29,6 @@ object IntentHelper {
 
         ctx.startActivity(intent)
 //        (ctx as Activity).overridePendingTransition(0, 0)
-
     }
 
     fun gotoMapsActivity(ctx: Context){
@@ -39,6 +39,62 @@ object IntentHelper {
 
     fun gotoPersonalActivity(ctx: Context){
         val intent = Intent(ctx, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+
+    fun gotoFullScreenImageActivity(ctx: Context, imgUrl: String, imageView: ImageView){
+        val intent = Intent(ctx, FullScreenImageActivity::class.java)
+        val b = Bundle()
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            ctx as ChatRoomActivity, imageView, ViewCompat.getTransitionName(imageView)!!
+        )
+        b.putString("imgUrl", imgUrl)
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent, options.toBundle())
+    }
+
+    fun gotoCreateEventActivity(ctx: Context){
+        val intent = Intent(ctx, CreateEventActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoCreateEventActivity(ctx: Context, label: String){
+        val intent = Intent(ctx, CreateEventActivity::class.java)
+        val b = Bundle()
+        b.putString("Label", label)
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+
+    fun gotoProfileActivity(ctx: Context){
+        val intent = Intent(ctx, ProfileActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoEventDetailActivity(ctx: Context, label: String){
+        val intent = Intent(ctx, EventDetailActivity::class.java)
+        val b = Bundle()
+        b.putString("Label", label)
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoMyInfoActivity(ctx: Context){
+        val intent = Intent(ctx, MyInfoActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoEditMyInfoActivity(ctx: Context){
+        val intent = Intent(ctx, EditMyInfoActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }

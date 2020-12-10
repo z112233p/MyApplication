@@ -1,7 +1,9 @@
 package com.example.myapplication.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -29,6 +31,8 @@ class FragmentEventsMain : BaseFragment(), View.OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (getMContext().get() as Activity).window.addFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH)
+
         init()
         initObserve()
         eventsActivityVM.getEventsApi(null)
@@ -49,12 +53,10 @@ class FragmentEventsMain : BaseFragment(), View.OnClickListener{
         btn_my_created_event_event.setOnClickListener(this)
     }
 
-
     private fun initObserve(){
         eventsActivityVM.getEvents().observe(viewLifecycleOwner, Observer {
             adapter.setData(it.data.event)
         })
-
     }
 
     override fun onClick(p0: View) {

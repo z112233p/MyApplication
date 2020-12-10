@@ -2,6 +2,7 @@ package com.example.myapplication.tools
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -18,9 +19,26 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
+import com.example.myapplication.`interface`.ImageLoaderModle
 
 
 object ImgHelper {
+    private var callback: ImageLoaderModle = object : ImageLoaderModle{
+        override fun onSuccess() {
+            Log.e("Peter","IMG onSuccess   ")
+        }
+
+        override fun OnError() {
+            Log.e("Peter","IMG OnError   ")
+        }
+
+    }
+
+    fun setImageLoaderModle(callback: ImageLoaderModle){
+        this.callback = callback
+    }
+
+
     //Normal Loads Customized
     fun loadNormalImg(
         ctx: Context?,
@@ -34,7 +52,18 @@ object ImgHelper {
         this.loadImage(ctx, url, addHeader, ivHolder, nullDrawableID, DiskCacheStrategy.ALL, false)
     }
 
-    //Normal Loads Customized
+    fun loadNormalImgNoCache(
+        ctx: Context?,
+        url: String?,
+        ivHolder: ImageView?) {
+        //drawable int = 0 代表空的drawable
+        val nullDrawableID = R.drawable.crop_image_menu_rotate_right
+        val addHeader: Boolean = url?.contains(BuildConfig.CHATROOM_URL, true)!!
+        Log.e("Peter","IMAGECHECK")
+
+        this.loadImage(ctx, url, addHeader, ivHolder, nullDrawableID, DiskCacheStrategy.NONE, true)
+    }
+
     fun loadOriginalImage(
         ctx: Context?,
         url: String?,
@@ -91,6 +120,7 @@ object ImgHelper {
                         dataSource: DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
+                        callback.onSuccess()
                         Log.e("Peter","IMG onResourceReady   ")
                         return false
                     }
@@ -120,7 +150,9 @@ object ImgHelper {
                         dataSource: DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.e("Peter","IMG err   ")
+                        callback.onSuccess()
+
+                        Log.e("Peter","IMG onResourceReady   ")
                         return false
                     }
 
@@ -175,6 +207,8 @@ object ImgHelper {
                         isFirstResource: Boolean
                     ): Boolean {
                         Log.e("Peter","IMG onResourceReady   ")
+                        callback.onSuccess()
+
                         return false
                     }
 
@@ -204,7 +238,9 @@ object ImgHelper {
                         dataSource: DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.e("Peter","IMG err   ")
+                        callback.onSuccess()
+
+                        Log.e("Peter","IMG onResourceReady   ")
                         return false
                     }
 

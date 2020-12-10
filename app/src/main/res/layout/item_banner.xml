@@ -2,7 +2,7 @@
 <ImageView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="136dp"
+    android:layout_height="130dp"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/iv_banner_img"
     android:scaleType="fitXY">

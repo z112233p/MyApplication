@@ -5,8 +5,8 @@
 
 
     <size
-        android:width="173dp"
-        android:height="48dp" />
+        android:width="10dp"
+        android:height="35dp" />
     <corners
         android:radius="24dp"/>
 

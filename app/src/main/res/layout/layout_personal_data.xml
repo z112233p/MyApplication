@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_marginTop="14dp"
+        
         app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
         <androidx.cardview.widget.CardView
@@ -153,27 +154,35 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/fl_option_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/ll_personal_sup">
 
         <include layout="@layout/item_anim_view_btn"
             android:id="@+id/tv_see_detail"
-            android:layout_gravity="center|start"
+            android:layout_gravity="center"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
+            android:layout_width="0dp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
         <include layout="@layout/item_anim_view_btn"
             android:id="@+id/tv_event_status"
-            android:layout_gravity="center|end"
+            android:layout_weight="4"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="0dp"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/fl_option_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -182,15 +191,23 @@
 
         <include layout="@layout/item_anim_view_btn"
             android:id="@+id/tv_score"
-            android:layout_gravity="center|start"
+            android:layout_gravity="center"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
+            android:layout_width="0dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
         <include layout="@layout/item_anim_view_btn"
             android:id="@+id/tv_report"
-            android:layout_gravity="center|end"
+            android:layout_gravity="center"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="0dp" />
 
-    </FrameLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

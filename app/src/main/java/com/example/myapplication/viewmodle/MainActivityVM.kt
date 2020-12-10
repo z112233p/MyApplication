@@ -35,12 +35,12 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val registerResponse : SingleLiveEvent<RegisterResponse> = SingleLiveEvent<RegisterResponse>()
     private val updateMyInfoResponse: SingleLiveEvent<UpdateMyInfoResponse> = SingleLiveEvent<UpdateMyInfoResponse>()
     private val resendSMSCheck: SingleLiveEvent<Boolean> = SingleLiveEvent<Boolean>()
-
     private val myInfoData: MutableLiveData<MyInfoData> = MutableLiveData<MyInfoData>()
     private val myPhoto: MutableLiveData<List<MyInfoPhoto>> = MutableLiveData<List<MyInfoPhoto>>()
     private val deleteMyPhoto: SingleLiveEvent<DeleteMyPhotoResponse> = SingleLiveEvent<DeleteMyPhotoResponse>()
     private val chatRoomList: MutableLiveData<ChatRoomList> = MutableLiveData<ChatRoomList>()
     private val chatHistory: MutableLiveData<String> = MutableLiveData<String>()
+    private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
 
     //get
@@ -80,18 +80,25 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         return chatHistory
     }
 
+    fun getProgressStatus(): LiveData<Boolean> {
+        return progressStatus
+    }
 
     //Api Function
     fun resendSMS(resendSMS: ResendSMS){
         val resendSMSObserver: Observer<ResendResponse> = object : Observer<ResendResponse>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter222", "onError${e.message}")
 
             }
@@ -108,13 +115,18 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun register(register: Register){
         val registerObserver: Observer<RegisterResponse> = object : Observer<RegisterResponse>{
             override fun onComplete() {
+                progressStatus.value = true
+
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+                registerResponse.value = null
                 Log.e("Peter222", "onError  register   ${e.message}")
 
             }
@@ -132,13 +144,17 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
         val loginObserver: Observer<LoginResponse> = object : Observer<LoginResponse>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peterlogin", "onError${e.localizedMessage}")
                 val data = LoginResponse()
                 loginResponse.value = data
@@ -156,9 +172,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun getMyInfo(){
         val myInfoObserver: Observer<MyInfo> = object  : Observer<MyInfo>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
@@ -168,6 +186,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
             }
         }
         ApiMethods.getMyInfo(myInfoObserver)
@@ -180,9 +200,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun updateMyInfo(updateMtInfo: UpdateMtInfo){
         val myInfoObserver: Observer<UpdateMyInfoResponse> = object  : Observer<UpdateMyInfoResponse>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
@@ -192,6 +214,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter2", "updateMyInfo  onError:  "+e.message)
 
             }
@@ -206,9 +230,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         val imageMessageObserve: Observer<UpdatePhotoResponse> = object :Observer<UpdatePhotoResponse>{
             override fun onComplete() {
                 Log.e("Peter", "postImageMessage onComplete")
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
             }
 
             override fun onNext(t: UpdatePhotoResponse) {
@@ -218,6 +244,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
 
                 Log.e("Peter", "updateMyPhoto onError:  $e")
             }
@@ -229,9 +256,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun deleteMyInfo(dataBody: DeleteMyPhoto){
         val deleteMyPhotoObserver: Observer<DeleteMyPhotoResponse> = object  : Observer<DeleteMyPhotoResponse>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
                 disContainer.add(d)
             }
 
@@ -241,6 +270,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter2", "deleteMyInfo  onError:  "+e.message)
 
             }
@@ -251,12 +282,16 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun getChatRoomList(){
         val chatRoomList: Observer<ChatRoomList> = object : Observer<ChatRoomList>{
             override fun onComplete() {
+                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
             }
 
             override fun onError(e: Throwable) {
+                progressStatus.value = true
+
                 Log.e("Peter2", "chatRoomList onError:  $e")
 
             }
