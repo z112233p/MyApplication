@@ -24,7 +24,7 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(Id: String)
+        fun onItemClick(Id: String, name: String)
     }
 
     fun setType(typeId: Int){
@@ -73,7 +73,7 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
 
 
             holder.itemView.setOnClickListener {
-            mOnItemClickListener?.onItemClick(data.id.toString())
+            mOnItemClickListener?.onItemClick(data.id.toString(), data.i18n)
             oldHighLight = currentPosition
             currentPosition = position
             notifyItemChanged(oldHighLight)

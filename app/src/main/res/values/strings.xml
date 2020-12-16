@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jo Live</string>
+    <string name="app_name">JoLive</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -51,5 +51,28 @@
     <string name="constellation_capricorn">摩羯座</string>
     <string name="constellation_aquarius">水瓶座</string>
     <string name="constellation_pisces">雙魚座</string>
+
+    <string name="notice_push">推播通知</string>
+    <string name="ban_list">封鎖名單</string>
+    <string name="hide_age">隱藏年紀</string>
+    <string name="change_language">切換語言</string>
+
+    <string name="service_provision">服務條款</string>
+    <string name="official_website">前往官方網站</string>
+    <string name="facebook_website">前往Facebook粉絲專頁</string>
+
+
+
+
+
+
+    <string name="multi_event">同時多開活動</string>
+    <string name="chocolate_center">黑糖中心</string>
+    <string name="who_watch_me">%d看過我</string>
+    <string name="function">功能</string>
+    <string name="support">支援</string>
+    <string name="buy_back">回復購買</string>
+    <string name="logout">登出</string>
+
 
 </resources>

@@ -31,6 +31,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    fun setSubTitle(subtitle: String){
+        tv_subtitle.text = subtitle
+    }
 
     fun setStepOne(){
         ll_step.weightSum = 3F

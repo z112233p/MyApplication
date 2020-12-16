@@ -35,11 +35,11 @@ class FragmentEventsMain : BaseFragment(), View.OnClickListener{
 
         init()
         initObserve()
-        eventsActivityVM.getEventsApi(null)
+        eventsActivityVM.getEventsApi(null, null)
     }
 
     private fun init() {
-        adapter = Adapter_Events(getMContext().get(), 3)
+        adapter = Adapter_Events(getMContext().get(), 3, true)
         rv_events.layoutManager = GridLayoutManager(getMContext().get(), 2, RecyclerView.VERTICAL, false)
         rv_events.adapter = adapter
         adapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
@@ -55,7 +55,7 @@ class FragmentEventsMain : BaseFragment(), View.OnClickListener{
 
     private fun initObserve(){
         eventsActivityVM.getEvents().observe(viewLifecycleOwner, Observer {
-            adapter.setData(it.data.event)
+//            adapter.setData(it.data.event)
         })
     }
 

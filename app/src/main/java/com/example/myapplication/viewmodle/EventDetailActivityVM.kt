@@ -2,33 +2,19 @@ package com.example.myapplication.viewmodle
 
 import android.app.Application
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.datamodle.dating.DatingSearchData
-import com.example.myapplication.datamodle.event.Events
-import com.example.myapplication.datamodle.event.detail.EventDetail
 import com.example.myapplication.datamodle.event.detailv2.EventDetailV2
 import com.example.myapplication.datamodle.event.review.EventReview
 import com.example.myapplication.datamodle.event.review_member.ReviewMember
-import com.example.myapplication.datamodle.profile.MyInfo
-import com.example.myapplication.datamodle.profile.MyInfoData
-import com.example.myapplication.datamodle.profile.MyInfoPhoto
-import com.example.myapplication.datamodle.profile.interest.interest
-import com.example.myapplication.datamodle.profile.job.job
-import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
-import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
-import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.example.myapplication.network.ApiMethods
 import com.example.myapplication.tools.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.json.JSONObject
-import java.io.File
 
 class EventDetailActivityVM (application: Application) : AndroidViewModel(application){
     private val mContent: Context? = application.applicationContext

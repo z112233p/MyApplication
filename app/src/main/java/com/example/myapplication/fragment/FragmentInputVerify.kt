@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -155,8 +156,9 @@ class FragmentInputVerify : BaseFragment() {
             PrefHelper.setChatToken(it.data.chat_auth_token)
             PrefHelper.setChatId(it.data.chat_user_id)
             PrefHelper.setChatLable(it.data.label)
-//            findNavController().navigate(R.id.action_FragmentInputVerify_to_SecondFragment)
-            getMContext().get()?.let { it1 -> IntentHelper.gotoProfileActivity(it1) }
+
+            mainActVM.getMyInfo()
+
         })
 
         mainActVM.getResendSMSCheck().observe(viewLifecycleOwner, Observer {
@@ -165,6 +167,19 @@ class FragmentInputVerify : BaseFragment() {
                 Tools.toast(getMContext().get(), "驗證碼發送成功")
             } else {
                 Tools.toast(getMContext().get(), "驗證碼發送失敗")
+            }
+        })
+
+        mainActVM.getMyInfoData().observe(viewLifecycleOwner, Observer {
+            (getMContext().get() as Activity).finish()
+            if(TextUtils.isEmpty(it.user.nickname)){
+                getMContext().get()?.let { it1 -> IntentHelper.gotoProfileActivity(it1) }
+
+            } else {
+                PrefHelper.setChatName(it.user.nickname)
+
+                getMContext().get()?.let { it1 -> IntentHelper.gotoEventActivity(it1) }
+
             }
         })
     }

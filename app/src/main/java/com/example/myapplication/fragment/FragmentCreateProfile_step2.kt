@@ -45,9 +45,9 @@ class FragmentCreateProfile_step2 : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle("Hello.")
+        setTitle("哈囉")
+        act.setSubTitle("請選擇您目前的職業")
         (getMContext().get() as ProfileActivity).setStepTwo()
-
     }
 
 

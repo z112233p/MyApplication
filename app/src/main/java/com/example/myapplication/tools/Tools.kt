@@ -68,14 +68,20 @@ object Tools {
         PrefHelper.setChatToken("")
         PrefHelper.setChatId("")
         PrefHelper.setChatLable("")
+        PrefHelper.setChatName("")
+        PrefHelper.setUserPhone("")
     }
 
     //    public static boolean localBigHeadExist() {
     //        File file = new File(getLocalBigHeadImagePath() );
     //        return file.exists();
     //    }
-    fun getLocalSavedImagePath(): String? {
+    fun getLocalSavedImagePath1(): String? {
         return Environment.getExternalStorageDirectory().path + File.separatorChar + Environment.DIRECTORY_DCIM + File.separatorChar + "crop.png"
+    }
+
+    fun getLocalSavedImagePath(): String? {
+        return MyApp.get()?.externalCacheDir.toString()+ "crop.png"
     }
     fun getLocalSavedAudioPath(): String? {
         return Environment.getExternalStorageDirectory().path + File.separatorChar + Environment.DIRECTORY_DCIM + File.separatorChar

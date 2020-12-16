@@ -11,6 +11,8 @@ import com.example.myapplication.tools.SingleLiveEvent
 import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse
 import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList
+import com.example.myapplication.datamodle.notice.notice_data.Notice
+import com.example.myapplication.datamodle.notice.template.NoticeTemplate
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.MyInfoData
 import com.example.myapplication.datamodle.profile.MyInfoPhoto
@@ -40,6 +42,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val deleteMyPhoto: SingleLiveEvent<DeleteMyPhotoResponse> = SingleLiveEvent<DeleteMyPhotoResponse>()
     private val chatRoomList: MutableLiveData<ChatRoomList> = MutableLiveData<ChatRoomList>()
     private val chatHistory: MutableLiveData<String> = MutableLiveData<String>()
+    private val noticeTemplate: MutableLiveData<NoticeTemplate> = MutableLiveData<NoticeTemplate>()
+    private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
+
+
+
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
 
@@ -78,6 +85,14 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
     fun getChatHistoryData(): LiveData<String> {
         return chatHistory
+    }
+
+    fun getNoticeTemplateData(): LiveData<NoticeTemplate> {
+        return noticeTemplate
+    }
+
+    fun getNoticeData(): LiveData<Notice> {
+        return notice
     }
 
     fun getProgressStatus(): LiveData<Boolean> {
@@ -304,4 +319,53 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         ApiMethods.getChatRoomList(chatRoomList)
     }
 
+    fun getNoticeTemplate(){
+        val noticeTemplateObserver: Observer<NoticeTemplate> = object : Observer<NoticeTemplate>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "chatRoomList onError:  $e")
+
+            }
+
+            override fun onNext(t: NoticeTemplate) {
+                noticeTemplate.value = t
+            }
+
+        }
+        ApiMethods.getNoticeTemplate(noticeTemplateObserver)
+    }
+
+    fun getNotice(){
+        val noticeObserver: Observer<Notice> = object : Observer<Notice>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "chatRoomList onError:  $e")
+
+            }
+
+            override fun onNext(t: Notice) {
+                notice.value = t
+            }
+
+        }
+        ApiMethods.getNotice(noticeObserver)
+    }
 }

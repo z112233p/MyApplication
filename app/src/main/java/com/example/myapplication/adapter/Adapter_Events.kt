@@ -20,7 +20,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
-import com.example.myapplication.datamodle.event.Event
+import com.example.myapplication.datamodle.event.index.EventIndexData
 import com.example.myapplication.tools.ImgHelper
 
 
@@ -29,14 +29,17 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TYPE_NORMAL = 1
     val TYPE_GRADUAL = 2
     val TYPE_FULL_IMG = 3
+    val TYPE_SEE_MORE = 4
 
-    private lateinit var dataList: MutableList<Event>
+    private lateinit var dataList: MutableList<EventIndexData>
     private lateinit var mContext: Context
+    private var isMainPage: Boolean = false
     private var holderType: Int = TYPE_NORMAL
     private var mOnItemClickListener: OnItemClickListener? = null
 
 
-    constructor(context: Context?, holderType: Int) : this(){
+    constructor(context: Context?, holderType: Int, isMainPage: Boolean) : this(){
+        this.isMainPage = isMainPage
         dataList = ArrayList()
         this.holderType = holderType
         if (context != null) {
@@ -52,7 +55,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mOnItemClickListener = listener
     }
 
-    fun setData(dealData: List<Event>?) {
+    fun setData(dealData: List<EventIndexData>?) {
         if (dealData == null || dealData.isEmpty()) {
             return
         }
@@ -69,6 +72,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val cell :View = when(viewType){
             TYPE_FULL_IMG -> LayoutInflater.from(mContext).inflate(R.layout.item_hot_event, parent, false)
             TYPE_NORMAL,TYPE_GRADUAL -> LayoutInflater.from(mContext).inflate(R.layout.item_event_normal, parent, false)
+            TYPE_SEE_MORE -> LayoutInflater.from(mContext).inflate(R.layout.item_event_see_more, parent, false)
             else -> LayoutInflater.from(mContext).inflate(R.layout.item_hot_event, parent, false)
         }
         val viewHolder = ViewHolder(cell)
@@ -82,8 +86,15 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
-
+        return if(isMainPage){
+            if(dataList.size <= 10){
+                dataList.size
+            } else {
+                10
+            }
+        } else {
+            dataList.size
+        }
     }
 
     @SuppressLint("WrongConstant")

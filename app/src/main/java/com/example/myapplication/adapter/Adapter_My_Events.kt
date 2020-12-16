@@ -2,28 +2,18 @@ package com.example.myapplication.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.palette.graphics.Palette
-import androidx.palette.graphics.Palette.Swatch
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
-import com.example.myapplication.datamodle.event.Event
+import com.example.myapplication.datamodle.event.index.EventIndexData
 import com.example.myapplication.tools.ImgHelper
 import com.example.myapplication.tools.PrefHelper
-import kotlinx.android.synthetic.main.fragment_my_info_detail.*
 
 
 @Suppress("UNREACHABLE_CODE")
@@ -31,7 +21,7 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TYPE_GOING = 1
     val TYPE_HISTORY = 2
 
-    private lateinit var dataList: MutableList<Event>
+    private lateinit var dataList: MutableList<EventIndexData>
     private lateinit var mContext: Context
     private var holderType: Int = TYPE_GOING
     private var mOnItemClickListener: OnItemClickListener? = null
@@ -53,7 +43,7 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mOnItemClickListener = listener
     }
 
-    fun setData(dealData: List<Event>?) {
+    fun setData(dealData: List<EventIndexData>?) {
         if (dealData == null || dealData.isEmpty()) {
             return
         }

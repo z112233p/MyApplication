@@ -86,7 +86,8 @@ class FragmentCreateProfile_step3 : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle("Hello.")
+        setTitle("哈囉")
+        act.setSubTitle("請上傳一張照片，建立基本資訊")
         (getMContext().get() as ProfileActivity).setStepThree()
 
     }

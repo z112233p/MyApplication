@@ -85,6 +85,22 @@ class FragmentMyinfo_event : BaseFragment() {
         myEventAdapter = Adapter_My_Events(getMContext().get(), 1)
         historyEventAdapter= Adapter_My_Events(getMContext().get(), 2)
 
+        myEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
+            override fun onItemClick(view: View?, position: Int, label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label)
+                }
+            }
+        })
+
+        historyEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
+            override fun onItemClick(view: View?, position: Int, label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label)
+                }
+            }
+        })
+
         val layoutManager =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.VERTICAL, false)
         rv_events_going.layoutManager = layoutManager
         rv_events_going.adapter = myEventAdapter
@@ -134,18 +150,16 @@ class FragmentMyinfo_event : BaseFragment() {
 //    }
 
     private fun initObserve(){
-
-
-        profileActivityVM.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            myEventAdapter.setData(it.data.event)
-            historyEventAdapter.setData(it.data.event)
-
+        profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            myEventAdapter.setData(it.data.processing)
+            historyEventAdapter.setData(it.data.processing)
         })
     }
 
     private fun callApis(){
 //        profileActivityVM.getMyInfo()
-        profileActivityVM.getEventsApi(PrefHelper.chatLable)
+        profileActivityVM.getEventsApi(PrefHelper.chatLable, null)
+        profileActivityVM.getMyEvents()
     }
 
 }

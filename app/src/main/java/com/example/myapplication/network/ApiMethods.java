@@ -20,12 +20,16 @@ import com.example.myapplication.datamodle.chat.text_message.TextMessage;
 import com.example.myapplication.datamodle.chat.text_message.response.TextResponse;
 import com.example.myapplication.datamodle.chat_room.Token.ChatRoomToken;
 import com.example.myapplication.datamodle.dating.DatingSearch;
-import com.example.myapplication.datamodle.event.Events;
 import com.example.myapplication.datamodle.event.detail.EventDetail;
 import com.example.myapplication.datamodle.event.detailv2.EventDetailV2;
+import com.example.myapplication.datamodle.event.event_list.EventList;
+import com.example.myapplication.datamodle.event.index.EventIndex;
 import com.example.myapplication.datamodle.event.list.TypeLists;
+import com.example.myapplication.datamodle.event.my_events.MyEvents;
 import com.example.myapplication.datamodle.event.review.EventReview;
 import com.example.myapplication.datamodle.event.review_member.ReviewMember;
+import com.example.myapplication.datamodle.notice.notice_data.Notice;
+import com.example.myapplication.datamodle.notice.template.NoticeTemplate;
 import com.example.myapplication.datamodle.profile.MyInfo;
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto;
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse;
@@ -109,9 +113,9 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).deleteMyPhoto(deleteMyPhoto)), pbObserver);
     }
 
-    public static void getEvents(Observer<Events> pbObserver, String label){
+    public static void getEvents(Observer< EventList > pbObserver, String label, String eventsCategorysId){
         String labelValue = TextUtils.isEmpty(label)? null: label;
-        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEvents(1,10, 1,labelValue)), pbObserver);
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEvents(1, 99, 1,labelValue, eventsCategorysId)), pbObserver);
     }
 
     public static void joinEvent(Observer<String> pbObserver, String id){
@@ -248,5 +252,19 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getChatRoomToken()), pbObserver);
     }
 
+    public static void getNoticeTemplate(Observer< NoticeTemplate > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getNoticeTemplate()), pbObserver);
+    }
 
+    public static void getNotice(Observer< Notice > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getNotice()), pbObserver);
+    }
+
+    public static void getEventIndex(Observer< EventIndex > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventIndex()), pbObserver);
+    }
+    //getMyEvents
+    public static void getMyEvents(Observer< MyEvents > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getMyEvents()), pbObserver);
+    }
 }

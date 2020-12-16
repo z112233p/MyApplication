@@ -5,21 +5,18 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.datamodle.chat.chatroom_list.ChatRoomList
-import com.example.myapplication.datamodle.event.Events
 import com.example.myapplication.datamodle.event.detail.EventDetail
+import com.example.myapplication.datamodle.event.event_list.EventList
 import com.example.myapplication.datamodle.event.list.TypeLists
 import com.example.myapplication.datamodle.event.review.EventReview
 import com.example.myapplication.datamodle.event.review_member.ReviewMember
 import com.example.myapplication.network.ApiMethods
 import com.example.myapplication.tools.SingleLiveEvent
-import com.example.myapplication.tools.Tools
-import com.google.gson.JsonObject
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.json.JSONObject
@@ -28,7 +25,7 @@ import java.io.File
 class CreateEventsActivityVM (application: Application) : AndroidViewModel(application){
     private val mContent: Context? = application.applicationContext
 
-    private val events: MutableLiveData<Events> = MutableLiveData<Events>()
+    private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
     private val eventDetail: MutableLiveData<EventDetail> = MutableLiveData<EventDetail>()
     private val eventReview: MutableLiveData<EventReview> = MutableLiveData<EventReview>()
     private val paymentMethod: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
@@ -41,7 +38,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
 
-    fun getEvents(): LiveData<Events> {
+    fun getEvents(): LiveData<EventList> {
         return events
     }
     fun getEventDetail(): LiveData<EventDetail> {
@@ -77,8 +74,8 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
         return progressStatus
     }
 
-    fun getEventsApi(label: String?){
-        val getEventsObserver = object : Observer<Events>{
+    fun getEventsApi(label: String?, eventsCategorysId: String?){
+        val getEventsObserver = object : Observer<EventList>{
             override fun onComplete() {
                 progressStatus.value = true
 
@@ -88,7 +85,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
                 progressStatus.value = false
             }
 
-            override fun onNext(t: Events) {
+            override fun onNext(t: EventList) {
                 events.value = t
                 Log.e("Peter","getEventsApi  onNext    $t")
             }
@@ -99,7 +96,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
             }
 
         }
-        ApiMethods.getEvents(getEventsObserver,label)
+        ApiMethods.getEvents(getEventsObserver,label, eventsCategorysId)
     }
 
     fun getEventDetail(label: String?){

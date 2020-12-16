@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_notice"
+    app:startDestination="@id/FragmentNotice">
+
+    <fragment
+        android:id="@+id/FragmentNotice"
+        android:name="com.example.myapplication.fragment.FragmentNotice"
+        tools:layout="@layout/fragment_notice">
+
+    </fragment>
+
+
+</navigation>

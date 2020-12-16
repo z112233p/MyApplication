@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.datamodle.event.Events
 import com.example.myapplication.network.ApiMethods
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

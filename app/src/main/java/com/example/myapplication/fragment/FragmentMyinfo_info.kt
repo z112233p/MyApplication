@@ -31,6 +31,7 @@ import com.example.myapplication.activity.CreateEventActivity
 import com.example.myapplication.activity.ProfileActivity
 import com.example.myapplication.adapter.Adapter_Events
 import com.example.myapplication.custom_view.ItemJobView
+import com.example.myapplication.dialog.DialogIGLogin
 import com.example.myapplication.tools.ImgHelper
 import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.tools.PrefHelper
@@ -86,7 +87,10 @@ class FragmentMyinfo_info : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private fun init(){
-        myEventAdapter = Adapter_Events(getMContext().get(), 3)
+        tv_follow_btn.setOnClickListener(onClick)
+
+
+        myEventAdapter = Adapter_Events(getMContext().get(), 3, false)
         val layoutManager =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.HORIZONTAL, false)
         rv_my_events.layoutManager = layoutManager
         rv_my_events.adapter = myEventAdapter
@@ -114,6 +118,10 @@ class FragmentMyinfo_info : BaseFragment() {
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
         when (it.id) {
+            R.id.tv_follow_btn -> {
+                val dialog = getMContext().get()?.let { it1 -> DialogIGLogin(it1) }
+                dialog?.show()
+            }
 
         }
     }
@@ -147,14 +155,15 @@ class FragmentMyinfo_info : BaseFragment() {
             tv_about_me_data.text = it.user.about
         })
 
-        profileActivityVM.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            myEventAdapter.setData(it.data.event)
+        profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            myEventAdapter.setData(it.data.processing)
         })
     }
 
     private fun callApis(){
         profileActivityVM.getMyInfo()
-        profileActivityVM.getEventsApi(PrefHelper.chatLable)
+        profileActivityVM.getEventsApi(PrefHelper.chatLable, null)
+        profileActivityVM.getMyEvents()
     }
 
 }

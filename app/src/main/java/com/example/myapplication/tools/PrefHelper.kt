@@ -14,6 +14,9 @@ object PrefHelper {
     private const val CHAT_LABLE = "chat_lable"
     private const val CHAT_Name = "chat_name"
     private const val CHAT_ROOM_ID = "chat_room_id"
+    private const val USER_PHONE = "user_iduser_phone"
+
+
     private var _preferences: SharedPreferences? = null
     val instance: SharedPreferences
         get() {
@@ -38,6 +41,14 @@ object PrefHelper {
 
     val userID: String?
         get() = instance!!.getString(USER_ID, "")
+
+    //User Phone
+    fun setUserPhone(session: String) {
+        savePref(USER_PHONE, session)
+    }
+
+    val userPhone: String?
+        get() = instance!!.getString(USER_PHONE, "")
 
     //Chat Token
     fun setChatToken(value: String) {

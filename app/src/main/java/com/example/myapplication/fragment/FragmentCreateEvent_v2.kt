@@ -129,7 +129,7 @@ class FragmentCreateEvent_v2 : BaseFragment() {
 
         eventTypeAdapter = Adapter_Event_Type(getMContext().get())
         eventTypeAdapter.setOnItemClickListener(object :Adapter_Event_Type.OnItemClickListener{
-            override fun onItemClick(Id: String) {
+            override fun onItemClick(Id: String, name: String) {
                 eventType = Id
                 hasType = true
                 checkNextStep()

@@ -64,6 +64,8 @@ class EventsActivity : AppCompatActivity(){
                     true
                 }
                 R.id.navigation_notifications -> {
+                    IntentHelper.gotoNoticeActivity(this)
+
                     true
                 }
                 R.id.navigation_personal -> {

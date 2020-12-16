@@ -51,7 +51,8 @@ class FragmentCreateProfile_step1 : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle("Hello.")
+        setTitle("哈囉")
+        act.setSubTitle("請選擇您近期喜歡或參與的興趣")
         (getMContext().get() as ProfileActivity).setStepOne()
         act.dataBody.keys.forEach {
             if(it.contains("interests[")){
@@ -113,6 +114,19 @@ class FragmentCreateProfile_step1 : BaseFragment() {
                             }
                             Log.e("Peter", "nextStepCheck $nextStepCheck  ")
 
+                            if(nextStepCheck == 0){
+                                nextStepCheck++
+                            } else if(nextStepCheck == 1 && textView.getIsSelected() == true){
+                                nextStepCheck = 0
+
+                            }
+
+                            if(nextStepCheck >= 8 ){
+                                textView.setClickAble(false)
+                            } else {
+                                textView.setClickAble(true)
+                            }
+
                             if(nextStepCheck > 0){
                                 tv_next_step.isClickable = true
                                 tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)
@@ -121,8 +135,6 @@ class FragmentCreateProfile_step1 : BaseFragment() {
                                 tv_next_step.isClickable = false
                                 tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_unclickable_btn)
                                 tv_next_step.setTextColor(getMContext().get()!!.resources.getColor(R.color.colorGray70))
-
-
 
                             }
                         }

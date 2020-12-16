@@ -8,8 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.datamodle.dating.DatingSearchData
-import com.example.myapplication.datamodle.event.Events
+import com.example.myapplication.datamodle.event.event_list.EventList
+import com.example.myapplication.datamodle.event.my_events.MyEvents
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.MyInfoData
 import com.example.myapplication.datamodle.profile.MyInfoPhoto
@@ -31,20 +31,25 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
 
 
     //set
-    private val events: MutableLiveData<Events> = MutableLiveData<Events>()
+    private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
+    private val myEvents: MutableLiveData<MyEvents> = MutableLiveData<MyEvents>()
+
     private val jobList: MutableLiveData<job> = MutableLiveData<job>()
     private val interestList: MutableLiveData<interest> = MutableLiveData<interest>()
     private val myPhoto: MutableLiveData<List<MyInfoPhoto>> = MutableLiveData<List<MyInfoPhoto>>()
     private val myInfoData: MutableLiveData<MyInfoData> = MutableLiveData<MyInfoData>()
     private val updateMyInfoResponse: SingleLiveEvent<UpdateMyInfoResponse> = SingleLiveEvent<UpdateMyInfoResponse>()
 
+
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
     //get
-    fun getEvents(): LiveData<Events> {
+    fun getEvents(): LiveData<EventList> {
         return events
     }
-
+    fun getMyEventsData(): LiveData<MyEvents> {
+        return myEvents
+    }
     fun getJbListData(): LiveData<job> {
         return jobList
     }
@@ -65,8 +70,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     }
 
 
-    fun getEventsApi(label: String?){
-        val getEventsObserver = object : Observer<Events>{
+    fun getEventsApi(label: String?, eventsCategorysId: String?){
+        val getEventsObserver = object : Observer<EventList>{
             override fun onComplete() {
                 progressStatus.value = true
             }
@@ -75,9 +80,12 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
                 progressStatus.value = false
             }
 
-            override fun onNext(t: Events) {
+            override fun onNext(t: EventList) {
                 events.value = t
                 Log.e("Peter","getEventsApi  onNext    $t")
+                Log.e("Peter","getEventsApi  onNext   size ${t.data.event.size}")
+                Log.e("Peter","getEventsApi  onNext   PARAMS  $label  $eventsCategorysId")
+
             }
 
             override fun onError(e: Throwable) {
@@ -87,7 +95,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
 
         }
-        ApiMethods.getEvents(getEventsObserver,label)
+        ApiMethods.getEvents(getEventsObserver,label, eventsCategorysId)
     }
 
 
@@ -247,6 +255,32 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
         }
         ApiMethods.updateMyInfo(myInfoObserver, updateMtInfo)
+    }
+
+    fun getMyEvents(){
+        val myEventsObserver: Observer<MyEvents> = object  : Observer<MyEvents>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: MyEvents) {
+                myEvents.value = t
+                Log.e("Peter2", "updateMyInfo  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "updateMyInfo  onError:  "+e.message)
+
+            }
+        }
+        ApiMethods.getMyEvents(myEventsObserver)
     }
 
 }

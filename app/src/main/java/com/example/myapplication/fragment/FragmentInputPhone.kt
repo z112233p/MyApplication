@@ -70,6 +70,7 @@ class FragmentInputPhone : BaseFragment() {
 
     private fun initObserve(){
         mainActVM.getRegisterResponse().observe(viewLifecycleOwner, Observer {
+            PrefHelper.setUserPhone(ed_phone_number.text.toString())
             val bundle = bundleOf(Config.INPUT_NUMBER to ed_phone_number.text)
             findNavController().navigate(R.id.action_FragmentInputPhone_to_FragmentInputVerify, bundle)
         })

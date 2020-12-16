@@ -2,6 +2,8 @@ package com.example.myapplication.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -42,7 +44,7 @@ class FragmentLoginMain : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        setTitle("請輸入手機號碼")
+
         nowPicPos %= imgResSize
         iv_peter_test.setImageResource(imgRes[nowPicPos])
         nowPicPos++
@@ -52,6 +54,12 @@ class FragmentLoginMain : BaseFragment() {
         fadeOutAndHideImage(iv_peter_test)
 //        peter_test2.alpha = 0.2F
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setTitle("")
+        setToolbarTitle("")
     }
 
     override fun onDestroyView() {
@@ -65,7 +73,7 @@ class FragmentLoginMain : BaseFragment() {
     private fun init(){
         hideToolBar()
         hideTitle()
-        tv_login.setOnClickListener(onClick)
+//        tv_login.setOnClickListener(onClick)
         btn_login_phone.run {
             setOnClickListener(onClick)
             tv_btn_text.text = "手機號碼註冊"
@@ -88,6 +96,9 @@ class FragmentLoginMain : BaseFragment() {
             iv_btn_img.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_apple))
         }
 
+        tv_terms_of_Service.setOnClickListener(onClick)
+        tv_privacy_policy.setOnClickListener(onClick)
+
     }
 
     @SuppressLint("WrongConstant", "ShowToast")
@@ -96,6 +107,16 @@ class FragmentLoginMain : BaseFragment() {
         when (it.id){
             R.id.btn_login_phone,R.id.tv_login -> {
                 findNavController().navigate(R.id.action_FragmentLoginMain_to_FragmentInputPhone)
+            }
+            R.id.tv_terms_of_Service -> {
+                val myIntent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://jolive.illa.me/zhTW/others/userterms"))
+                this.startActivity(myIntent)
+            }
+            R.id.tv_privacy_policy -> {
+                val myIntent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://jolive.illa.me/zhTW/others/policy"))
+                this.startActivity(myIntent)
             }
 
         }

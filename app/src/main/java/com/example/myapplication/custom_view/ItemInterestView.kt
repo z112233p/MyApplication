@@ -16,8 +16,11 @@ import kotlinx.android.synthetic.main.item_profile_item.view.*
 class ItemInterestView(context: Context?) : ConstraintLayout(context) {
 
     private var isSelected: Boolean? = false
+    private var clickAble: Boolean = true
+
     private var selectedColor = "#ffffff"
     private var id: Int? = 0
+
     private lateinit var onClick : ItemInterestView.onItemClick
 
     interface onItemClick{
@@ -27,6 +30,11 @@ class ItemInterestView(context: Context?) : ConstraintLayout(context) {
     init {
         View.inflate(context, R.layout.item_profile_item, this)
         this.setOnClickListener {
+            onClick.onClick()
+
+//            if(!clickAble){
+//                return@setOnClickListener
+//            }
 
             Log.e("Peter", "MenuItemLayoutQ setOnClickListener:  ")
             if (context != null) {
@@ -36,6 +44,9 @@ class ItemInterestView(context: Context?) : ConstraintLayout(context) {
                     isSelected = false
 
                 } else {
+                    if(!clickAble){
+                        return@setOnClickListener
+                    }
                     tv_item_name.background = context.resources.getDrawable(R.drawable.bg_profile_item_selected)
                     val gd = GradientDrawable(
                         GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(Color.parseColor("#"+selectedColor), Color.parseColor("#d18412"))
@@ -45,10 +56,13 @@ class ItemInterestView(context: Context?) : ConstraintLayout(context) {
 
                     isSelected = true
                 }
-                onClick.onClick()
 
             }
         }
+    }
+
+    fun setClickAble(param: Boolean){
+        clickAble = param
     }
 
     fun setItemOnclick(onClick : ItemInterestView.onItemClick){
@@ -90,4 +104,7 @@ class ItemInterestView(context: Context?) : ConstraintLayout(context) {
         return isSelected
     }
 
+    fun setIsSelected(param: Boolean){
+        isSelected = param
+    }
 }

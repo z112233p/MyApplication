@@ -39,7 +39,7 @@ object IntentHelper {
 
     fun gotoPersonalActivity(ctx: Context){
         val intent = Intent(ctx, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
 
@@ -95,6 +95,29 @@ object IntentHelper {
 
     fun gotoEditMyInfoActivity(ctx: Context){
         val intent = Intent(ctx, EditMyInfoActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoSettingActivity(ctx: Context){
+        val intent = Intent(ctx, SettingActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoNoticeActivity(ctx: Context){
+        val intent = Intent(ctx, NoticeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoSeeMoreActivity(ctx: Context, sortType: String, eventsCategorysId: String, title: String){
+        val intent = Intent(ctx, SeeMoreActivity::class.java)
+        val b = Bundle()
+        b.putString("title", title)
+        b.putString("sortType", sortType)
+        b.putString("eventsCategorysId", eventsCategorysId)
+        intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }

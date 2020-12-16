@@ -12,11 +12,16 @@ import com.example.myapplication.adapter.Adapter_Event_Type
 import com.example.myapplication.adapter.Adapter_Events
 import com.example.myapplication.adapter.CircleViewPager
 import com.example.myapplication.controller.BannerController
+import com.example.myapplication.datamodle.event.index.EventIndexData
 import com.example.myapplication.dialog.DialogChooseCountry
 import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.layout_input_rv.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 class FragmentMain : BaseFragment() {
 
     private val eventsActivityVM : EventsActivityVM by activityViewModels()
@@ -63,8 +68,9 @@ class FragmentMain : BaseFragment() {
     }
 
     private fun callApis(){
-        eventsActivityVM.getEventsApi(null)
+        eventsActivityVM.getEventsApi(null, null)
         eventsActivityVM.getEventCategory()
+        eventsActivityVM.getEventIndex()
 
     }
 
@@ -92,9 +98,17 @@ class FragmentMain : BaseFragment() {
         vp_banner_view_pager.setController(bannerController)
 
         eventTypeAdapter = Adapter_Event_Type(getMContext().get())
-        comingEventAdapter = Adapter_Events(getMContext().get(), 1)
-        mayLikeEventAdapter = Adapter_Events(getMContext().get(), 2)
-        this.hotEventAdapter = Adapter_Events(getMContext().get(), 3)
+        comingEventAdapter = Adapter_Events(getMContext().get(), 1, true)
+        mayLikeEventAdapter = Adapter_Events(getMContext().get(), 2, true)
+        this.hotEventAdapter = Adapter_Events(getMContext().get(), 2, true)
+
+        eventTypeAdapter.setOnItemClickListener(object :Adapter_Event_Type.OnItemClickListener{
+            override fun onItemClick(Id: String, name: String) {
+                getMContext().get()?.let { it1 ->
+                    IntentHelper.gotoSeeMoreActivity(it1, "", Id, name) }
+            }
+
+        })
 
 
         val layoutManager =  GridLayoutManager(getMContext().get(), 2, LinearLayoutManager.HORIZONTAL, false)
@@ -118,6 +132,10 @@ class FragmentMain : BaseFragment() {
         ll_hot_events.run {
             getRecycleView().adapter = hotEventAdapter
             setTitle("熱門推薦")
+            tv_show_more.setOnClickListener {
+                getMContext().get()?.let { it1 ->
+                    IntentHelper.gotoSeeMoreActivity(it1, "popular", "", "熱門推薦") }
+            }
         }
     }
 
@@ -135,6 +153,9 @@ class FragmentMain : BaseFragment() {
         ll_coming_events.run {
             getRecycleView().adapter = comingEventAdapter
             setTitle("即將開始")
+            tv_show_more.setOnClickListener {
+                getMContext().get()?.let { it1 -> IntentHelper.gotoSeeMoreActivity(it1, "incoming", "", "即將開始") }
+            }
         }
     }
 
@@ -151,16 +172,21 @@ class FragmentMain : BaseFragment() {
 
         ll_may_like_events.run {
             getRecycleView().adapter = mayLikeEventAdapter
-            setTitle("猜你喜歡")
+            setTitle("最新開團")
+            tv_show_more.setOnClickListener {
+                getMContext().get()?.let { it1 -> IntentHelper.gotoSeeMoreActivity(it1, "latest", "", "最新開團") }
+            }
         }
     }
 
 
     private fun initObserve(){
-        eventsActivityVM.getEvents().observe(viewLifecycleOwner, Observer {
-            hotEventAdapter.setData(it.data.event)
-            comingEventAdapter.setData(it.data.event)
-            mayLikeEventAdapter.setData(it.data.event)
+        eventsActivityVM.getEventIndexData().observe(viewLifecycleOwner, Observer {
+            Log.e("Peter","getEventIndexData popular Size   ")
+            Collections.shuffle(it.data.popular)
+            hotEventAdapter.setData(it.data.popular)
+            comingEventAdapter.setData(it.data.incoming )
+            mayLikeEventAdapter.setData(it.data.latest)
 
         })
 

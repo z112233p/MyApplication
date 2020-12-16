@@ -29,11 +29,11 @@ class FragmentMyEvents : BaseFragment(){
         super.onViewCreated(view, savedInstanceState)
         init()
         initObserve()
-        eventsActivityVM.getEventsApi(PrefHelper.chatLable)
+        eventsActivityVM.getEventsApi(PrefHelper.chatLable, null)
     }
 
     private fun init() {
-        adapter = Adapter_Events(getMContext().get(), 3)
+        adapter = Adapter_Events(getMContext().get(), 3, true)
         rv_events.layoutManager = GridLayoutManager(getMContext().get(), 2, RecyclerView.VERTICAL, false)
         rv_events.adapter = adapter
         adapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
@@ -46,7 +46,7 @@ class FragmentMyEvents : BaseFragment(){
 
     private fun initObserve(){
         eventsActivityVM.getEvents().observe(viewLifecycleOwner, Observer {
-            adapter.setData(it.data.event)
+//            adapter.setData(it.data.event)
         })
     }
 }

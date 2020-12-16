@@ -1,7 +1,6 @@
 package com.example.myapplication.network
 
 import android.os.Build
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.datamodle.ErrorLogApi
@@ -13,12 +12,16 @@ import com.example.myapplication.datamodle.authorization.register.Register
 import com.example.myapplication.datamodle.authorization.register.RegisterResponse
 import com.example.myapplication.datamodle.chat_room.Token.ChatRoomToken
 import com.example.myapplication.datamodle.dating.DatingSearch
-import com.example.myapplication.datamodle.event.Events
 import com.example.myapplication.datamodle.event.detail.EventDetail
 import com.example.myapplication.datamodle.event.detailv2.EventDetailV2
+import com.example.myapplication.datamodle.event.event_list.EventList
+import com.example.myapplication.datamodle.event.index.EventIndex
 import com.example.myapplication.datamodle.event.list.TypeLists
+import com.example.myapplication.datamodle.event.my_events.MyEvents
 import com.example.myapplication.datamodle.event.review.EventReview
 import com.example.myapplication.datamodle.event.review_member.ReviewMember
+import com.example.myapplication.datamodle.notice.notice_data.Notice
+import com.example.myapplication.datamodle.notice.template.NoticeTemplate
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
@@ -84,7 +87,17 @@ interface ApiService {
     @GET("event")
     fun getEvents(@Query("page") page: Int,
                   @Query("limit") limit: Int,
-                  @Query("country_id") countryId: Int, @Query("label") label: String): Observable<Events>
+                  @Query("country_id") countryId: Int,
+                  @Query("sort_type") sortType: String, @Query("events_categorys_id") eventsCategorysId: String): Observable<EventList>
+
+    //get Events Index
+    @GET("event/index")
+    fun getEventIndex(): Observable<EventIndex>
+
+    //get My Events
+    @GET("me/info/events")
+    fun getMyEvents(): Observable<MyEvents>
+
 
     //Create Event
     @POST("event/create")
@@ -154,6 +167,15 @@ interface ApiService {
     //Refresh Chat Token
     @POST("chatroom/getToken")
     fun getChatRoomToken(): Observable<ChatRoomToken>
+
+    //Notice Template
+    @GET("notification/template")
+    fun getNoticeTemplate(): Observable<NoticeTemplate>
+
+    //Notice
+    @GET("notification?page=1&limit=10")
+    fun getNotice(): Observable<Notice>
+
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

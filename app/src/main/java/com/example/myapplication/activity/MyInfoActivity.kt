@@ -72,7 +72,7 @@ class MyInfoActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_event_detail, menu)
+        menuInflater.inflate(R.menu.menu_my_info, menu)
         return true
     }
 
@@ -82,6 +82,7 @@ class MyInfoActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_option -> {
                 Log.e("Peter","MyInfoActivity onOptionsItemSelected action_option")
+                IntentHelper.gotoSettingActivity(this)
 
                 false
             }
