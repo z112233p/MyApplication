@@ -18,11 +18,38 @@
     android:paddingEnd="15dp">
 
 
+    <FrameLayout
+        android:id="@+id/fl_banner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.example.myapplication.viewpager.BannerViewPager
+            android:id="@+id/vp_banner_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_dot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:paddingBottom="7dp"
+            android:orientation="horizontal"/>
+    </FrameLayout>
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_my_photo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
+        android:visibility="gone"
         app:cardCornerRadius="15dp"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintDimensionRatio="h,345:224"
@@ -36,6 +63,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_upload_photo"/>
 
+
+
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
@@ -47,7 +76,7 @@
         android:gravity="center_vertical"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/cv_my_photo">
+        app:layout_constraintTop_toBottomOf="@+id/fl_banner">
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="0dp"
@@ -61,17 +90,20 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:padding="3dp"
+            android:src="@mipmap/ic_star_dark_yellow"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:padding="3dp"
             android:src="@mipmap/ic_star_dark_yellow"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:src="@mipmap/ic_star_dark_yellow"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
+            android:visibility="invisible"
             android:src="@mipmap/ic_star_dark_yellow"/>
     </LinearLayout>
 
@@ -104,6 +136,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
+
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="15sp"
@@ -224,7 +258,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/colorWhite"
                 android:lineSpacingExtra="5sp"
-                android:text="人氣度" />
+                android:text="粉絲數" />
         </LinearLayout>
     </LinearLayout>
 
@@ -232,6 +266,7 @@
         android:id="@+id/tv_follow_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="30dp"
         android:paddingTop="9dp"
         android:paddingBottom="9dp"
@@ -241,7 +276,7 @@
         android:textSize="16sp"
         android:textColor="@color/colorWhite"
         android:lineSpacingExtra="1sp"
-        android:text="Follow"
+        android:text="追蹤"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_my_detail"/>
@@ -261,9 +296,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorYellowD1"
         android:lineSpacingExtra="1sp"
         android:text="興趣"
         app:layout_constraintStart_toStartOf="parent"
@@ -289,9 +323,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorYellowD1"
         android:lineSpacingExtra="1sp"
         android:text="職業"
         app:layout_constraintStart_toStartOf="parent"
@@ -329,9 +362,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorYellowD1"
         android:lineSpacingExtra="1sp"
         android:text="開團中"
         app:layout_constraintStart_toStartOf="parent"
@@ -361,9 +393,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorYellowD1"
         android:lineSpacingExtra="1sp"
         android:text="關於我"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
 import com.example.myapplication.datamodle.event.index.EventIndexData
 import com.example.myapplication.tools.ImgHelper
+import org.w3c.dom.Text
+import java.text.SimpleDateFormat
 
 
 @Suppress("UNREACHABLE_CODE")
@@ -30,6 +33,9 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TYPE_GRADUAL = 2
     val TYPE_FULL_IMG = 3
     val TYPE_SEE_MORE = 4
+    private var customDateFormat: SimpleDateFormat = SimpleDateFormat("MM月dd日 hh:mm (E)")
+    private var customTodayFormat: SimpleDateFormat = SimpleDateFormat("a hh:mm")
+    private var sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     private lateinit var dataList: MutableList<EventIndexData>
     private lateinit var mContext: Context
@@ -82,6 +88,9 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.tvEventLocation = cell.findViewById(R.id.tv_event_location)
         viewHolder.tvEventTime = cell.findViewById(R.id.tv_event_time)
         viewHolder.tvEventDescription = cell.findViewById(R.id.tv_event_description)
+        viewHolder.tvOwner = cell.findViewById(R.id.tv_owner)
+        viewHolder.ivOwner = cell.findViewById(R.id.iv_owner)
+
         return viewHolder
     }
 
@@ -109,7 +118,9 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.tvEventTitle.text = data.title
         holder.tvEventDescription.text = data.description
         holder.tvEventLocation.text = data.location_title
-        holder.tvEventTime.text = data.start_time
+        holder.tvEventTime.text = customDateFormat.format(sdf.parse(data.start_time))//data.start_time
+        holder.tvOwner.text = data.author.nickname
+        ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+data.author.image, holder.ivOwner)
 
         if(getItemViewType(position) != TYPE_FULL_IMG){
             holder.tvEventTime.setTextColor(mContext.resources.getColor(R.color.colorPinkOrange))
@@ -175,6 +186,8 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         lateinit var tvEventLocation: TextView
         lateinit var tvEventTime: TextView
         lateinit var tvEventDescription: TextView
+        lateinit var tvOwner: TextView
+        lateinit var ivOwner: ImageView
     }
 
 }

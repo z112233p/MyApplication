@@ -24,7 +24,7 @@ class SeeMoreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notice)
+        setContentView(R.layout.activity_see_more)
         setSupportActionBar(toolbar)
         getIntentData()
         title = ""

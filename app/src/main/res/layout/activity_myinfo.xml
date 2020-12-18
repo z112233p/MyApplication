@@ -13,6 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="40dp"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal">
         <TextView
@@ -49,8 +50,8 @@
             android:gravity="center_vertical"
             android:background="@color/transparent"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:text="100000"/>
+            android:textSize="14sp"
+            android:text="0"/>
 
         <com.lijiankun24.shadowlayout.ShadowLayout
             android:layout_width="wrap_content"
@@ -76,8 +77,8 @@
             android:gravity="center_vertical"
             android:background="@color/transparent"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:text="13000"/>
+            android:textSize="14sp"
+            android:text="0"/>
     </LinearLayout>
 
 
@@ -98,9 +99,11 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
+                app:navigationIcon="@mipmap/ic_back"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
             </androidx.appcompat.widget.Toolbar>
+
             <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"

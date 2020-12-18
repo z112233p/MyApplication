@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    android:background="@drawable/bg_chat_message_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_female"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:foreground="@drawable/ripple_gray_color"
+        android:textSize="16dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/female"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_male"/>
+
+    <TextView
+        android:id="@+id/tv_male"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/ripple_gray_color"
+
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/male"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_female"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

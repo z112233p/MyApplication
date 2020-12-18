@@ -37,6 +37,8 @@ class EventDetailActivity : AppCompatActivity() {
     val eventDetailActVM: EventDetailActivityVM by viewModel()
     var eventLabel = ""
     var eventID = 0
+    var userLabel = ""
+
     private lateinit var actionItem: MenuItem
     private lateinit var optionItem: MenuItem
 
@@ -68,6 +70,7 @@ class EventDetailActivity : AppCompatActivity() {
     private fun init(){
         tv_event_join_btn.setOnClickListener(onClick)
         tv_event_cancel_btn.setOnClickListener(onClick)
+        ll_event_owner.setOnClickListener(onClick)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -85,7 +88,10 @@ class EventDetailActivity : AppCompatActivity() {
         when(it.id){
             R.id.tv_event_join_btn -> eventDetailActVM.joinEvent(eventID.toString())
             R.id.tv_event_cancel_btn -> eventDetailActVM.cancelJoinEvent(eventID.toString())
-
+            R.id.ll_event_owner -> {
+                IntentHelper.gotoMyInfoActivity(this,userLabel)
+                this.finish()
+            }
         }
     }
 
@@ -163,6 +169,7 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     fun setOwnerData(author: Author) {
+        userLabel = author.label
         tv_owner_name.text = author.nickname
 //        ImgHelper.loadNormalImg(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)
         ImgHelper.loadNormalImgNoCache(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)

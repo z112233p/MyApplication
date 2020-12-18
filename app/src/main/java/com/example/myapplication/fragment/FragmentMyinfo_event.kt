@@ -28,6 +28,7 @@ import com.example.myapplication.BuildConfig
 import com.example.myapplication.MyApp
 import com.example.myapplication.R
 import com.example.myapplication.activity.CreateEventActivity
+import com.example.myapplication.activity.MyInfoActivity
 import com.example.myapplication.activity.ProfileActivity
 import com.example.myapplication.adapter.Adapter_Events
 import com.example.myapplication.adapter.Adapter_My_Events
@@ -152,14 +153,22 @@ class FragmentMyinfo_event : BaseFragment() {
     private fun initObserve(){
         profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myEventAdapter.setData(it.data.processing)
-            historyEventAdapter.setData(it.data.processing)
+            historyEventAdapter.setData(it.data.history)
         })
     }
 
     private fun callApis(){
 //        profileActivityVM.getMyInfo()
-        profileActivityVM.getEventsApi(PrefHelper.chatLable, null)
-        profileActivityVM.getMyEvents()
+//        profileActivityVM.getEventsApi(PrefHelper.chatLable, null)
+
+        if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
+            profileActivityVM.getMyEvents()
+
+        } else {
+            profileActivityVM.getUserEvents((getMContext().get() as MyInfoActivity).userLabel)
+
+        }
+
     }
 
 }

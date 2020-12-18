@@ -30,6 +30,7 @@ import com.example.myapplication.datamodle.profile.job.job
 import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
+import com.example.myapplication.datamodle.profile.user_info.UserInfo
 import com.example.myapplication.tools.PrefHelper
 import io.reactivex.Observable
 import okhttp3.*
@@ -69,7 +70,6 @@ interface ApiService {
     @POST("me/info")
     fun updateMyInfo_v2(@Body body: RequestBody): Observable<UpdateMyInfoResponse>
 
-
     //Update Profile Photo
     @Multipart
     @POST("me/create_photos")
@@ -82,6 +82,10 @@ interface ApiService {
     //Get Profile Information
     @GET("me/info")
     fun getMyInfo(): Observable<MyInfo>
+
+    //get User Information
+    @GET("user/{userLabel}")
+    fun getUserInfo(@Path("userLabel") userLabel: String): Observable<UserInfo>
 
     //Check Events
     @GET("event")
@@ -97,6 +101,11 @@ interface ApiService {
     //get My Events
     @GET("me/info/events")
     fun getMyEvents(): Observable<MyEvents>
+
+
+    //get User Events
+    @GET("user/{userLabel}/events")
+    fun getUserEvents(@Path("userLabel") userLabel: String): Observable<MyEvents>
 
 
     //Create Event

@@ -26,22 +26,33 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MyInfoActivity : AppCompatActivity() {
     val profileActivityVM: ProfileActivityVM by viewModel()
 
-
     private var f1 = FragmentMyinfo_info()
     private var f2 = FragmentMyinfo_event()
+
+    var userLabel = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_myinfo)
         setSupportActionBar(toolbar)
         title = ""
+        getIntentData()
         init()
         initObserve()
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         ProgressDialogController.setContext(this)
+    }
+
+    private fun getIntentData(){
+        val b = intent.extras
+        userLabel = b?.getString("Label")!!
+
     }
 
     private fun init(){

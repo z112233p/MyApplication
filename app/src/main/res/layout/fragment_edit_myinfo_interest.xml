@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:fillViewport="true"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/fl_tag_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_next_step"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="36dp"
+            app:justifyContent="center"
+            app:flexWrap="wrap"
+            app:background="@color/colorMainBackground"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:layout_marginBottom="34dp"
+            android:gravity="center"
+            android:background="@drawable/bg_unclickable_btn"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/colorGray70"
+            android:lineSpacingExtra="6sp"
+            android:text="下一步"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

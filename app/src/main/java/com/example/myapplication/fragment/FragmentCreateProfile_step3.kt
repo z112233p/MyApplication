@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +13,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.palette.graphics.Palette
@@ -24,24 +21,20 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
-import com.example.myapplication.activity.CreateEventActivity
 import com.example.myapplication.activity.ProfileActivity
-import com.example.myapplication.custom_view.ItemJobView
+import com.example.myapplication.dialog.DialogChooseGender
+import com.example.myapplication.dialog.DialogIGLogin
 import com.example.myapplication.tools.ImgHelper
 import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.tools.Tools
 import com.example.myapplication.viewmodle.ProfileActivityVM
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.android.synthetic.main.fragment_creat_profile_step_2.*
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_3.*
-import kotlinx.android.synthetic.main.fragment_creat_profile_step_3.tv_next_step
-import kotlinx.android.synthetic.main.item_custom_incoming_message.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.collections.forEach
+import kotlin.collections.set
 import kotlin.math.abs
 
 
@@ -55,6 +48,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
     private lateinit var act: ProfileActivity
     private lateinit var date: DatePickerDialog.OnDateSetListener
     private lateinit var genderList: ArrayList<String>
+    private lateinit var chooseGender: DialogChooseGender
 
     private var hasName: Boolean = false
     private var hasPhoto: Boolean = false
@@ -147,7 +141,26 @@ class FragmentCreateProfile_step3 : BaseFragment() {
     private val onClick = View.OnClickListener {
         when (it.id) {
             R.id.ed_user_gender -> {
-                sp_gender.performClick()
+//                sp_gender.performClick()
+//                val chooseGender = getMContext().get()?.let { it1 -> DialogChooseGender(it1) }
+                val chooseGender = getMContext().get()?.let { it1 -> DialogChooseGender(it1) }
+                chooseGender?.setOnItemClick(object : DialogChooseGender.OnItemClickListener{
+                    override fun onFemaleClick(gender: String) {
+                        ed_user_gender.setText(gender)
+                        selectedGender = 0
+                        hasGender = true
+                        checkNextStep()
+                    }
+
+                    override fun onMaleClick(gender: String) {
+                        ed_user_gender.setText(gender)
+                        selectedGender = 1
+                        hasGender = true
+                        checkNextStep()
+                    }
+
+                })
+                chooseGender?.show()
             }
             R.id.iv_profile_photo -> {
 //                v2.setColor("#1778f2")
@@ -156,10 +169,17 @@ class FragmentCreateProfile_step3 : BaseFragment() {
 
             }
             R.id.ed_user_birth -> {
-                DatePickerDialog(
+                val cal = Calendar.getInstance()
+
+                val year = cal[Calendar.YEAR]
+                val month = cal[Calendar.MONTH]
+                val day = cal[Calendar.DAY_OF_MONTH]
+                val picker = DatePickerDialog(
                     getMContext().get()!!, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                     myCalendar[Calendar.DAY_OF_MONTH]
-                ).show()
+                )
+                picker.updateDate(1990,month,day)
+                picker.show()
             }
             R.id.tv_next_step -> {
                 act.dataBody["nickname"] = ed_user_name.text.toString()
@@ -173,6 +193,11 @@ class FragmentCreateProfile_step3 : BaseFragment() {
     }
 
     private fun checkNextStep(){
+        Log.e("Peter","checkNextStep  hasBirth   $hasBirth")
+        Log.e("Peter","checkNextStep  hasGender  $hasGender")
+        Log.e("Peter","checkNextStep  hasName   $hasName")
+        Log.e("Peter","checkNextStep  hasPhoto   $hasPhoto")
+
         if(hasBirth && hasGender && hasName &&hasPhoto){
             tv_next_step.isClickable = true
             tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)

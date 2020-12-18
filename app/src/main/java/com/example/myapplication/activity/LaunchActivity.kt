@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_launch.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LaunchActivity: AppCompatActivity() {
+class  LaunchActivity: AppCompatActivity() {
     val profileActivityVM: ProfileActivityVM by viewModel()
 
     private var nowPicPos = 0
@@ -36,6 +36,14 @@ class LaunchActivity: AppCompatActivity() {
 
         object : CountDownTimer(2000, 1000) {
             override fun onFinish() {
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatName}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.apiHeader}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatId}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatLable}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatToken}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.userID}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.userPhone}         ")
+
                 if(checkSession()){
 
                     if (checkNickName()){

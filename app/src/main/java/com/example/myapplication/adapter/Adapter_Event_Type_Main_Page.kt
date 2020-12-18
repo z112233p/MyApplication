@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.datamodle.event.list.Data
 
-class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>() {
+class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Main_Page.ViewHolder>() {
     private lateinit var dataList: ArrayList<Data>
     private lateinit var mContext: Context
     private var mOnItemClickListener: OnItemClickListener? = null
@@ -34,7 +33,7 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
 
     }
 
-    fun setOnItemClickListener(listener: Adapter_Event_Type.OnItemClickListener) {
+    fun setOnItemClickListener(listener: Adapter_Event_Type_Main_Page.OnItemClickListener) {
         mOnItemClickListener = listener
 
     }
@@ -49,7 +48,7 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cell = LayoutInflater.from(mContext).inflate(R.layout.item_event_type, parent, false)
+        val cell = LayoutInflater.from(mContext).inflate(R.layout.item_event_type_main_page, parent, false)
         val viewHolder = ViewHolder(cell)
         viewHolder.tvEventType = cell.findViewById(R.id.iv_event_type)
 //        viewHolder.clMain = cell.findViewById(R.id.cl_main)
@@ -66,13 +65,13 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
         val data = dataList[position]
         holder.tvEventType.text = data.i18n
 
-        if(position == currentPosition){
-            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn_selected)
-//            holder.tvEventType.setTextColor(mContext.resources.getColor(R.color))
-        } else {
-            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn)
-
-        }
+//        if(position == currentPosition){
+//            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn_selected)
+////            holder.tvEventType.setTextColor(mContext.resources.getColor(R.color))
+//        } else {
+//            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn)
+//
+//        }
 
 
             holder.itemView.setOnClickListener {

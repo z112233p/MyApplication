@@ -1,6 +1,7 @@
 package com.example.myapplication.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,19 @@ class CircleViewPager(private var mContext: Context,
                       private var imageList: List<String>): PagerAdapter() {
 
     private lateinit var callback: CircleViewPagerInterface
-
+    private var imageResourceList = ArrayList<Int>()
 
     interface CircleViewPagerInterface{
         fun itemOnClick(pos: Int)
         fun itemOnLongClick(pos: Int)
+    }
+
+    fun setImageList(imageResourceList: ArrayList<Int>) {
+        if(imageResourceList.size == 0){return}
+        this.imageResourceList.clear()
+        imageResourceList.forEach {
+            this.imageResourceList.add(it)
+        }
     }
 
     fun setCircleViewPagerInterface(callback: CircleViewPagerInterface){
@@ -45,7 +54,13 @@ class CircleViewPager(private var mContext: Context,
             true
         }
         val ivBanner = view.findViewById<ImageView>(R.id.iv_banner_img)
-        ImgHelper.loadNormalImg(mContext, imageList[pos], ivBanner)
+        Log.e("Peter", "CircleViewPager    ${imageList}")
+        if(imageResourceList.size == 0){
+            ImgHelper.loadNormalImg(mContext, imageList[pos], ivBanner)
+        } else {
+            ivBanner.setImageResource(imageResourceList[pos])
+        }
+//        ivBanner.setImageResource(imageResourceList[pos])
         container.addView(view)
         return view
     }

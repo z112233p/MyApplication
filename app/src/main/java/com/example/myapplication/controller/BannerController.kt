@@ -1,6 +1,5 @@
 package com.example.myapplication.controller
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Handler
@@ -12,7 +11,7 @@ import android.widget.LinearLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.example.myapplication.R
-import java.util.*
+import kotlin.collections.ArrayList
 
 class BannerController (private val context: Context,
                         private val listSize: Int, dealPager: ViewPager?,
@@ -32,8 +31,8 @@ class BannerController (private val context: Context,
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
+                positionOffsetPixels: Int) {
+
             }
 
             override fun onPageSelected(position: Int) {
@@ -50,6 +49,10 @@ class BannerController (private val context: Context,
         prepareDots(0)
         initRunnable(dealPager)
         startSwipe()
+    }
+
+    fun setImageList(imageResourceList: ArrayList<Int>) {
+
     }
 
     fun startSwipe() {

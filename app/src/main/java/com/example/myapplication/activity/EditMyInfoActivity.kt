@@ -20,6 +20,8 @@ class EditMyInfoActivity : AppCompatActivity() {
 
     val profileActivityVM: ProfileActivityVM by viewModel()
     val dataBody :HashMap<String, String> = HashMap()
+    val interestArrayList = ArrayList<Int>()
+    var jobId: Int = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

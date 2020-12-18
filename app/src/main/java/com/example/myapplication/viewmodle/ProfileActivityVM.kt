@@ -13,17 +13,23 @@ import com.example.myapplication.datamodle.event.my_events.MyEvents
 import com.example.myapplication.datamodle.profile.MyInfo
 import com.example.myapplication.datamodle.profile.MyInfoData
 import com.example.myapplication.datamodle.profile.MyInfoPhoto
+import com.example.myapplication.datamodle.profile.delete_photo.DeleteMyPhoto
+import com.example.myapplication.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
 import com.example.myapplication.datamodle.profile.interest.interest
 import com.example.myapplication.datamodle.profile.job.job
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
 import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse
+import com.example.myapplication.datamodle.profile.user_info.UserInfo
 import com.example.myapplication.network.ApiMethods
+import com.example.myapplication.network.ApiService.Companion.create
 import com.example.myapplication.tools.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.util.*
 
 class ProfileActivityVM (application: Application) : AndroidViewModel(application){
     private val mContent: Context? = application.applicationContext
@@ -39,7 +45,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val myPhoto: MutableLiveData<List<MyInfoPhoto>> = MutableLiveData<List<MyInfoPhoto>>()
     private val myInfoData: MutableLiveData<MyInfoData> = MutableLiveData<MyInfoData>()
     private val updateMyInfoResponse: SingleLiveEvent<UpdateMyInfoResponse> = SingleLiveEvent<UpdateMyInfoResponse>()
-
+    private val userInfo:MutableLiveData<UserInfo> = MutableLiveData<UserInfo>()
+    private val deleteMyPhoto: SingleLiveEvent<DeleteMyPhotoResponse> = SingleLiveEvent<DeleteMyPhotoResponse>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -61,6 +68,12 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     }
     fun getMyPhoto(): LiveData<List<MyInfoPhoto>> {
         return myPhoto
+    }
+    fun getUserInfoData(): LiveData<UserInfo> {
+        return userInfo
+    }
+    fun getDeleteMyPhoto(): LiveData<DeleteMyPhotoResponse> {
+        return deleteMyPhoto
     }
     fun getProgressStatus(): LiveData<Boolean> {
         return progressStatus
@@ -281,6 +294,86 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
         }
         ApiMethods.getMyEvents(myEventsObserver)
+    }
+
+
+    fun getUserInfo(userLabel: String){
+        val myInfoObserver: Observer<UserInfo> = object  : Observer<UserInfo>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: UserInfo) {
+                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
+                userInfo.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("Peter2", "getMyInfo  onError:  "+e.message)
+
+                progressStatus.value = true
+            }
+        }
+        ApiMethods.getUserInfo(myInfoObserver, userLabel)
+    }
+
+
+    fun getUserEvents(userLabel: String){
+        val myEventsObserver: Observer<MyEvents> = object  : Observer<MyEvents>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: MyEvents) {
+                myEvents.value = t
+                Log.e("Peter2", "updateMyInfo  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "updateMyInfo  onError:  "+e.message)
+
+            }
+        }
+        ApiMethods.getUserEvents(myEventsObserver, userLabel)
+    }
+
+
+    fun deleteMyPhoto(dataBody: DeleteMyPhoto){
+        val deleteMyPhotoObserver: Observer<DeleteMyPhotoResponse> = object  : Observer<DeleteMyPhotoResponse>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: DeleteMyPhotoResponse) {
+                deleteMyPhoto.value = t
+                Log.e("Peter2", "deleteMyInfo  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "deleteMyInfo  onError:  "+e.message)
+
+            }
+        }
+        ApiMethods.deleteMyPhoto(deleteMyPhotoObserver, dataBody)
     }
 
 }

@@ -83,6 +83,12 @@ object Tools {
     fun getLocalSavedImagePath(): String? {
         return MyApp.get()?.externalCacheDir.toString()+ "crop.png"
     }
+
+    fun getLocalSavedUserPhotoPath(position: Int): String? {
+        return MyApp.get()?.externalCacheDir.toString()+ "user$position.png"
+    }
+
+
     fun getLocalSavedAudioPath(): String? {
         return Environment.getExternalStorageDirectory().path + File.separatorChar + Environment.DIRECTORY_DCIM + File.separatorChar
     }
@@ -95,6 +101,20 @@ object Tools {
             Log.e("Peter","dealCropImage:   ${imgFile.length()}")
             compressCropImage()
             imgFile = File(getLocalSavedImagePath())
+        }
+        Log.e("Peter","dealCropImage:out2   ${imgFile.length()}")
+
+        return imgFile
+    }
+
+    fun dealUserPhoto(position: Int): File {
+        var imgFile = File(getLocalSavedUserPhotoPath(position))
+        Log.e("Peter","dealCropImage:out   ${imgFile.length()}")
+
+        while (imgFile.length() > IMAGE_UPLOAD_LIMIT){
+            Log.e("Peter","dealCropImage:   ${imgFile.length()}")
+            compressUserPhoto(position)
+            imgFile = File(getLocalSavedUserPhotoPath(position))
         }
         Log.e("Peter","dealCropImage:out2   ${imgFile.length()}")
 
@@ -115,6 +135,22 @@ object Tools {
         // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(local, newOpts)
         saveCropImage(bitmap)
+    }
+
+    fun compressUserPhoto(position: Int) {
+        val local: String? = getLocalSavedUserPhotoPath(position)
+        val newOpts = BitmapFactory.Options()
+        // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true
+        // 此时返回bm为空
+        var bitmap = BitmapFactory.decodeFile(local, newOpts)
+        newOpts.inJustDecodeBounds = false
+        // 设置缩放比例-+
+        newOpts.inSampleSize = 2
+
+        // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        bitmap = BitmapFactory.decodeFile(local, newOpts)
+        saveUserPhoto(bitmap, position)
     }
 
     fun saveCropImage(bmp: Bitmap) {
@@ -155,9 +191,54 @@ object Tools {
         }
     }
 
+    fun saveUserPhoto(bmp: Bitmap, position: Int) {
+        val local: String? = Tools.getLocalSavedUserPhotoPath(position)
+        try {
+            FileOutputStream(local).use { out ->
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, out) // bmp is your Bitmap instance
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun saveUserPhoto(sourceUri: Uri, position: Int) {
+        val sourceFilename = sourceUri.path
+        val destinationFilename: String? = Tools.getLocalSavedUserPhotoPath(position)
+        var bis: BufferedInputStream? = null
+        var bos: BufferedOutputStream? = null
+        try {
+            bis = BufferedInputStream(FileInputStream(sourceFilename))
+            bos = BufferedOutputStream(FileOutputStream(destinationFilename, false))
+            val buf = ByteArray(1024)
+            bis.read(buf)
+            do {
+                bos.write(buf)
+            } while (bis.read(buf) != -1)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("Peter", "saveCropImage: " + e.message)
+        } finally {
+            try {
+                bis?.close()
+                bos?.close()
+            } catch (e: IOException) {//0919020739
+                e.printStackTrace()
+            }
+            Log.e("peter", "saveCropImage: $destinationFilename")
+        }
+    }
+
     fun deleteCropImage(){
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val where = MediaStore.Images.Media.DATA + "='" + getLocalSavedImagePath() + "'"
+        val mContentResolver: ContentResolver = (MyApp.get() as Context).contentResolver
+        mContentResolver.delete(uri, where, null)
+    }
+
+    fun deleteUserPhoto(position: Int){
+        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val where = MediaStore.Images.Media.DATA + "='" + getLocalSavedUserPhotoPath(position) + "'"
         val mContentResolver: ContentResolver = (MyApp.get() as Context).contentResolver
         mContentResolver.delete(uri, where, null)
     }

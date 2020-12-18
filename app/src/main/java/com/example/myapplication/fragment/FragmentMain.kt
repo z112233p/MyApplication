@@ -6,13 +6,11 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.adapter.Adapter_Event_Type
+import com.example.myapplication.adapter.Adapter_Event_Type_Main_Page
 import com.example.myapplication.adapter.Adapter_Events
 import com.example.myapplication.adapter.CircleViewPager
 import com.example.myapplication.controller.BannerController
-import com.example.myapplication.datamodle.event.index.EventIndexData
 import com.example.myapplication.dialog.DialogChooseCountry
 import com.example.myapplication.tools.IntentHelper
 import com.example.myapplication.viewmodle.EventsActivityVM
@@ -28,11 +26,13 @@ class FragmentMain : BaseFragment() {
 
     private lateinit var bannerController: BannerController
     private lateinit var imageList: ArrayList<String>
+    private lateinit var imageResourceList: ArrayList<Int>
+
     private lateinit var hotEventAdapter: Adapter_Events
     private lateinit var comingEventAdapter: Adapter_Events
     private lateinit var mayLikeEventAdapter: Adapter_Events
 
-    private lateinit var eventTypeAdapter: Adapter_Event_Type
+    private lateinit var eventTypeAdapter: Adapter_Event_Type_Main_Page
     private lateinit var eventCategoryList: ArrayList<String>
 
 
@@ -81,8 +81,18 @@ class FragmentMain : BaseFragment() {
         imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
         imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
         imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
+        imageResourceList = ArrayList()
+        imageResourceList.add(R.mipmap.ph_banner01)
+        imageResourceList.add(R.mipmap.ph_banner02)
+        imageResourceList.add(R.mipmap.ph_banner03)
+        imageResourceList.add(R.mipmap.ph_banner04)
+
         bannerController = BannerController(getMContext().get()!!, imageList.size, vp_banner_view_pager, ll_dot_layout)
+        bannerController.setImageList(imageResourceList)
+
         val adapter = CircleViewPager(getMContext().get()!! , imageList)
+        adapter.setImageList(imageResourceList)
+
         adapter.setCircleViewPagerInterface(object : CircleViewPager.CircleViewPagerInterface{
             override fun itemOnClick(pos: Int) {
                 Log.e("peter","itemOnClick")
@@ -97,12 +107,12 @@ class FragmentMain : BaseFragment() {
 //        vp_banner_view_pager.setPageTransformer(true, object : )
         vp_banner_view_pager.setController(bannerController)
 
-        eventTypeAdapter = Adapter_Event_Type(getMContext().get())
+        eventTypeAdapter = Adapter_Event_Type_Main_Page(getMContext().get())
         comingEventAdapter = Adapter_Events(getMContext().get(), 1, true)
         mayLikeEventAdapter = Adapter_Events(getMContext().get(), 2, true)
         this.hotEventAdapter = Adapter_Events(getMContext().get(), 2, true)
 
-        eventTypeAdapter.setOnItemClickListener(object :Adapter_Event_Type.OnItemClickListener{
+        eventTypeAdapter.setOnItemClickListener(object :Adapter_Event_Type_Main_Page.OnItemClickListener{
             override fun onItemClick(Id: String, name: String) {
                 getMContext().get()?.let { it1 ->
                     IntentHelper.gotoSeeMoreActivity(it1, "", Id, name) }
@@ -111,7 +121,7 @@ class FragmentMain : BaseFragment() {
         })
 
 
-        val layoutManager =  GridLayoutManager(getMContext().get(), 2, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =  GridLayoutManager(getMContext().get(), 2)//, LinearLayoutManager.HORIZONTAL, false)
         rv_event_type.layoutManager = layoutManager
         rv_event_type.adapter = eventTypeAdapter
 

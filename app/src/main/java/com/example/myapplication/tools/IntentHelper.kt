@@ -87,8 +87,11 @@ object IntentHelper {
         ctx.startActivity(intent)
     }
 
-    fun gotoMyInfoActivity(ctx: Context){
+    fun gotoMyInfoActivity(ctx: Context, label: String){
         val intent = Intent(ctx, MyInfoActivity::class.java)
+        val b = Bundle()
+        b.putString("Label", label)
+        intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }

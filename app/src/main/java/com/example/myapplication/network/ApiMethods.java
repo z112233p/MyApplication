@@ -38,6 +38,7 @@ import com.example.myapplication.datamodle.profile.job.job;
 import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoResponse;
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo;
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse;
+import com.example.myapplication.datamodle.profile.user_info.UserInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,6 +80,10 @@ public class ApiMethods {
 
     public static void getMyInfo(Observer<MyInfo> pbObserver){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getMyInfo()), pbObserver);
+    }//getUserInfo
+
+    public static void getUserInfo(Observer< UserInfo > pbObserver, String userLabel){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getUserInfo(userLabel)), pbObserver);
     }
 
     public static void updateMyInfo(Observer<UpdateMyInfoResponse> pbObserver, UpdateMtInfo updateMtInfo){
@@ -109,7 +114,7 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).updateMyPhoto(part, description)), pbObserver);
     }
 
-    public static void deleteMyInfo(Observer< DeleteMyPhotoResponse > pbObserver, DeleteMyPhoto deleteMyPhoto){
+    public static void deleteMyPhoto(Observer< DeleteMyPhotoResponse > pbObserver, DeleteMyPhoto deleteMyPhoto){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).deleteMyPhoto(deleteMyPhoto)), pbObserver);
     }
 
@@ -263,8 +268,13 @@ public class ApiMethods {
     public static void getEventIndex(Observer< EventIndex > pbObserver ){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventIndex()), pbObserver);
     }
-    //getMyEvents
+
     public static void getMyEvents(Observer< MyEvents > pbObserver ){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getMyEvents()), pbObserver);
     }
+
+    public static void getUserEvents(Observer< MyEvents > pbObserver, String userLabel ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getUserEvents(userLabel)), pbObserver);
+    }
+
 }

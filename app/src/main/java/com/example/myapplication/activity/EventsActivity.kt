@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.tools.IntentHelper
+import com.example.myapplication.tools.PrefHelper
 import com.example.myapplication.tools.ProgressDialogController
 import com.example.myapplication.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.activity_events.*
@@ -69,7 +70,7 @@ class EventsActivity : AppCompatActivity(){
                     true
                 }
                 R.id.navigation_personal -> {
-                    IntentHelper.gotoMyInfoActivity(this)
+                    IntentHelper.gotoMyInfoActivity(this, PrefHelper.chatLable)
                     true
                 }
                 else -> true

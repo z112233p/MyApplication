@@ -10,23 +10,28 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
+import com.example.myapplication.activity.EditMyInfoActivity
 import com.example.myapplication.activity.ProfileActivity
 import com.example.myapplication.custom_view.ItemInterestView
+import com.example.myapplication.custom_view.ItemJobView
 import com.example.myapplication.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_1.*
+import kotlinx.android.synthetic.main.fragment_creat_profile_step_1.fl_tag_main
+import kotlinx.android.synthetic.main.fragment_creat_profile_step_1.tv_next_step
+import kotlinx.android.synthetic.main.fragment_creat_profile_step_2.*
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "CAST_NEVER_SUCCEEDS")
-class FragmentCreateProfile_step1 : BaseFragment() {
+class FragmentEditMyInfo_Interest : BaseFragment() {
 
     private val profileActivityVM: ProfileActivityVM by activityViewModels()
     private var nextStepCheck = 0
     private var selectedPosition = 0
-    private lateinit var act: ProfileActivity
+    private lateinit var act: EditMyInfoActivity
 
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_creat_profile_step_1
+        return R.layout.fragment_edit_myinfo_interest
     }
 
     @SuppressLint("NewApi")
@@ -47,31 +52,14 @@ class FragmentCreateProfile_step1 : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle("哈囉")
-        act.setSubTitle("請選擇您近期喜歡或參與的興趣")
-        (getMContext().get() as ProfileActivity).setStepOne()
-
-        var itr = act.dataBody.iterator()
-        var strElement = ""
-
-        while (itr.hasNext()) {
-            strElement = itr.next().toString()
-            Log.e("Peter","show itr  $strElement")
-
-            if (strElement.contains("interests[")){
-                itr.remove()
-            }
-        }
-
-
-
-        act.dataBody.keys.forEach {
-            if(it.contains("interests[")){
-                Log.e("Peter","show key  $it")
+        setTitle("")
+//        act.setSubTitle("請選擇您近期喜歡或參與的興趣")
+//        (getMContext().get() as ProfileActivity).setStepOne()
+//        act.dataBody.keys.forEach {
+//            if(it.contains("interests[")){
 //                act.dataBody.remove(it)
-            }
-        }
-        selectedPosition = 0
+//            }
+//        }
     }
 
 
@@ -79,7 +67,7 @@ class FragmentCreateProfile_step1 : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun init(){
         tv_next_step.isClickable = false
-        act = getMContext().get() as ProfileActivity
+        act = getMContext().get() as EditMyInfoActivity
         tv_next_step.setOnClickListener(onClick)
         tv_next_step.isClickable = false
 
@@ -92,16 +80,19 @@ class FragmentCreateProfile_step1 : BaseFragment() {
         when (it.id) {
 
             R.id.tv_next_step -> {
+                act.interestArrayList.clear()
                 for(i in 0 until fl_tag_main.childCount){
                     val itemView = fl_tag_main[i] as ItemInterestView
                     if(itemView.getIsSelected()!!){
-                        act.dataBody["interests[$selectedPosition]"] = itemView.getItemId().toString()
+//                        act.dataBody["interests[$selectedPosition]"] = itemView.getItemId().toString()
+                        Log.e("Peter","select interest   ${itemView.getItemId()}")
+                        itemView.getItemId()?.let { it1 -> act.interestArrayList.add(it1) }
+
                         selectedPosition++
                     }
                 }
-                Log.e("Peter","show databody  ${act.dataBody}")
-
-                findNavController().navigate(R.id.action_FragmentCreateProfile_step1_to_FragmentCreateProfile_step2)
+                act.onBackPressed()
+//                findNavController().navigate(R.id.action_FragmentCreateProfile_step1_to_FragmentCreateProfile_step2)
             }
         }
     }

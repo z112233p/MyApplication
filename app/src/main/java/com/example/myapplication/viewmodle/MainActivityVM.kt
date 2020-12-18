@@ -22,10 +22,14 @@ import com.example.myapplication.datamodle.profile.update_photo.UpdatePhotoRespo
 import com.example.myapplication.datamodle.profile.update.UpdateMtInfo
 import com.example.myapplication.datamodle.profile.update.UpdateMyInfoResponse
 import com.example.myapplication.network.ApiMethods
+import com.example.myapplication.network.ApiService
 import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.util.*
 
 class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
@@ -46,6 +50,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
 
 
+    private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -95,6 +100,10 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         return notice
     }
 
+    fun getErrorMsg(): LiveData<String> {
+        return errorMsg
+    }
+
     fun getProgressStatus(): LiveData<Boolean> {
         return progressStatus
     }
@@ -140,15 +149,29 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                errorMsg.value = e.message
                 progressStatus.value = true
-                registerResponse.value = null
+
+                Log.e("Peter222", "onError  register   ${e.localizedMessage}")
                 Log.e("Peter222", "onError  register   ${e.message}")
 
             }
 
             override fun onNext(t: RegisterResponse) {
-                registerResponse.value = t
-                Log.e("Peter2", "register   onNext:  "+t.data)
+                Log.e("Peter2", "register   onNext:  "+t)
+
+                if(t.code != 0){
+                    if(t.errors.toString() == "register phone_exists"){
+                        registerResponse.value = t
+
+                    } else {
+                        errorMsg.value = t.errors.toString()
+
+                    }
+                } else {
+                    registerResponse.value = t
+                }
+
             }
         }
         register.let { ApiMethods.register(registerObserver,it) }
@@ -291,7 +314,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
             }
         }
-        ApiMethods.deleteMyInfo(deleteMyPhotoObserver, dataBody)
+        ApiMethods.deleteMyPhoto(deleteMyPhotoObserver, dataBody)
     }
 
     fun getChatRoomList(){
@@ -367,5 +390,21 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
         }
         ApiMethods.getNotice(noticeObserver)
+    }
+
+
+    fun test(register: Register){
+        Objects.requireNonNull(ApiService.create(false).register(register)
+
+
+            .subscribeOn(Schedulers.io())
+            .unsubscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.e("Peter","Register code  ${it.code}")
+                Log.e("Peter","Register code  ${it.data}")
+                Log.e("Peter","Register code  ${it.msg}")
+
+            })
     }
 }
