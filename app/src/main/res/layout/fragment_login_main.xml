@@ -78,6 +78,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_login_apple"
             android:layout_height="0dp"
             app:layout_constraintVertical_weight="1"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             layout="@layout/item_login_button"/>
         <include

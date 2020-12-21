@@ -29,7 +29,7 @@
             android:lineSpacingExtra="6sp"
             android:text="活動內文" />
 
-        <com.example.myapplication.custom_view.XWEditText
+        <com.illa.joliveapp.custom_view.XWEditText
             android:id="@+id/ed_event_contain"
             android:layout_width="0dp"
             android:layout_height="0dp"

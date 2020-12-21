@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.myapplication.custom_view.UploadPhotoView
+        <com.illa.joliveapp.custom_view.UploadPhotoView
             android:id="@+id/iv_event_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

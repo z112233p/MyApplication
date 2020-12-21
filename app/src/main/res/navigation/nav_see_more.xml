@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FragmentSeeMoreMain"
-        android:name="com.example.myapplication.fragment.FragmentSeeMoreMain"
+        android:name="com.illa.joliveapp.fragment.FragmentSeeMoreMain"
         tools:layout="@layout/fragment_see_more_main">
 
     </fragment>

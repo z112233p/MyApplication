@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/FragmentEventDetailV2"
-        android:name="com.example.myapplication.fragment.FragmentEventDetailV2"
+        android:name="com.illa.joliveapp.fragment.FragmentEventDetailV2"
         tools:layout="@layout/fragment_event_main_v2">
         <action
             android:id="@+id/action_FragmentEventDetailV2_to_FragmentEventReview"
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/FragmentEventReview"
-        android:name="com.example.myapplication.fragment.FragmentEventReview"
+        android:name="com.illa.joliveapp.fragment.FragmentEventReview"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_event_review">
 

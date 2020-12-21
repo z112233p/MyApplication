@@ -109,7 +109,7 @@
                     android:layout_marginBottom="3dp"
                     android:background="@color/white"/>
 
-                <com.example.myapplication.custom_view.AudioPlayerLayout
+                <com.illa.joliveapp.custom_view.AudioPlayerLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

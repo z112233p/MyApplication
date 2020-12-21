@@ -27,7 +27,7 @@
             android:paddingBottom="5dp"
             android:orientation="vertical">
 
-            <com.example.myapplication.custom_view.SquareImageView
+            <com.illa.joliveapp.custom_view.SquareImageView
                 android:id="@+id/iv_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -92,7 +92,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorWhite"
                 app:layout_constraintStart_toEndOf="@+id/iv_choose_country"
-                android:text="Send Code"/>
+                android:text="發送驗證碼"/>
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

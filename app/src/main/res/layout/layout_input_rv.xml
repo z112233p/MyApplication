@@ -41,7 +41,7 @@
             android:textSize="11sp" />
 
     </LinearLayout>
-<com.example.myapplication.custom_view.OverScrollLayout
+<com.illa.joliveapp.custom_view.OverScrollLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="RtlSymmetry" />
-</com.example.myapplication.custom_view.OverScrollLayout>
+</com.illa.joliveapp.custom_view.OverScrollLayout>
 
 
 </LinearLayout>

@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/FragmentChooseLocation"
-        android:name="com.example.myapplication.fragment.FragmentChooseLocation"
+        android:name="com.illa.joliveapp.fragment.FragmentChooseLocation"
         tools:layout="@layout/fragment_choose_location">
 
     </fragment>
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/FragmentMain"
-        android:name="com.example.myapplication.fragment.FragmentMain"
+        android:name="com.illa.joliveapp.fragment.FragmentMain"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_main">
         <action
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/FragmentEventsMain"
-        android:name="com.example.myapplication.fragment.FragmentEventsMain"
+        android:name="com.illa.joliveapp.fragment.FragmentEventsMain"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_events_main">
 
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/FragmentEventDetail"
-        android:name="com.example.myapplication.fragment.FragmentEventDetail"
+        android:name="com.illa.joliveapp.fragment.FragmentEventDetail"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_event_detial">
         <action
@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/FragmentEventReview"
-        android:name="com.example.myapplication.fragment.FragmentEventReview"
+        android:name="com.illa.joliveapp.fragment.FragmentEventReview"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_event_review">
 
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/FragmentCreateEvent"
-        android:name="com.example.myapplication.fragment.FragmentCreateEvent"
+        android:name="com.illa.joliveapp.fragment.FragmentCreateEvent"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_create_event">
 
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/FragmentMyEvents"
-        android:name="com.example.myapplication.fragment.FragmentMyEvents"
+        android:name="com.illa.joliveapp.fragment.FragmentMyEvents"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_my_events">
 
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/FragmentEventUpdate"
-        android:name="com.example.myapplication.fragment.FragmentEventUpdate"
+        android:name="com.illa.joliveapp.fragment.FragmentEventUpdate"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_event_detial">
 
@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/FragmentChatRoom"
-        android:name="com.example.myapplication.fragment.FragmentChatRoomList"
+        android:name="com.illa.joliveapp.fragment.FragmentChatRoomList"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_chatroom">
 

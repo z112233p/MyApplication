@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FragmentCreateEvent_v2"
-        android:name="com.example.myapplication.fragment.FragmentCreateEvent_v2"
+        android:name="com.illa.joliveapp.fragment.FragmentCreateEvent_v2"
         tools:layout="@layout/fragment_create_event_v2">
         <action
             android:id="@+id/action_FragmentCreateEvent_v2_to_FragmentCreateEvent_step2"
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/FragmentCreateEvent_step2"
-        android:name="com.example.myapplication.fragment.FragmentCreateEvent_step2"
+        android:name="com.illa.joliveapp.fragment.FragmentCreateEvent_step2"
         tools:layout="@layout/fragment_create_event_step_2">
         <action
             android:id="@+id/action_FragmentCreateEvent_step2_to_FragmentCreateEvent_step3"
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/FragmentCreateEvent_step3"
-        android:name="com.example.myapplication.fragment.FragmentCreateEvent_step3"
+        android:name="com.illa.joliveapp.fragment.FragmentCreateEvent_step3"
         tools:layout="@layout/fragment_create_event_step_3">
 
     </fragment>

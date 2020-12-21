@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"/>
-                <com.example.myapplication.custom_view.AudioPlayerLayout
+                <com.illa.joliveapp.custom_view.AudioPlayerLayout
                     android:id="@+id/ll_audio_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

@@ -53,12 +53,16 @@
 
         <FrameLayout
             android:id="@+id/fl_banner"
-            android:layout_width="match_parent"
-            android:layout_height="173dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="18dp"
+            app:layout_constraintDimensionRatio="h,375:130"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ll_hot_events"
             app:layout_constraintTop_toBottomOf="@+id/iv_choose_country">
 
-            <com.example.myapplication.viewpager.BannerViewPager
+            <com.illa.joliveapp.viewpager.BannerViewPager
                 android:id="@+id/vp_banner_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -73,7 +77,7 @@
                 android:orientation="horizontal"/>
         </FrameLayout>
 
-        <com.example.myapplication.custom_view.HorizontalItemLayout
+        <com.illa.joliveapp.custom_view.HorizontalItemLayout
             android:id="@+id/ll_hot_events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,14 +92,14 @@
             android:layout_marginTop="40dp"
             app:layout_constraintTop_toBottomOf="@+id/ll_hot_events"/>
 
-        <com.example.myapplication.custom_view.HorizontalItemLayout
+        <com.illa.joliveapp.custom_view.HorizontalItemLayout
             android:id="@+id/ll_coming_events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             app:layout_constraintTop_toBottomOf="@+id/rv_event_type"/>
 
-        <com.example.myapplication.custom_view.HorizontalItemLayout
+        <com.illa.joliveapp.custom_view.HorizontalItemLayout
             android:id="@+id/ll_may_like_events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

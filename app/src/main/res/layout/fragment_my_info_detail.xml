@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.example.myapplication.viewpager.BannerViewPager
+        <com.illa.joliveapp.viewpager.BannerViewPager
             android:id="@+id/vp_banner_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -28,7 +28,7 @@
         android:background="@color/white"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <com.example.myapplication.custom_view.ContextMenuRecyclerView
+        <com.illa.joliveapp.custom_view.ContextMenuRecyclerView
             android:id="@+id/messagesList"
             android:layout_width="match_parent"
             android:background="@color/white"

@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
 
-        <com.example.myapplication.custom_view.MyView
+        <com.illa.joliveapp.custom_view.MyView
             android:id="@+id/v1"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry" />
 
-        <com.example.myapplication.custom_view.MyView2
+        <com.illa.joliveapp.custom_view.MyView2
             android:id="@+id/v2"
             android:layout_width="0dp"
             android:layout_height="0dp"

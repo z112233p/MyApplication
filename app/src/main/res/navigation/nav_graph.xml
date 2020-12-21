@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FragmentInputVerify"
-        android:name="com.example.myapplication.fragment.FragmentInputVerify"
+        android:name="com.illa.joliveapp.fragment.FragmentInputVerify"
         tools:layout="@layout/fragment_input_verify">
         <action
             android:id="@+id/action_FragmentInputVerify_to_SecondFragment"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/FragmentInputPhone"
-        android:name="com.example.myapplication.fragment.FragmentInputPhone"
+        android:name="com.illa.joliveapp.fragment.FragmentInputPhone"
         tools:layout="@layout/fragment_input_phone">
         <action
             android:id="@+id/action_FragmentInputPhone_to_FragmentInputVerify"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/FragmentLoginMain"
-        android:name="com.example.myapplication.fragment.FragmentLoginMain"
+        android:name="com.illa.joliveapp.fragment.FragmentLoginMain"
         tools:layout="@layout/fragment_login_main">
         <action
             android:id="@+id/action_FragmentLoginMain_to_FragmentInputPhone"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/FragmentEditMyInfo"
-        android:name="com.example.myapplication.fragment.FragmentEditMyInfo"
+        android:name="com.illa.joliveapp.fragment.FragmentEditMyInfo"
         android:label="FragmentEditMyInfo"
         tools:layout="@layout/fragment_edit_myinfo">
 
@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/FragmentRegister"
-        android:name="com.example.myapplication.fragment.FragmentRegister"
+        android:name="com.illa.joliveapp.fragment.FragmentRegister"
         android:label="FragmentRegister"
         tools:layout="@layout/fragment_register">
 
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.myapplication.fragment.FragmentLogin"
+        android:name="com.illa.joliveapp.fragment.FragmentLogin"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_login_main">
 
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.myapplication.fragment.FragmentMyInfo"
+        android:name="com.illa.joliveapp.fragment.FragmentMyInfo"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_myinfo">
 
@@ -88,7 +88,7 @@
 
     <fragment
         android:id="@+id/FragmentChatRoom"
-        android:name="com.example.myapplication.fragment.FragmentChatRoomList"
+        android:name="com.illa.joliveapp.fragment.FragmentChatRoomList"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_chatroom">
 

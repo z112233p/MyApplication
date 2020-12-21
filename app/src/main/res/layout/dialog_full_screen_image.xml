@@ -8,7 +8,7 @@
 
 
 
-    <com.example.myapplication.custom_view.PinchImageView
+    <com.illa.joliveapp.custom_view.PinchImageView
         android:id="@+id/iv_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

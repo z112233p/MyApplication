@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FragmentEditMyInfoV2"
-        android:name="com.example.myapplication.fragment.FragmentEditMyInfoV2"
+        android:name="com.illa.joliveapp.fragment.FragmentEditMyInfoV2"
         tools:layout="@layout/fragment_edit_my_info">
         <action
             android:id="@+id/action_FragmentEditMyInfoV2_to_FragmentEditMyInfo_Interest"
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/FragmentEditMyInfo_Interest"
-        android:name="com.example.myapplication.fragment.FragmentEditMyInfo_Interest"
+        android:name="com.illa.joliveapp.fragment.FragmentEditMyInfo_Interest"
         tools:layout="@layout/fragment_creat_profile_step_1">
 
     </fragment>
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/FragmentEditMyInfo_Job"
-        android:name="com.example.myapplication.fragment.FragmentEditMyInfo_Job"
+        android:name="com.illa.joliveapp.fragment.FragmentEditMyInfo_Job"
         tools:layout="@layout/fragment_edit_myinfo_job">
 
     </fragment>
