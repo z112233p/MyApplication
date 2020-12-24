@@ -73,12 +73,14 @@ class FragmentChatRoomList : BaseFragment() {
 
     private fun initObserve(){
         eventsActivityVM.getChatRoomTokenData().observe(viewLifecycleOwner, Observer {
-            if(it != null){
+            Log.e("peter","getChatRoomTokenData   $it")
+            if(it.data != null){
                 PrefHelper.setChatToken(it.data.chat_auth_token)
                 PrefHelper.setChatId(it.data.chat_user_id)
                 eventsActivityVM.getChatRoomList()
 
             }
+
         })
 
         eventsActivityVM.getChatRoomListData().observe(viewLifecycleOwner, Observer {

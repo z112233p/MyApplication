@@ -1,11 +1,14 @@
 package com.illa.joliveapp.fragment
 
+import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.Adapter_Event_Type_Main_Page
 import com.illa.joliveapp.adapter.Adapter_Events
@@ -67,6 +70,20 @@ class FragmentMain : BaseFragment() {
 
     }
 
+    private val onSwipeToRefresh = SwipeRefreshLayout.OnRefreshListener {
+        callApis()
+        ll_hot_events.getRecycleView().scrollToPosition(0)
+        ll_coming_events.getRecycleView().scrollToPosition(0)
+        ll_may_like_events.getRecycleView().scrollToPosition(0)
+
+        Handler().postDelayed({
+            if(home_refresh.isRefreshing){
+                home_refresh.isRefreshing = false
+            }
+
+        }, 1000)
+    }
+
     private fun callApis(){
         eventsActivityVM.getEventsApi(null, null)
         eventsActivityVM.getEventCategory()
@@ -75,6 +92,9 @@ class FragmentMain : BaseFragment() {
     }
 
     fun init(){
+        home_refresh.setOnRefreshListener(onSwipeToRefresh)
+        home_refresh.setColorSchemeColors(getMContext().get()?.resources!!.getColor(R.color.colorAccent))
+
         eventCategoryList = ArrayList()
         imageList = ArrayList()
         imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
@@ -134,7 +154,7 @@ class FragmentMain : BaseFragment() {
 //                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
 
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })
@@ -155,7 +175,7 @@ class FragmentMain : BaseFragment() {
 //                val bundle = bundleOf(Config.EVENT_LABEL to label)
 //                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })
@@ -175,7 +195,7 @@ class FragmentMain : BaseFragment() {
 //                val bundle = bundleOf(Config.EVENT_LABEL to label)
 //                findNavController().navigate(R.id.action_FragmentMain_to_FragmentEventDetail, bundle)
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })

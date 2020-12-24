@@ -130,7 +130,13 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
             override fun onNext(t: ResendResponse) {
                 Log.e("Peter2", "onNext:  "+t)
-                resendSMSCheck.value = t.data.resend
+                if(t.data == null){
+                    resendSMSCheck.value = false
+
+                } else {
+                    resendSMSCheck.value = t.data.resend
+
+                }
             }
         }
         resendSMS.let { ApiMethods.resendSMS(resendSMSObserver,it) }
@@ -163,6 +169,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
                 if(t.code != 0){
                     if(t.errors.toString() == "register phone_exists"){
+                        resendSMS(resendSMS = ResendSMS(register.phone))
                         registerResponse.value = t
 
                     } else {
@@ -230,6 +237,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Throwable) {
+                Log.e("Peter2", "getMyInfo  onError:  "+e.message)
+
                 progressStatus.value = true
 
             }

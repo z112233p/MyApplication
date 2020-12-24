@@ -59,7 +59,7 @@ class FragmentMyinfo_event : BaseFragment() {
         myEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })
@@ -67,7 +67,7 @@ class FragmentMyinfo_event : BaseFragment() {
         historyEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })

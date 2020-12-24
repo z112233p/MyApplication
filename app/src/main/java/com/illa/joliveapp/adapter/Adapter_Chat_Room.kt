@@ -30,6 +30,7 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
 
     private lateinit var dataList: MutableList<Update>
     private lateinit var mContext: Context
+    private lateinit var eventID: String
 
     constructor(context: Context) : this(){
         dataList = ArrayList()
@@ -53,7 +54,9 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
 
         if(jsonObject.get("type") == "event_group"){
             url = BuildConfig.CHATROOM_IMAGE_URL+"event/"+data.fname.replace("event_", "")+".jpg"
+            eventID = data.fname.replace("event_", "")
         } else if(jsonObject.get("type") == "dating_group"){
+            eventID = ""
             url = BuildConfig.CHATROOM_IMAGE_URL+"dating/"+data.fname.replace("_"+PrefHelper.chatLable, "")+".jpg"
         }
         Log.e("Peter", "dealChatRoomPhoto   $url")
@@ -119,7 +122,7 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
         holder.tvChatRoomName.text = ""
         holder.tvChatRoomName.text = dealChatRoomName(data)
         holder.itemView.setOnClickListener {
-            IntentHelper.gotoChatRoom(mContext, data._id)
+            IntentHelper.gotoChatRoom(mContext, data._id, data.fname.replace("event_", ""))
         }
 
         if(data.lastMessage == null){
@@ -128,7 +131,7 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
             return
         }
 
-        val username = if(data.lastMessage?.u?.username == PrefHelper.chatLable){
+        val username = if(data.lastMessage.u.username == PrefHelper.chatLable){
             "你"
         } else {
             if(data.lastMessage != null){

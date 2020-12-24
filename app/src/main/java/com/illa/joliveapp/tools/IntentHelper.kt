@@ -7,15 +7,17 @@ import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import com.illa.joliveapp.activity.*
+import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 
 
 object IntentHelper {
 
 
-    fun gotoChatRoom(ctx: Context, rID: String) {
+    fun gotoChatRoom(ctx: Context, rID: String, eventId: String) {
         val intent = Intent(ctx, ChatRoomActivity::class.java)
         val b = Bundle()
         b.putString("ChatRoomID", rID)
+        b.putString("eventID", eventId)
         intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
@@ -77,10 +79,21 @@ object IntentHelper {
         ctx.startActivity(intent)
     }
 
-    fun gotoEventDetailActivity(ctx: Context, label: String){
+    fun gotoEventDetailActivity(ctx: Context, label: String, gotoReview: Boolean){
         val intent = Intent(ctx, EventDetailActivity::class.java)
         val b = Bundle()
         b.putString("Label", label)
+        b.putBoolean("gotoReview", gotoReview)
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoEventReviewActivity(ctx: Context, label: String, eventId: String){
+        val intent = Intent(ctx, EventReviewActivity::class.java)
+        val b = Bundle()
+        b.putString("Label", label)
+        b.putString("eventId", eventId)
         intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
@@ -94,6 +107,17 @@ object IntentHelper {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
+
+    fun gotoMyInfoActivity(ctx: Context, label: String, position: Int){
+        val intent = Intent(ctx, MyInfoActivity::class.java)
+        val b = Bundle()
+        b.putString("Label", label)
+        b.putInt("position", position)
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
 
     fun gotoEditMyInfoActivity(ctx: Context){
         val intent = Intent(ctx, EditMyInfoActivity::class.java)

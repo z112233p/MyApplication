@@ -164,12 +164,14 @@ class FragmentInputVerify : BaseFragment() {
         })
 
         mainActVM.getResendSMSCheck().observe(viewLifecycleOwner, Observer {
-
-            if(it){
-                Tools.toast(getMContext().get(), "驗證碼發送成功")
-            } else {
-                Tools.toast(getMContext().get(), "驗證碼發送失敗")
-            }
+            //已重新發送驗證碼
+            Tools.toast(getMContext().get(), "已重新發送驗證碼")
+//
+//            if(it){
+//                Tools.toast(getMContext().get(), "驗證碼發送成功")
+//            } else {
+//                Tools.toast(getMContext().get(), "驗證碼發送失敗")
+//            }
         })
 
         mainActVM.getMyInfoData().observe(viewLifecycleOwner, Observer {

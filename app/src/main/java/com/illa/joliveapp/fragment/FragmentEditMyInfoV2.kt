@@ -42,6 +42,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
     private val myCalendar: Calendar = Calendar.getInstance()
     private var selectedGender = 0
     private var photoPosition = 0
+    private var currentPhotoSize = 0
     private val dataBody :HashMap<String, String> = HashMap()
     private lateinit var adapter: Adapter_Profile_PhotoV2
     private lateinit var date: DatePickerDialog.OnDateSetListener
@@ -141,10 +142,14 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         adapter.setOnItemClickListener(object : Adapter_Profile_PhotoV2.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, url: String) {
                 photoPosition = position
-                getMContext().get()?.let { ctx -> CropImage.activity().start(ctx,this@FragmentEditMyInfoV2) }
+                getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentEditMyInfoV2) }
             }
 
             override fun onDeletePhoto(view: View?, position: Int, url: String) {
+                if(currentPhotoSize == 1){
+                 Tools.toast(getMContext().get(), "必須保留一張照片")
+                    return
+                }
                 Log.e("Peter","onDeletePhoto    $url")
                 val dataBody = DeleteMyPhoto("delete",url)
                 profileActivityVM.deleteMyPhoto(dataBody)
@@ -212,6 +217,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         profileActivityVM.getMyInfoData().observe(viewLifecycleOwner, Observer {
 
             adapter.setData(it.user.photos)
+            currentPhotoSize = it.user.photos?.size!!
 
             cl_edit_nickname.ed_data.setText(it.user.nickname)
             cl_edit_birth.ed_data.setText(it.user.birthday)
@@ -265,8 +271,6 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 it.user.interest_map?.forEach {
                     act.interestArrayList.add(it)
                 }
-
-
             } else {
                 cl_edit_interest.ed_data.setText(MyApp.get()!!.getInterest(it.user.interest_map!![0]))
                 cl_edit_interest.ed_data.visibility = View.VISIBLE
@@ -276,10 +280,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 it.user.interest_map?.forEach {
                     act.interestArrayList.add(it)
                 }
-
             }
-
-
 
             if(act.jobId == -1){
                 cl_edit_job.ed_data.setText(MyApp.get()!!.getJob(it.user.job_id.toInt()))
@@ -303,6 +304,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
 
         profileActivityVM.getMyPhoto().observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
+            currentPhotoSize = it.size
         })
 
         profileActivityVM.getDeleteMyPhoto().observe(viewLifecycleOwner, Observer {

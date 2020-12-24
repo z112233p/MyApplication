@@ -96,6 +96,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name="com.illa.joliveapp.activity.EventReviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name="com.illa.joliveapp.activity.MyInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

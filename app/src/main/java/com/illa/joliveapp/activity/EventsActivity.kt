@@ -25,9 +25,10 @@ class EventsActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
         setSupportActionBar(toolbar)
+        ProgressDialogController.setContext(this)
+
         initObserve()
         val navController= findNavController(this,R.id.nav_host_fragment)
-        ProgressDialogController.setContext(this)
 
         // Hide status bar
         window.addFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH)
@@ -81,6 +82,7 @@ class EventsActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
         ProgressDialogController.setContext(this)
+
         Log.e("Peter","EventsActivity onResume")
         nav_view.selectedItemId = onBackID
     }

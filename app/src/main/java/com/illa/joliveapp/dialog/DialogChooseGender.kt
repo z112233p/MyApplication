@@ -57,7 +57,7 @@ class DialogChooseGender(context: Context) : Dialog(context) {
                 dismiss()
             }
             R.id.tv_male -> {
-                onClickListener.onFemaleClick(tv_male.text.toString())
+                onClickListener.onMaleClick(tv_male.text.toString())
                 dismiss()
             }
         }

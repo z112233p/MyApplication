@@ -77,6 +77,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     private lateinit var animLayout: MenuItemLayout3
     private lateinit var backgroundCardViewHolder: CardView
     private lateinit var personalDataLayout: PersonalDataLayout
+    private lateinit var eventDataLayout: EventDataLayout
 
     private var layoutHeight by Delegates.notNull<Int>()
     private var hasAnimation: Boolean = false
@@ -85,6 +86,9 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     private lateinit var transactionBitmap: Bitmap
 
     private lateinit var rId: String
+    private lateinit var eventId: String
+    private var eventLabel = ""
+
     private lateinit var adapter: Adapter_Chat_Room_Message<Message>
     private lateinit var dataList: ArrayList<Message>
     private lateinit var imm: InputMethodManager
@@ -129,20 +133,37 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
             Log.e("Peter","personalDataLayout.post    ${personalDataLayout.measuredHeight}")
             Log.e("Peter","personalDataLayout.post2    ${personalDataLayout.height}")
 
-            layoutHeight = personalDataLayout.height + 250
-            optionLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,layoutHeight)
-            animLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,layoutHeight)
-            layoutHeight -= 250
+//            layoutHeight = personalDataLayout.height + 250
+//            optionLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+//            animLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+//            layoutHeight -= 250
         }
 
+        eventDataLayout = EventDataLayout(this)
+
+        eventDataLayout.post {
+            Log.e("Peter","eventDataLayout.post    ${personalDataLayout.measuredHeight}")
+            Log.e("Peter","eventDataLayout.post2    ${personalDataLayout.height}")
+
+//            layoutHeight = eventDataLayout.height + 250
+//            optionLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+//            animLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+//            layoutHeight -= 250
+        }
+
+
+
         optionLayout = LinearLayout(this)
-        optionLayout.alpha = 0.5F
+//        optionLayout.alpha = 0.5F
 
 
         optionLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,1500)
         optionLayout.orientation = LinearLayout.VERTICAL
         optionLayout.setBackgroundColor(this.resources.getColor(R.color.transparent))
+//        optionLayout.addView(personalDataLayout)
+        optionLayout.addView(eventDataLayout)
         optionLayout.addView(personalDataLayout)
+
         val itemNames = this.resources.getStringArray(R.array.chat_room_menu)
 //        itemNames.forEach { name ->
 //            optionLayout.addView(MenuItemLayout(this).apply {
@@ -249,6 +270,9 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         init()
         initObserve()
         chatRoomActVM.getChatHistory(rId)
+        if(!TextUtils.isEmpty(eventId)){
+            chatRoomActVM.getEventDetailById(eventId)
+        }
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
 
@@ -334,9 +358,12 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 
     private fun getIntentData(){
         rId = ""
+        eventId = ""
         val b = intent?.extras
         rId = b?.getString("ChatRoomID")!!
+        eventId = b.getString("eventID")!!
         PrefHelper.setChatRoomId(rId)
+        Log.e("Peter","chatroom ID    $rId")
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -371,7 +398,32 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
                     message.imageUrl!!, itemView.findViewById(R.id.image))
             }
         }
-        payload.setAvatarClickListener(iii)
+        payload.setImgClickListener(iii)
+        payload.setAvatarOnClickListener(object : BaseMessageViewHolder.OnAvatarClickListener{
+            override fun onAvatarClick(message: Message, itemView: View) {
+
+                Log.e("Peter","onAvatarClick  message    ${message.author.id}")
+                Log.e("Peter","onAvatarClick  message    ${message.author.name}")
+
+                chatRoomActVM.getUserInfo(message.author.id)
+                initAnimaView()
+                personalDataLayout.setLabel(message.author.id)
+                layoutHeight = personalDataLayout.height + 250
+                optionLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+                animLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+                layoutHeight -= 250
+
+                optionLayout.removeAllViews()
+                optionLayout.addView(personalDataLayout)
+
+                Log.e("Peter","item.action_member  layoutHeight    $layoutHeight")
+                animLayout.startAnimation(AnimHelper.getVerticalAnimation(animLayout, 500,
+                    hasAnimation, layoutHeight, layoutHeight))
+                hasAnimation = !hasAnimation
+            }
+
+        })
+
 
         val holdersConfig = MessagesListAdapter.HoldersConfig()
 //        holdersConfig.setOutcoming(CustomOutComingTextMessageViewHolder::class.java, R.layout.item_custom_outcoming_message)
@@ -615,6 +667,17 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     }
 
     private fun initObserve(){
+        chatRoomActVM.getEventDetailData().observe(this, Observer {
+            Log.e("Peter","getEventDetailData INCHAT  $it")
+            eventDataLayout.setData(it)
+            eventLabel = it.data.label
+        })
+
+
+        chatRoomActVM.getUserInfoData().observe(this, Observer {
+            personalDataLayout.setData(it)
+        })
+
         chatRoomActVM.getMessageUpdate().observe(this, Observer {
             it.imageUrl?.let { it1 -> imgUrlMap.put(it.id, it1) }
             adapter.update(it, false)
@@ -723,55 +786,70 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         return true
     }
 
+    private fun initAnimaView(){
+        messagesList.stopScroll()
+        Blurry.with(this).radius(100).capture(ll_chat_room_main).into(mImageView)
+
+        val drawable :BitmapDrawable = mImageView.drawable as BitmapDrawable
+        transactionBitmap = drawable.bitmap
+        val bitmap = drawable.bitmap
+        mImageView.setImageBitmap(bitmap)
+
+        val w = bitmap . getWidth () // 得到图片的宽，高
+        val h = bitmap . getHeight ()
+        Log.e("Peter","animLayout.viewTreeObserver2  bitmap   $w   $h")
+
+        ll_gray_view.visibility = View.VISIBLE
+        ll_gray_view.bringToFront()
+
+        Log.e("Peter", "optionLayout    ${optionLayout.height}")
+
+        var alphaParam : Float = 0F
+        var alphaParam2 : Float = 0.5F
+
+        object : CountDownTimer(500, 25) {
+            override fun onFinish() {
+                if(!hasAnimation){
+                    ll_gray_view.visibility = View.GONE
+                }
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                if(!hasAnimation){
+                    alphaParam2 -= 0.025F
+                    ll_gray_view.alpha = alphaParam2
+
+                } else {
+                    alphaParam += 0.025F
+                    ll_gray_view.alpha = alphaParam
+                }
+
+            }
+        }.start()
+    }
+
     @SuppressLint("Range")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        messagesList.scrollToPosition((messagesList.getChildAt (0).layoutParams as RecyclerView.LayoutParams).viewAdapterPosition)
-        messagesList.stopScroll()
         return when (item.itemId) {
             R.id.action_option -> {
-                Blurry.with(this).radius(100).capture(ll_chat_room_main).into(mImageView)
+                initAnimaView()
 
-                val drawable :BitmapDrawable = mImageView.drawable as BitmapDrawable
-                transactionBitmap = drawable.bitmap
-                val bitmap = drawable.bitmap
-                mImageView.setImageBitmap(bitmap)
+                layoutHeight = eventDataLayout.height + 250
+                optionLayout.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+                animLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,layoutHeight)
+                layoutHeight -= 250
 
-                val w = bitmap . getWidth () // 得到图片的宽，高
-                val h = bitmap . getHeight ()
-                Log.e("Peter","animLayout.viewTreeObserver2  bitmap   $w   $h")
+                optionLayout.removeAllViews()
+                optionLayout.addView(eventDataLayout)
 
-                ll_gray_view.visibility = View.VISIBLE
-                ll_gray_view.bringToFront()
-
-                Log.e("Peter", "optionLayout    ${optionLayout.height}")
-
-                var alphaParam : Float = 0F
-                var alphaParam2 : Float = 0.5F
-
-                object : CountDownTimer(500, 25) {
-
-                    override fun onFinish() {
-                        if(!hasAnimation){
-                            ll_gray_view.visibility = View.GONE
-                        }
-                    }
-
-                    override fun onTick(millisUntilFinished: Long) {
-                        if(!hasAnimation){
-                            alphaParam2 -= 0.025F
-                            ll_gray_view.alpha = alphaParam2
-
-                        } else {
-                            alphaParam += 0.025F
-                            ll_gray_view.alpha = alphaParam
-                        }
-
-                    }
-                }.start()
-
+                Log.e("Peter","item.action_option  layoutHeight    $layoutHeight")
                 animLayout.startAnimation(AnimHelper.getVerticalAnimation(animLayout, 500,
                     hasAnimation, layoutHeight, layoutHeight))
                 hasAnimation = !hasAnimation
+                true
+            }
+            R.id.action_member ->{
+                IntentHelper.gotoEventReviewActivity(this,eventLabel,eventId)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -14,7 +14,7 @@
     <item
         android:id="@+id/action_option"
         android:orderInCategory="50"
-        android:icon="@mipmap/ic_triple_dot"
+        android:icon="@mipmap/ic_three_dot_white"
         app:showAsAction="ifRoom"
         android:title="ic_triple_dot" />
 </menu>

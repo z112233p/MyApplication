@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_event_detail"
+    app:startDestination="@id/FragmentEventReview">
+
+
+
+    <fragment
+        android:id="@+id/FragmentEventDetailV2"
+        android:name="com.illa.joliveapp.fragment.FragmentEventDetailV2"
+        tools:layout="@layout/fragment_event_main_v2">
+        <action
+            android:id="@+id/action_FragmentEventDetailV2_to_FragmentEventReview"
+            app:destination="@id/FragmentEventReview" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FragmentEventReview"
+        android:name="com.illa.joliveapp.fragment.FragmentEventReviewV2"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_event_review">
+
+    </fragment>
+
+
+</navigation>

@@ -27,6 +27,8 @@ class Adapter_Chat_Room_All() : RecyclerView.Adapter<Adapter_Chat_Room_All.ViewH
 
     private lateinit var dataList: MutableList<Update>
     private lateinit var mContext: Context
+    private lateinit var eventID: String
+
 
     constructor(context: Context) : this(){
         dataList = ArrayList()
@@ -50,8 +52,10 @@ class Adapter_Chat_Room_All() : RecyclerView.Adapter<Adapter_Chat_Room_All.ViewH
 
         if(jsonObject.get("type") == "event_group"){
             url = BuildConfig.CHATROOM_IMAGE_URL+"event/"+data.fname.replace("event_", "")+".jpg"
+            eventID = data.fname.replace("event_", "")
         } else if(jsonObject.get("type") == "dating_group"){
             url = BuildConfig.CHATROOM_IMAGE_URL+"dating/"+data.fname.replace("_"+PrefHelper.chatLable, "")+".jpg"
+            eventID = ""
         }
 
         ImgHelper.loadNormalImg(mContext, url, imageView)
@@ -115,10 +119,10 @@ class Adapter_Chat_Room_All() : RecyclerView.Adapter<Adapter_Chat_Room_All.ViewH
         holder.tvChatRoomName.text = ""
         holder.tvChatRoomName.text = dealChatRoomName(data)
         holder.itemView.setOnClickListener {
-            IntentHelper.gotoChatRoom(mContext, data._id)
+            IntentHelper.gotoChatRoom(mContext, data._id, data.fname.replace("event_", ""))
         }
         holder.ivChatRoomPhoto.setOnClickListener {
-            IntentHelper.gotoChatRoom(mContext, data._id)
+            IntentHelper.gotoChatRoom(mContext, data._id, data.fname.replace("event_", ""))
         }
 
 //

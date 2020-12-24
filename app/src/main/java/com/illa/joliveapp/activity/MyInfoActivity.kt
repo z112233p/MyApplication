@@ -23,7 +23,7 @@ class MyInfoActivity : AppCompatActivity() {
 
     private var f1 = FragmentMyinfo_info()
     private var f2 = FragmentMyinfo_event()
-
+    private var currentPosition = 0
     var userLabel = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +47,7 @@ class MyInfoActivity : AppCompatActivity() {
     private fun getIntentData(){
         val b = intent.extras
         userLabel = b?.getString("Label")!!
+        currentPosition = b.getInt("position")
 
     }
 
@@ -58,7 +59,7 @@ class MyInfoActivity : AppCompatActivity() {
 
         val pagerAdapter = AdapterPager(supportFragmentManager, tabTitle, myInfoFragments)
         vp_my_info.adapter = pagerAdapter
-        vp_my_info.currentItem = 0
+        vp_my_info.currentItem = currentPosition
         tab_my_info.setupWithViewPager(vp_my_info)
 
 

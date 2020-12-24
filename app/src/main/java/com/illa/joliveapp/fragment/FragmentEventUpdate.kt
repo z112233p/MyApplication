@@ -227,7 +227,7 @@ class FragmentEventUpdate : BaseFragment(){
             }
             R.id.iv_event_photo -> {
                 getMContext().get()?.let { ctx ->
-                    CropImage.activity().start(ctx,this@FragmentEventUpdate)
+                    CropImage.activity().setAspectRatio(345,224).start(ctx,this@FragmentEventUpdate)
                 }
             }
             R.id.btn_goto_map_activity -> getMContext().get()?.let { it1 ->

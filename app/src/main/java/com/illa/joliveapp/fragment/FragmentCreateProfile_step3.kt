@@ -134,7 +134,6 @@ class FragmentCreateProfile_step3 : BaseFragment() {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
@@ -164,7 +163,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
             R.id.iv_profile_photo -> {
 //                v2.setColor("#1778f2")
 //                v1.setColor("#ec663c")
-                getMContext().get()?.let { ctx -> CropImage.activity().start(ctx,this@FragmentCreateProfile_step3) }
+                getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentCreateProfile_step3) }
 
             }
             R.id.ed_user_birth -> {

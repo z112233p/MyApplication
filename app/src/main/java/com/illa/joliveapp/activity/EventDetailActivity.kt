@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -36,6 +37,7 @@ class EventDetailActivity : AppCompatActivity() {
     var eventLabel = ""
     var eventID = 0
     var userLabel = ""
+    var gotoReview = false
 
     private lateinit var actionItem: MenuItem
     private lateinit var optionItem: MenuItem
@@ -51,6 +53,7 @@ class EventDetailActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+//        checkIntentData()
     }
 
     override fun onResume() {
@@ -62,8 +65,9 @@ class EventDetailActivity : AppCompatActivity() {
     private fun getIntentData(){
         val b = intent.extras
         eventLabel = b?.getString("Label")!!
-
+        gotoReview = b.getBoolean("gotoReview")
     }
+
 
     private fun init(){
         tv_event_join_btn.setOnClickListener(onClick)
@@ -79,8 +83,6 @@ class EventDetailActivity : AppCompatActivity() {
         optionItem.isVisible = false
         return true
     }
-
-
 
     private val onClick = View.OnClickListener {
         when(it.id){
@@ -109,7 +111,6 @@ class EventDetailActivity : AppCompatActivity() {
 
                 Tools.toast(this, "報名成功")
                 dealEventStatus(0.0)
-
 
             }
         })
@@ -219,7 +220,7 @@ class EventDetailActivity : AppCompatActivity() {
                         gd.colors = intArrayOf(secondColor, mainColor)
                         gd.useLevel = false
                         gd.gradientType = GradientDrawable.LINEAR_GRADIENT
-                        setEventOwnerLayout(gd)
+//                        setEventOwnerLayout(gd)
                     }
                 }
             })

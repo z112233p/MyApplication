@@ -60,7 +60,7 @@ class FragmentSeeMoreMain : BaseFragment() {
         adapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })

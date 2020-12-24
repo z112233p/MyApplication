@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
@@ -128,7 +129,6 @@ class FragmentEventDetailV2 : BaseFragment() {
 
             act.dealEventStatus(eventDetailData.join_type)
             act.eventID = eventDetailData.id
-
             locationLatitude = eventDetailData.location_gps_latitude
             locationLongitude = eventDetailData.location_gps_longitude
 
@@ -165,6 +165,14 @@ class FragmentEventDetailV2 : BaseFragment() {
         eventDetailActVM.getEventDetailV2(act.eventLabel)
     }
 
+    private fun checkIntentData(){
+        if(act.gotoReview){
+            val bundle = bundleOf("eventID" to act.eventID)
+            findNavController().navigate(R.id.action_FragmentEventDetailV2_to_FragmentEventReview, bundle)
+
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -188,7 +196,9 @@ class FragmentEventDetailV2 : BaseFragment() {
                         return@OnClickListener
                     }
                     Log.e("Peter","ChatId   $ChatId")
-                    getMContext().get()?.let { it1 -> IntentHelper.gotoChatRoom(it1,ChatId) }
+                    getMContext().get()?.let { it1 -> IntentHelper.gotoChatRoom(it1,ChatId,
+                        act.eventID.toString()
+                    ) }
                     dialog.dismiss()
 
                 })

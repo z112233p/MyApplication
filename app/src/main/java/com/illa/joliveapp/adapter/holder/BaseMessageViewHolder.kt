@@ -171,7 +171,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
         tvReplyText.visibility = if (randomReplyItemBool) View.GONE else View.VISIBLE
 
         messageUserAvatar?.setOnClickListener {
-            payload?.avatarClickListener?.onAvatarClick()
+            payload?.avatarClickListener?.onAvatarClick(message, itemView)
         }
 
         llMessageReply?.setOnClickListener {
@@ -207,7 +207,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
 
     //Item Onclick Interface
     interface OnAvatarClickListener {
-        fun onAvatarClick()
+        fun onAvatarClick(message: Message, itemView: View)
     }
 
     interface OnReplyClickListener {
@@ -220,7 +220,7 @@ abstract class BaseMessageViewHolder(itemView: View) :
 
     class Payload {
         var avatarClickListener: OnAvatarClickListener? = object : OnAvatarClickListener{
-            override fun onAvatarClick() {
+            override fun onAvatarClick(message: Message, itemView: View) {
                 Log.e("BaseMessageViewHolder","onAvatarClick")
             }
         }
@@ -236,8 +236,12 @@ abstract class BaseMessageViewHolder(itemView: View) :
             }
         }
 
-        fun setAvatarClickListener(iii: OnImageClickListener) {
+        fun setImgClickListener(iii: OnImageClickListener) {
             imageClickListener = iii
+        }
+
+        fun setAvatarOnClickListener(param: OnAvatarClickListener){
+            avatarClickListener = param
         }
 
     }

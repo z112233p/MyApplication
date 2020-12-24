@@ -143,6 +143,10 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetailV2(label)), pbObserver);
     }
 
+    public static void getEventDetailById(Observer< EventDetailV2 > pbObserver, String eventId){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetailById(eventId)), pbObserver);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void createEvent(Observer<String> pbObserver, Map<String, String> dataBody, File file){
         String[] keySet = dataBody.keySet().toArray(new String[0]);

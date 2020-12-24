@@ -33,9 +33,9 @@
         android:layout_weight="1"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_verify_images"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_weight="9"
         android:orientation="horizontal">
         <FrameLayout
             android:id="@+id/fl_verify_1"
@@ -44,7 +44,8 @@
             android:padding="2dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fl_verify_2">
             <ImageView
                 android:id="@+id/iv_verify_1"
                 android:layout_width="wrap_content"
@@ -159,7 +160,8 @@
             android:padding="2dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fl_verify_5">
             <ImageView
                 android:id="@+id/iv_verify_6"
                 android:layout_width="wrap_content"

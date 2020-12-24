@@ -42,9 +42,12 @@ class CircleViewPager(private var mContext: Context,
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val pos: Int = position % imageList.size
         val layoutInflater: LayoutInflater = this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View = layoutInflater.inflate(R.layout.item_banner, container, false)
+
+        if (imageList.isEmpty()){return view}
+
+        val pos: Int = position % imageList.size
 
         view.setOnClickListener {
             callback.itemOnClick(pos)

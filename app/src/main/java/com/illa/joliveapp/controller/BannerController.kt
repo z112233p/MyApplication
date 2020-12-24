@@ -14,7 +14,7 @@ import com.illa.joliveapp.R
 import kotlin.collections.ArrayList
 
 class BannerController (private val context: Context,
-                        private val listSize: Int, dealPager: ViewPager?,
+                        private var listSize: Int, dealPager: ViewPager?,
                         private val dotsLayout: LinearLayout?) {
 
     private var currentPosition = 0
@@ -23,6 +23,9 @@ class BannerController (private val context: Context,
     private var isAutoPlay = false
 
     init {
+        if(listSize == 0){
+            listSize = 1
+        }
         val handlerThread = HandlerThread("background-handler")
         handlerThread.start()
         val looper = handlerThread.looper

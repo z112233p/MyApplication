@@ -39,7 +39,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     private val chatRoomList: MutableLiveData<ChatRoomList> = MutableLiveData<ChatRoomList>()
     private val chatRoomToken: MutableLiveData<ChatRoomToken> = MutableLiveData<ChatRoomToken>()
 
-    private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private val progressStatus: SingleLiveEvent<Boolean> = SingleLiveEvent<Boolean>()
 
 
     fun getEvents(): LiveData<EventList> {

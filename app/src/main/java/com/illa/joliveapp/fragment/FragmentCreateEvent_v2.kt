@@ -20,6 +20,7 @@ import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.CreateEventActivity
 import com.illa.joliveapp.activity.MapsActivity
 import com.illa.joliveapp.adapter.Adapter_Event_Type
+import com.illa.joliveapp.custom_view.RangeTimePickerDialog
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
@@ -49,6 +50,11 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     private lateinit var eventTypeAdapter: Adapter_Event_Type
     private lateinit var act: CreateEventActivity
 
+    private var dateSdf = SimpleDateFormat("yyyy-MM-dd")
+    private var timeSdf = SimpleDateFormat("HH:mm:ss")
+    private var hourSdf = SimpleDateFormat("HH")
+    private var minuteSdf = SimpleDateFormat("mm")
+    private var nowTime =  Date()
 
     private val MAP_ACTIVITY_RESULT_OK = 999
     private var eventType = "1"
@@ -155,14 +161,14 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     private val onClick = View.OnClickListener {
         when(it.id){
             R.id.ll_choose_start_time ->{
-                DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                val datePicker = DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
                     val chooseDate :Date = dateFormat.parse("$year-${month+1}-$day")
                     val chooseDate2 : String? = dateFormat.format(chooseDate)
 
                     tv_event_start_date.text = chooseDate2
                     hasStartDay = true
                     checkNextStep()
-                    TimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                    val timePicker = RangeTimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                         val hourString = if(hour.toString().length < 2){
                             "0$hour"
                         } else {
@@ -174,22 +180,63 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                             minute.toString()
                         }
                         tv_event_start_time.text = "$hourString:$minuteString:00"
+                        if(tv_event_start_date.text == tv_event_end_date.text){
+                            tv_event_end_date.text = ""
+                            tv_event_end_time.text = ""
+
+
+                        } else if(tv_event_start_date.text == tv_event_restriction_date.text){
+                            tv_event_restriction_date.text = ""
+                            tv_event_restriction_time.text = ""
+                        }
+
                         hasStartTime = true
                         checkNextStep()
-                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false)
 
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+                    if(!TextUtils.isEmpty(tv_event_start_time.text)){
+                        val hour = tv_event_start_time.text.split(":")[0].toInt()
+                        val minute = tv_event_start_time.text.split(":")[1].toInt()
+
+                        timePicker.updateTime(hour,minute)
+                    }
+                    if(!TextUtils.isEmpty(tv_event_restriction_time.text) && tv_event_restriction_date.text == tv_event_start_date.text){
+                        val minTime = timeSdf.parse(tv_event_restriction_time.text.toString())
+                        val hour = tv_event_restriction_time.text.split(":")[0].toInt()
+                        val minute = tv_event_start_time.text.split(":")[1].toInt()
+
+                        timePicker.setMin(hour, minute)
+                    }
+
+                    timePicker.show()
+
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                //tv_event_restriction_date
+
+                if(!TextUtils.isEmpty(tv_event_start_date.text)){
+                    val year = tv_event_start_date.text.split("-")[0].toInt()
+                    val month = tv_event_start_date.text.split("-")[1].toInt() - 1
+                    val day = tv_event_start_date.text.split("-")[2].toInt()
+                    datePicker.updateDate(year, month, day)
+
+                }
+                if(!TextUtils.isEmpty(tv_event_restriction_date.text)){
+
+                    val minDate = dateSdf.parse(tv_event_restriction_date.text.toString())
+                    datePicker.datePicker.minDate = minDate.time
+                }
+                datePicker.show()
             }
 
             R.id.ll_choose_end_time ->{
-                DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                val datePicker = DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
                     val chooseDate :Date = dateFormat.parse("$year-${month+1}-$day")
                     val chooseDate2 : String? = dateFormat.format(chooseDate)
 
                     tv_event_end_date.text = chooseDate2
                     hasEndDay = true
                     checkNextStep()
-                    TimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                    val timePicker = RangeTimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                         val hourString = if(hour.toString().length < 2){
                             "0$hour"
                         } else {
@@ -203,20 +250,50 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         tv_event_end_time.text = "$hourString:$minuteString:00"
                         hasEndTime = true
                         checkNextStep()
-                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false)
+                    if(!TextUtils.isEmpty(tv_event_end_time.text)){
+                        val hour = tv_event_end_time.text.split(":")[0].toInt()
+                        val minute = tv_event_end_time.text.split(":")[1].toInt()
 
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+                        timePicker.updateTime(hour,minute)
+                    }
+                    if(!TextUtils.isEmpty(tv_event_start_time.text) && tv_event_start_date.text == tv_event_end_date.text){
+                        val minTime = timeSdf.parse(tv_event_start_time.text.toString())
+                        val hour = tv_event_start_time.text.split(":")[0].toInt()
+                        val minute = tv_event_start_time.text.split(":")[1].toInt()
+
+                        timePicker.setMin(hour, minute)
+                    }
+
+                    timePicker.show()
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+                if(!TextUtils.isEmpty(tv_event_end_date.text)){
+                    val year = tv_event_end_date.text.split("-")[0].toInt()
+                    val month = tv_event_end_date.text.split("-")[1].toInt() - 1
+                    val day = tv_event_end_date.text.split("-")[2].toInt()
+                    Log.e("Peter","ll_choose_end_time update $year   $month   $day")
+                    datePicker.updateDate(year, month, day)
+
+                }
+                if(!TextUtils.isEmpty(tv_event_start_date.text)){
+
+                    val minDate = dateSdf.parse(tv_event_start_date.text.toString())
+                    datePicker.datePicker.minDate = minDate.time
+                }
+                //sdf.parse(data.start_time)
+                datePicker.show()
             }
 
             R.id.ll_choose_restriction_time ->{
-                DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                val datePicker = DatePickerDialog(getMContext().get()!!, DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
                     val chooseDate :Date = dateFormat.parse("$year-${month+1}-$day")
                     val chooseDate2 : String? = dateFormat.format(chooseDate)
 
                     tv_event_restriction_date.text = chooseDate2
                     hasRestrictionDay = true
                     checkNextStep()
-                    TimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                    val timePicker = RangeTimePickerDialog(getMContext().get()!!, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                         val hourString = if(hour.toString().length < 2){
                             "0$hour"
                         } else {
@@ -230,15 +307,48 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         tv_event_restriction_time.text = "$hourString:$minuteString:00"
                         hasRestrictionTime = true
                         checkNextStep()
-                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false)
+                    if(!TextUtils.isEmpty(tv_event_restriction_time.text)){
+                        val hour = tv_event_restriction_time.text.split(":")[0].toInt()
+                        val minute = tv_event_restriction_time.text.split(":")[1].toInt()
 
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+                        timePicker.updateTime(hour,minute)
+                    }
+                    if(!TextUtils.isEmpty(tv_event_restriction_date.text)){
+
+                        val nowDate = dateSdf.format(nowTime)
+                        val choosedDate = dateSdf.format(dateSdf.parse(tv_event_restriction_date.text.toString()))
+                        Log.e("Peter","tv_event_restriction_time  minuteSdf  $nowDate   $choosedDate")
+                        if(nowDate == chooseDate2){
+                            val hour = hourSdf.format(nowTime).toInt()+1
+                            val minute = minuteSdf.format(nowTime).toInt()
+                            Log.e("Peter","tv_event_restriction_time  minuteSdf  $minute   $hour")
+
+                        timePicker.setMin(hour, minute)
+                        }
+
+                    }
+
+                    timePicker.show()
+
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+                if(!TextUtils.isEmpty(tv_event_restriction_date.text)){
+                    val year = tv_event_restriction_date.text.split("-")[0].toInt()
+                    val month = tv_event_restriction_date.text.split("-")[1].toInt() - 1
+                    val day = tv_event_restriction_date.text.split("-")[2].toInt()
+                    Log.e("Peter","ll_choose_end_time update $year   $month   $day")
+                    datePicker.updateDate(year, month, day)
+
+                }
+                datePicker.datePicker.minDate = Date().time
+                datePicker.show()
             }
 
 
             R.id.iv_upload_photo -> {//iv_upload_photo//iv_event_photo
                 getMContext().get()?.let { ctx ->
-                    CropImage.activity().start(ctx,this@FragmentCreateEvent_v2)
+                    CropImage.activity().setAspectRatio(345,224).start(ctx,this@FragmentCreateEvent_v2)
                 }
             }
             R.id.btn_goto_map_activity -> getMContext().get()?.let { it1 ->

@@ -124,6 +124,9 @@ interface ApiService {
     @GET("event/detail/{label}")
     fun getEventDetailV2(@Path("label") label: String): Observable<EventDetailV2>
 
+    //Event Detail By ID
+    @GET("event/detail/id/{eventId}")
+    fun getEventDetailById(@Path("eventId") label: String): Observable<EventDetailV2>
 
     //Cancel Join Event
     @POST("event/cancel/{id}")

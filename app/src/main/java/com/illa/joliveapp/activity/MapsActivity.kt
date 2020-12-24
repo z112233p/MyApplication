@@ -28,6 +28,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places.createClient
+import com.google.android.libraries.places.api.Places.initialize
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -73,6 +79,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mGeoDataClient = Places.getGeoDataClient(this, null)
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        test()
 
         tv_confirm.setOnClickListener {
             val mIntent = Intent()
@@ -101,8 +108,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLatitude = b?.getString("Latitude")!!
         getLongitude = b.getString("Longitude")!!
         getLocation= b.getString("Location")!!
+
     }
 
+    private fun test(){
+        val token = AutocompleteSessionToken.newInstance()
+        val bounds = RectangularBounds.newInstance(
+            LatLng(-33.880490, 151.184363),
+            LatLng(-33.858754, 151.229596)
+        )
+
+        val request =
+            FindAutocompletePredictionsRequest.builder()
+                // Call either setLocationBias() OR setLocationRestiction().
+                .setLocationBias(bounds)
+//                .setOrigin(LatLng(-33.8749937, 151.2041382))
+                .setCountries("TW")
+                .setTypeFilter(TypeFilter.ADDRESS)
+                .setSessionToken(token)
+                .setQuery("101大樓")
+                .build()
+
+        com.google.android.libraries.places.api.Places.initialize(applicationContext, this.resources.getString(R.string.google_maps_key))
+
+        // Create a new PlacesClient instance
+        val placesClient = com.google.android.libraries.places.api.Places.createClient(this)
+
+//        val placesClient = com.google.android.libraries.places.api.Places.createClient(this)
+        placesClient.findAutocompletePredictions(request).addOnCompleteListener {
+            Log.e("peter","placesClient     ${it.result.autocompletePredictions.size}")
+            Log.e("peter","placesClient     ${it.result.autocompletePredictions[0].getPrimaryText(null)}")
+
+        }
+
+    }
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {

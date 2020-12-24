@@ -12,9 +12,12 @@ import com.illa.joliveapp.datamodle.chat.history.Message
 import com.illa.joliveapp.datamodle.chat.image_message.response.FileResponse
 import com.illa.joliveapp.datamodle.chat.text_message.TextMessage
 import com.illa.joliveapp.datamodle.chat.text_message.response.TextResponse
+import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
+import com.illa.joliveapp.datamodle.profile.user_info.UserInfo
 import io.reactivex.Observer
 import com.illa.joliveapp.network.ApiMethods
 import com.illa.joliveapp.tools.LogUtil
+import com.illa.joliveapp.tools.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.io.File
@@ -27,6 +30,9 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
     //set
     private val chatHistory: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
     private val messageUpdate: MutableLiveData<com.illa.joliveapp.datamodle.chat_room.Message> = MutableLiveData()
+    private val userInfo:MutableLiveData<UserInfo> = MutableLiveData<UserInfo>()
+    private val eventDetail: SingleLiveEvent<EventDetailV2> = SingleLiveEvent<EventDetailV2>()
+
 
     //get
     fun getChatHistoryData(): LiveData<List<Message>> {
@@ -36,6 +42,14 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
     fun getMessageUpdate(): LiveData<com.illa.joliveapp.datamodle.chat_room.Message> {
         return messageUpdate
     }
+    fun getUserInfoData(): LiveData<UserInfo> {
+        return userInfo
+    }
+    fun getEventDetailData(): LiveData<EventDetailV2> {
+        return eventDetail
+    }
+
+
 
     fun getChatHistory(rid: String){
         val chatHistoryObserve: Observer<ChatHistory> = object : Observer<ChatHistory>{
@@ -174,5 +188,51 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
 
         }
         ApiMethods.postTextMessage(textMessageObserve, dataBody, rId)
+    }
+
+
+    fun getUserInfo(userLabel: String){
+        val myInfoObserver: Observer<UserInfo> = object  : Observer<UserInfo>{
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: UserInfo) {
+                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
+                userInfo.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("Peter2", "getMyInfo  onError:  "+e.message)
+
+            }
+        }
+        ApiMethods.getUserInfo(myInfoObserver, userLabel)
+    }
+
+    fun getEventDetailById(eventId: String?){
+        val getEventDetailObserver = object : Observer<EventDetailV2>{
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onNext(t: EventDetailV2) {
+
+                Log.e("Peter","getEventDetailV2  onNext    $t")
+                eventDetail.value = t
+            }
+
+            override fun onError(e: Throwable) {
+
+                Log.e("Peter","getEventDetailV2  onError    "+e.message)
+            }
+        }
+        ApiMethods.getEventDetailById(getEventDetailObserver,eventId)
     }
 }

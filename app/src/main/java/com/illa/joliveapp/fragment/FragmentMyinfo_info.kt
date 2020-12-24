@@ -90,7 +90,7 @@ class FragmentMyinfo_info : BaseFragment() {
         myEventAdapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
                 getMContext().get()?.let {
-                    IntentHelper.gotoEventDetailActivity(it, label)
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
         })
@@ -126,8 +126,11 @@ class FragmentMyinfo_info : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
-        bannerController.stopSwipe()
-        bannerController.stopLooper()
+        if(bannerController != null){
+            bannerController.stopSwipe()
+            bannerController.stopLooper()
+        }
+
         Log.e("peter","onPause    ")
 
     }
