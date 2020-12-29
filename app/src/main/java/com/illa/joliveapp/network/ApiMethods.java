@@ -269,6 +269,10 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getNotice()), pbObserver);
     }
 
+    public static void setNoticeRead(Observer< String > pbObserver, String id ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).setNoticeRead(id)), pbObserver);
+    }
+
     public static void getEventIndex(Observer< EventIndex > pbObserver ){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventIndex()), pbObserver);
     }

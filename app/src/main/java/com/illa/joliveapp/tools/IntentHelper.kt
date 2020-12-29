@@ -104,7 +104,7 @@ object IntentHelper {
         val b = Bundle()
         b.putString("Label", label)
         intent.putExtras(b)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
 
@@ -114,7 +114,7 @@ object IntentHelper {
         b.putString("Label", label)
         b.putInt("position", position)
         intent.putExtras(b)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags =  Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "836474022826",
+    "project_id": "jolive-58522",
+    "storage_bucket": "jolive-58522.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836474022826:android:e2d6b5c734d486ae1d59d3",
+        "android_client_info": {
+          "package_name": "com.illa.joliveapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836474022826-gt84omkn5k4u7vuldp85mpocm81oacs0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.illa.joliveapp",
+            "certificate_hash": "6932697993a8c63ebf8b69a0ec356b20249374df"
+          }
+        },
+        {
+          "client_id": "836474022826-ufsdu8gu41p6piphd1n2iidin7t462m6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDJ3yfCYyn9f6so4EBVPmzXcJ3bln-Au0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836474022826-ufsdu8gu41p6piphd1n2iidin7t462m6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

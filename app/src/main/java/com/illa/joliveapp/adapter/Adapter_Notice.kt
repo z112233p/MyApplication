@@ -36,7 +36,11 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onItemClick(view: View?, position: Int)
+        fun onItemClick(
+            view: View?,
+            position: Int,
+            noticeId: String
+        )
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -103,6 +107,7 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(dataList.size == 0){return}
         val data = dataList[position]
+
         ImgHelper.loadNormalImg(mContext, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ data.navigation.image +".jpg", holder.ivUserPhoto)
 
         holder.tvNoticeInfo.text = getFormat(data.template).format(*(data.args).toTypedArray())
@@ -120,8 +125,15 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
             }
         }
 
-        holder.itemView.setOnClickListener {
+        if(data.is_read){
+            holder.itemView.alpha = 0.5F
+        } else {
+            holder.itemView.alpha = 1F
 
+        }
+
+        holder.itemView.setOnClickListener {
+            mOnItemClickListener?.onItemClick(it, position, data._id.`$oid`)
         }
     }
 

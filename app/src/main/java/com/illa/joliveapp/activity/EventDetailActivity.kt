@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -21,14 +20,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.detailv2.Author
-import com.illa.joliveapp.tools.ImgHelper
-import com.illa.joliveapp.tools.IntentHelper
-import com.illa.joliveapp.tools.ProgressDialogController
-import com.illa.joliveapp.tools.Tools
+import com.illa.joliveapp.tools.*
 import com.illa.joliveapp.viewmodle.EventDetailActivityVM
 import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class EventDetailActivity : AppCompatActivity() {
@@ -39,13 +37,17 @@ class EventDetailActivity : AppCompatActivity() {
     var userLabel = ""
     var gotoReview = false
 
+    private var dateSdf = SimpleDateFormat("yyyy-MM-dd")
+    private var newDate: Long = -1
     private lateinit var actionItem: MenuItem
     private lateinit var optionItem: MenuItem
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
         setSupportActionBar(toolbar)
+        ProgressDialogController.setContext(this)
         title = ""
         getIntentData()
         init()
@@ -110,7 +112,7 @@ class EventDetailActivity : AppCompatActivity() {
                 Log.e("Peter","getJoinEventResponse IN  $it")
 
                 Tools.toast(this, "報名成功")
-                dealEventStatus(0.0)
+                dealEventStatus(0.0, newDate.toLong())
 
             }
         })
@@ -122,7 +124,7 @@ class EventDetailActivity : AppCompatActivity() {
                 Log.e("Peter","getCancelJoinEventResponse IN  $it")
 
                 Tools.toast(this, "已取消報名")
-               dealEventStatus(1.0)
+               dealEventStatus(1.0, newDate.toLong())
             }
         })
 
@@ -131,13 +133,34 @@ class EventDetailActivity : AppCompatActivity() {
         })
     }
 
-    fun dealEventStatus(joinType: Any?){
+    fun dealEventStatus(joinType: Any?, newDate: Long){
         Log.e("Peter","dealEventStatus $joinType")
+
+        this.newDate = newDate
+
+
+        val diffDay = newDate / (1000 * 60 * 60 * 24);
+        val diffHour =(newDate - diffDay * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        val diffMinute = (newDate - diffDay * (1000 * 60 * 60 * 24) - diffHour * (1000 * 60 * 60)) / (1000 * 60)
+
+        if(newDate >= 0){
+            tv_diif_time.text = "${diffDay}天 ${diffHour}小時 ${diffMinute}分"
+            tv_diif_time.visibility = View.VISIBLE
+        } else {
+            tv_diif_time.visibility = View.GONE
+
+        }
 
         when(joinType){
             0.0 ,1.0-> {
                 Log.e("Peter","dealEventStatus 1")
-                ll_event_status.visibility = View.VISIBLE
+                if(newDate < 0){
+                    ll_event_status.visibility = View.GONE
+
+                } else {
+                    ll_event_status.visibility = View.VISIBLE
+
+                }
                 tv_event_cancel_btn.visibility = View.VISIBLE
                 tv_event_join_btn.visibility = View.GONE
                 actionItem.isVisible = false
@@ -150,13 +173,17 @@ class EventDetailActivity : AppCompatActivity() {
                 actionItem.isVisible = true
                 optionItem.isVisible = true
 
-
-
             }
             else -> {
                 Log.e("Peter","dealEventStatus else")
 
-                ll_event_status.visibility = View.VISIBLE
+                if(newDate < 0){
+                    ll_event_status.visibility = View.GONE
+
+                } else {
+                    ll_event_status.visibility = View.VISIBLE
+
+                }
                 tv_event_cancel_btn.visibility = View.GONE
                 tv_event_join_btn.visibility = View.VISIBLE
                 actionItem.isVisible = false
@@ -170,6 +197,11 @@ class EventDetailActivity : AppCompatActivity() {
     fun setOwnerData(author: Author) {
         userLabel = author.label
         tv_owner_name.text = author.nickname
+        val ff: Date = dateSdf.parse(author.birthday)
+
+        tv_age.text = DateGetAge.getAge(ff).toString()+"歲"
+        Log.e("Peter","setOwnerData    $ff  ${author.birthday}")
+
 //        ImgHelper.loadNormalImg(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)
         ImgHelper.loadNormalImgNoCache(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)
 

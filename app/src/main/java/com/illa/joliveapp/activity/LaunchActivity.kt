@@ -7,8 +7,13 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.illa.joliveapp.MyApp
 import com.illa.joliveapp.R
 import com.illa.joliveapp.tools.IntentHelper
@@ -24,12 +29,20 @@ class  LaunchActivity: AppCompatActivity() {
     private var nowPicPos = 0
     private val imgRes = intArrayOf(R.mipmap.ph_tokyo, R.mipmap.ph_taipei)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch)
         initObserve()
         callApis()
+        FirebaseApp.initializeApp(this)
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            Log.e("Peter","FIREBASE    $it")
+        }
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+            .addOnCompleteListener { task ->
+                Log.e("Peter","subscribeToTopic    ${task.isSuccessful}")
+
+            }
 //        fadeOutAndHideImage(iv_launch_image)
 
 

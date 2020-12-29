@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
-        android:id="@+id/navigation_pair"
-        android:icon="@mipmap/ic_pair"
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/nav_btn_selector_event"
         android:title="" />
 
     <item
         android:id="@+id/navigation_chat"
-        android:icon="@mipmap/ic_chat"
-        android:title="" />
-
-    <item
-        android:id="@+id/navigation_home"
-        android:icon="@mipmap/ic_home"
+        android:icon="@drawable/nav_btn_selector_message"
         android:title="" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@mipmap/ic_notifications"
+        android:icon="@drawable/nav_btn_selector_notice"
         android:title="" />
 
     <item
         android:id="@+id/navigation_personal"
-        android:icon="@mipmap/ic_personal"
+        android:icon="@drawable/nav_btn_selector_personal"
         android:title="" />
 
 </menu>

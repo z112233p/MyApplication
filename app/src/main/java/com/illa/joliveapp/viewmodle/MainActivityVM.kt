@@ -29,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 import java.io.File
 import java.util.*
 
@@ -49,6 +50,7 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val chatHistory: MutableLiveData<String> = MutableLiveData<String>()
     private val noticeTemplate: MutableLiveData<NoticeTemplate> = MutableLiveData<NoticeTemplate>()
     private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
+    private val noticeRead: MutableLiveData<String> = MutableLiveData<String>()
 
 
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
@@ -100,6 +102,11 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun getNoticeData(): LiveData<Notice> {
         return notice
     }
+
+    fun getNoticeRead(): LiveData<String> {
+        return noticeRead
+    }
+
 
     fun getErrorMsg(): LiveData<String> {
         return errorMsg
@@ -407,6 +414,39 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         ApiMethods.getNotice(noticeObserver)
     }
 
+    fun setNoticeRead(noticeId: String){
+        val noticeReadObserver: Observer<String> = object : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "setNoticeRead onError:  $e")
+
+            }
+
+            override fun onNext(t: String) {
+                val jsonData = JSONObject(t)
+
+                Log.e("Peter","setNoticeRead  onNext    $t")
+                if (jsonData.get("code") != 0){
+                    errorMsg.value = jsonData.get("data").toString()
+                } else {
+                    noticeRead.value = t
+
+                }
+
+            }
+
+        }
+        ApiMethods.setNoticeRead(noticeReadObserver, noticeId)
+    }
 
     fun test(register: Register){
         Objects.requireNonNull(ApiService.create(false).register(register)

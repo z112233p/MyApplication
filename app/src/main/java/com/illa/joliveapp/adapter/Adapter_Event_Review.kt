@@ -28,6 +28,7 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
 
     interface OnItemClickListener {
         fun onItemClick(view: View?, status: Int, userId: Int)
+        fun omAvatarClick(label: String)
     }
 
     fun setOnItemClickListener(listener: Adapter_Event_Review.OnItemClickListener) {
@@ -52,7 +53,7 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         val viewHolder = ViewHolder(cell)
         viewHolder.ivProfilePhoto = cell.findViewById(R.id.iv_profile_photo)
         viewHolder.tvUserName = cell.findViewById(R.id.tv_user_name)
-        viewHolder.btnReview = cell.findViewById(R.id.btn_review)
+        viewHolder.tvReview = cell.findViewById(R.id.tv_review)
         return viewHolder
     }
 
@@ -68,23 +69,31 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+ data.photos[0].url, holder.ivProfilePhoto)
         holder.tvUserName.text = data.nickname
 
+//        when(data.status){
+//            0 -> holder.tvReview.text = "未審核"
+//            1 -> holder.tvReview.text = "已審核"
+//            2 -> holder.tvReview.text = "已點名"
+//        }
+
         when(data.status){
-            0 -> holder.btnReview.text = "未審核"
-            1 -> holder.btnReview.text = "已審核"
-            2 -> holder.btnReview.text = "已點名"
+            0 -> holder.tvReview.visibility = View.VISIBLE
+            else -> holder.tvReview.visibility = View.GONE
         }
 
-        holder.itemView.setOnClickListener {
+        holder.tvReview.setOnClickListener {
             mOnItemClickListener?.onItemClick(holder.itemView, data.status, data.id)
+        }
+
+        holder.ivProfilePhoto.setOnClickListener {
+            mOnItemClickListener?.omAvatarClick(data.label)
         }
 
     }
 
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         lateinit var ivProfilePhoto: ImageView
         lateinit var tvUserName: TextView
-        lateinit var btnReview: Button
+        lateinit var tvReview: TextView
     }
 
 }

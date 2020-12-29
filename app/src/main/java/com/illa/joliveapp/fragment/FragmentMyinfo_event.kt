@@ -24,6 +24,7 @@ class FragmentMyinfo_event : BaseFragment() {
     private val profileActivityVM: ProfileActivityVM by activityViewModels()
     private lateinit var myEventAdapter: Adapter_My_Events
     private lateinit var historyEventAdapter: Adapter_My_Events
+    private lateinit var joinEventAdapter: Adapter_My_Events
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_my_events_history
@@ -55,6 +56,7 @@ class FragmentMyinfo_event : BaseFragment() {
     private fun init(){
         myEventAdapter = Adapter_My_Events(getMContext().get(), 1)
         historyEventAdapter= Adapter_My_Events(getMContext().get(), 2)
+        joinEventAdapter = Adapter_My_Events(getMContext().get(), 1)
 
         myEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
@@ -72,14 +74,27 @@ class FragmentMyinfo_event : BaseFragment() {
             }
         })
 
+        joinEventAdapter.setOnItemClickListener(object : Adapter_My_Events.OnItemClickListener{
+            override fun onItemClick(view: View?, position: Int, label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
+                }
+            }
+        })
+
+
         val layoutManager =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.VERTICAL, false)
         rv_events_going.layoutManager = layoutManager
         rv_events_going.adapter = myEventAdapter
 
-        val layoutManager2 =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.VERTICAL, false)
-
-        rv_events_history.layoutManager = layoutManager2
+        val layoutManagerHistory =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.VERTICAL, false)
+        rv_events_history.layoutManager = layoutManagerHistory
         rv_events_history.adapter = historyEventAdapter
+
+
+        val layoutManagerJoin =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.VERTICAL, false)
+        rv_events_join.layoutManager = layoutManagerJoin
+        rv_events_join.adapter = joinEventAdapter
     }
 
     private val onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
@@ -124,6 +139,7 @@ class FragmentMyinfo_event : BaseFragment() {
         profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myEventAdapter.setData(it.data.processing)
             historyEventAdapter.setData(it.data.history)
+            joinEventAdapter.setData(it.data.signing)
         })
     }
 

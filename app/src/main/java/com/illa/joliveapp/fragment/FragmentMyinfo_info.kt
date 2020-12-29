@@ -198,8 +198,8 @@ class FragmentMyinfo_info : BaseFragment() {
 
             }
             tv_about_me_data.text = it.user.about
-
-
+            tv_follow.text = it.user.follows_count.toString()
+            tv_fans_count.text = it.user.fans_count.toString()
         })
 
 
@@ -235,10 +235,14 @@ class FragmentMyinfo_info : BaseFragment() {
 
             }
             tv_about_me_data.text = it.user.about
+
+            tv_follow.text = it.user.follows_count.toString()
+            tv_fans_count.text = it.user.fans_count.toString()
         })
 
         profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myEventAdapter.setData(it.data.processing)
+            tv_event_count.text = (it.data.history.size + it.data.processing.size).toString()
         })
     }
 

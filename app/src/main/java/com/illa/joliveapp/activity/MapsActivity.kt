@@ -11,12 +11,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.illa.joliveapp.R
-import com.illa.joliveapp.adapter.CustomInfoWindowAdapter
-import com.illa.joliveapp.custom_view.CardPopup
-import com.illa.joliveapp.tools.Tools
-import com.illa.joliveapp.viewmodle.MapsActivityVM
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.places.GeoDataClient
@@ -32,14 +33,23 @@ import com.google.android.libraries.places.api.Places.createClient
 import com.google.android.libraries.places.api.Places.initialize
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.illa.joliveapp.R
+import com.illa.joliveapp.adapter.Adapter_Map_Search_Result
+import com.illa.joliveapp.adapter.CustomInfoWindowAdapter
+import com.illa.joliveapp.custom_view.CardPopup
+import com.illa.joliveapp.tools.Tools
+import com.illa.joliveapp.viewmodle.MapsActivityVM
 import kotlinx.android.synthetic.main.activity_maps.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
     
     private val MapsActVM: MapsActivityVM by viewModel()
     
@@ -49,13 +59,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mPlaceDetectionClient: PlaceDetectionClient
     private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var mLastKnownLocation: LatLng
+    private lateinit var searchAdapter: Adapter_Map_Search_Result
+    private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var placesClient: PlacesClient
+
     private var mLocationPermissionGranted: Boolean = true
     private val DEFAULT_ZOOM = 15.0F
     private var getLocation = ""
     private var getLocationAddress = ""
     private var getLatitude = ""
     private var getLongitude = ""
+    private var searchDataList = ArrayList<String>()
+    private var placeIdList = ArrayList<String>()
     private var confirmLocation: Boolean = false
+
 
     private lateinit var popup: CardPopup
 
@@ -64,6 +81,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         tv_toolbar_title.text = "地點"
+        title = ""
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             finish()
@@ -74,12 +92,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        initialize(applicationContext, "AIzaSyCYkun56DaA8wknm4LN57n_kF4lHZxccQs")
 
+        placesClient = createClient(this)
         geoCoder = Geocoder(this)
         mGeoDataClient = Places.getGeoDataClient(this, null)
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        test()
 
         tv_confirm.setOnClickListener {
             val mIntent = Intent()
@@ -100,6 +119,108 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             finish()
         }
         tv_confirm.isClickable = false
+
+        ed_event_title.setOnFocusChangeListener { view, b ->
+            Log.e("peter","ed_event_title.setOnFocusChangeListene     $b")
+            ll_search_result.visibility = View.VISIBLE
+        }
+
+
+        ed_event_title.setOnClickListener {
+            ed_event_title.isFocusable = true
+            ed_event_title.requestFocus()
+            ed_event_title.isFocusableInTouchMode = true
+            ed_event_title.isClickable = false
+            ll_search_result.visibility = View.VISIBLE
+        }
+
+        tv_search.setOnClickListener {
+            if(!TextUtils.isEmpty(ed_event_title.text)){
+                search(ed_event_title.text.toString())
+
+            }
+        }
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+            .addApi(Places.GEO_DATA_API)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .build()
+
+        searchAdapter = Adapter_Map_Search_Result(this)
+        searchAdapter.setOnItemClickListener(object : Adapter_Map_Search_Result.OnItemClickListener{
+            override fun onItemClick(view: View?, position: Int, title: String, placeId: String) {
+                Log.e("Peter","searchAdapter click")
+
+                val arr = arrayOf(
+                    com.google.android.libraries.places.api.model.Place.Field.ID,
+                    com.google.android.libraries.places.api.model.Place.Field.NAME,
+                    com.google.android.libraries.places.api.model.Place.Field.LAT_LNG,
+                    com.google.android.libraries.places.api.model.Place.Field.ADDRESS
+                )
+                var placeFields = arr.asList()
+                val request = FetchPlaceRequest.builder(placeId, placeFields)
+                    .build();
+
+
+                placesClient.fetchPlace(request).addOnSuccessListener {
+                    Log.e("peter","placesClient    fetchPlace   ${it.place.name}")
+                    Log.e("peter","placesClient    fetchPlace   ${it.place.latLng?.longitude}")
+                    Log.e("peter","placesClient    fetchPlace   ${it.place.latLng?.latitude}")
+                    Log.e("peter","placesClient    fetchPlace   ${it.place.address}")
+                    Log.e("peter","placesClient    fetchPlace   ${it.place.addressComponents}")
+
+
+
+                    mMap.clear()
+                    val choseLocation = LatLng(it.place.latLng?.latitude!!,
+                        it.place.latLng?.longitude!!
+                    )
+
+                    mMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(choseLocation, DEFAULT_ZOOM))
+
+                    Tools.hideSoftKeyboard(this@MapsActivity)
+
+                    ll_search_result.visibility = View.GONE
+
+                    tv_latitude.text = it.place.latLng?.latitude.toString()
+                    tv_longitude.text = it.place.latLng?.longitude.toString()
+                    tv_address.text = it.place.address
+                    tv_location.text = it.place.name
+                    getLocationAddress = it.place.address.toString()
+
+                    val markerOptions = MarkerOptions()
+                        .position(LatLng(it.place.latLng?.latitude!!, it.place.latLng?.longitude!!))
+                        .title(it.place.name)
+                        .snippet(it.place.address)
+//
+                    mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this@MapsActivity))
+                    mMap.addMarker(markerOptions).showInfoWindow()
+                    tv_confirm.setTextColor(this@MapsActivity.resources.getColor(R.color.white))
+                    tv_confirm.background = this@MapsActivity.resources.getDrawable(R.drawable.bg_blue_confirm)
+                    tv_confirm.isClickable = true
+                }
+            }
+
+        })
+        rv_search_result.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        rv_search_result.adapter = searchAdapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mGoogleApiClient.connect()
+    }
+    override fun onBackPressed() {
+
+        if(ll_search_result.isVisible){
+            Log.e("peter","ll_search_result.isVisible")
+            ll_search_result.visibility = View.GONE
+            return
+        }
+        super.onBackPressed()
     }
 
     private fun getIntentData(){
@@ -108,10 +229,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLatitude = b?.getString("Latitude")!!
         getLongitude = b.getString("Longitude")!!
         getLocation= b.getString("Location")!!
+        Log.e("peter","ll_search_result.getIntentData  $getLatitude")
+        Log.e("peter","ll_search_result.getIntentData  $getLongitude")
+        Log.e("peter","ll_search_result.getIntentData  $getLocation")
 
     }
 
-    private fun test(){
+    private fun search(title: String){
         val token = AutocompleteSessionToken.newInstance()
         val bounds = RectangularBounds.newInstance(
             LatLng(-33.880490, 151.184363),
@@ -120,26 +244,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val request =
             FindAutocompletePredictionsRequest.builder()
-                // Call either setLocationBias() OR setLocationRestiction().
-                .setLocationBias(bounds)
+                // Call either setLocationBias() OR setLocationRestiction().f
+//                .setLocationBias(bounds)
 //                .setOrigin(LatLng(-33.8749937, 151.2041382))
                 .setCountries("TW")
-                .setTypeFilter(TypeFilter.ADDRESS)
+//                .setTypeFilter(TypeFilter.ADDRESS)
                 .setSessionToken(token)
-                .setQuery("101大樓")
+                .setQuery(title)
                 .build()
 
-        com.google.android.libraries.places.api.Places.initialize(applicationContext, this.resources.getString(R.string.google_maps_key))
+        initialize(applicationContext, "AIzaSyCYkun56DaA8wknm4LN57n_kF4lHZxccQs")
 
-        // Create a new PlacesClient instance
-        val placesClient = com.google.android.libraries.places.api.Places.createClient(this)
 
-//        val placesClient = com.google.android.libraries.places.api.Places.createClient(this)
         placesClient.findAutocompletePredictions(request).addOnCompleteListener {
-            Log.e("peter","placesClient     ${it.result.autocompletePredictions.size}")
-            Log.e("peter","placesClient     ${it.result.autocompletePredictions[0].getPrimaryText(null)}")
+            Log.e("peter","placesClient     ${it.result.autocompletePredictions[0].placeId}")
+            searchDataList.clear()
+            placeIdList.clear()
+            it.result.autocompletePredictions.forEach {
 
+                Log.e("peter","placesClient     ${it.placeId}")
+
+                placeIdList.add(it.placeId)
+                searchDataList.add(it.getPrimaryText(null).toString())
+            }
+
+            searchAdapter.setIdList(placeIdList)
+            searchAdapter.setData(searchDataList)
+
+            ll_search_result.visibility = View.VISIBLE
         }
+
+
 
     }
 
@@ -302,6 +437,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         return bestLocation
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        Log.e("Peter","placesClient  onConnected   $p0")
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        Log.e("Peter","placesClient  onConnectionSuspended")
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        Log.e("Peter","placesClient  onConnectionFailed")
     }
 
 }

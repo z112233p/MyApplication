@@ -14,6 +14,7 @@ import com.illa.joliveapp.activity.EventReviewActivity
 import com.illa.joliveapp.adapter.Adapter_Event_Review
 import com.illa.joliveapp.datamodle.event.review.User
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.viewmodle.EventDetailActivityVM
 import kotlinx.android.synthetic.main.fragment_event_review.*
 
@@ -57,6 +58,17 @@ class FragmentEventReview : BaseFragment(){
 
         rv_event_review.adapter = adapter
         rv_event_review_not_check.adapter = adapterNotCheck
+
+        adapter.setOnItemClickListener(object : Adapter_Event_Review.OnItemClickListener{
+            override fun onItemClick(view: View?, status: Int, userId: Int) {
+                Log.e("Peter","Adapter_Event_Review onItemClick")
+            }
+
+            override fun omAvatarClick(label: String) {
+                getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it, label, 0) }
+            }
+
+        })
         adapterNotCheck.setOnItemClickListener(object : Adapter_Event_Review.OnItemClickListener{
             override fun onItemClick(view: View?, status: Int, userId: Int) {
                 val dataBody = ReviewMember(eventID.toInt(), userId)
@@ -75,6 +87,10 @@ class FragmentEventReview : BaseFragment(){
 //                    0 -> eventDetailActVM.postEventReview(dataBody)
 //                    1 -> eventDetailActVM.postEventRollCall(dataBody)
 //                }
+            }
+
+            override fun omAvatarClick(label: String) {
+                getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it, label) }
             }
         })
     }

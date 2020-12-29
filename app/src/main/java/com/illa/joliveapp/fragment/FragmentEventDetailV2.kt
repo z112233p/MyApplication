@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
@@ -34,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_location
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_start_time
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_title
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_users_limit
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "CAST_NEVER_SUCCEEDS",
@@ -47,6 +48,9 @@ class FragmentEventDetailV2 : BaseFragment() {
     private var locationLatitude = ""
     private var locationLongitude = ""
     private var ChatId = ""
+    private var dateSdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private var nowTime =  Date()
+
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_event_main_v2
@@ -127,7 +131,6 @@ class FragmentEventDetailV2 : BaseFragment() {
             ChatId = eventDetailData.chat_rid
             Log.e("Peter","getEventDetailV2 eventDetailData.join_type    ${eventDetailData.join_type} ")
 
-            act.dealEventStatus(eventDetailData.join_type)
             act.eventID = eventDetailData.id
             locationLatitude = eventDetailData.location_gps_latitude
             locationLongitude = eventDetailData.location_gps_longitude
@@ -140,6 +143,21 @@ class FragmentEventDetailV2 : BaseFragment() {
             tv_event_users_limit.text = eventDetailData.users_limit.toString()
             tv_event_reward.text = eventDetailData.award_count.toString()
             tv_event_content.text = eventDetailData.description
+
+
+            val restrictionTime = dateSdf.parse(eventDetailData.review_time)
+            val newDate = restrictionTime.time - nowTime.time
+
+            val diffDay = newDate / (1000 * 60 * 60 * 24);
+            val diffHour =(newDate - diffDay * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            val diffMinute = (newDate - diffDay * (1000 * 60 * 60 * 24) - diffHour * (1000 * 60 * 60)) / (1000 * 60)
+
+            Log.e("Peter"," getEventDetailV2  diffTime ?  ${eventDetailData.review_time}    $nowTime  ")
+
+            Log.e("Peter"," getEventDetailV2  diffTime !  $diffDay    $diffHour   $diffMinute")
+
+            act.dealEventStatus(eventDetailData.join_type, newDate)
+
 
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
 

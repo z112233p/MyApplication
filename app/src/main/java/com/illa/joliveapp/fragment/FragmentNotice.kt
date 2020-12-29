@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.R
 import com.illa.joliveapp.viewmodle.MainActivityVM
+import kotlinx.android.synthetic.main.dialog_event_detail_option.*
 
 import kotlinx.android.synthetic.main.fragment_notice.*
 import me.illa.jolive.adapter.Adapter_Notice
@@ -58,6 +59,16 @@ class FragmentNotice : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun init(){
         adapter = Adapter_Notice(getMContext().get())
+        adapter.setOnItemClickListener(object : Adapter_Notice.OnItemClickListener{
+            override fun onItemClick(
+                view: View?,
+                position: Int,
+                noticeId: String
+            ) {
+                mainActVM.setNoticeRead(noticeId)
+            }
+
+        })
         rv_notice.layoutManager = LinearLayoutManager(getMContext().get(), RecyclerView.VERTICAL, false)
         rv_notice.adapter = adapter
     }
@@ -85,6 +96,10 @@ class FragmentNotice : BaseFragment() {
 
         mainActVM.getNoticeTemplateData().observe(viewLifecycleOwner, Observer {
             adapter.setTemplate(it.data)
+        })
+
+        mainActVM.getNoticeRead().observe(viewLifecycleOwner, Observer {
+            mainActVM.getNotice()
         })
     }
 //

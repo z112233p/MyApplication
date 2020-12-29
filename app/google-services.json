@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "625306447148",
+    "firebase_url": "https://jolive-f7f4d.firebaseio.com",
+    "project_id": "jolive-f7f4d",
+    "storage_bucket": "jolive-f7f4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625306447148:android:99f9c2c27444608778d089",
+        "android_client_info": {
+          "package_name": "com.illa.joliveapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625306447148-07da43gf1ddnuj56i223e4k8451iu3pa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo9mt4pSOFwGVX0BIhQtzuOHSnqJ3Kv8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625306447148-07da43gf1ddnuj56i223e4k8451iu3pa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "625306447148-rpi5si3h6t472t1svu6h6se2dqp2rneo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "illa.live.jolive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

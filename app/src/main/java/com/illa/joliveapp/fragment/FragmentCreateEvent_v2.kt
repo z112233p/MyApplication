@@ -54,6 +54,10 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     private var timeSdf = SimpleDateFormat("HH:mm:ss")
     private var hourSdf = SimpleDateFormat("HH")
     private var minuteSdf = SimpleDateFormat("mm")
+    private var yearSdf = SimpleDateFormat("yyyy")
+    private var monthSdf = SimpleDateFormat("MM")
+    private var daySdf = SimpleDateFormat("dd")
+
     private var nowTime =  Date()
 
     private val MAP_ACTIVITY_RESULT_OK = 999
@@ -199,13 +203,34 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         val minute = tv_event_start_time.text.split(":")[1].toInt()
 
                         timePicker.updateTime(hour,minute)
+                    } else {
+                        val hour = hourSdf.format(nowTime).toInt()+2
+                        val minute = minuteSdf.format(nowTime).toInt()
+                        timePicker.updateTime(hour,minute)
+
                     }
+
                     if(!TextUtils.isEmpty(tv_event_restriction_time.text) && tv_event_restriction_date.text == tv_event_start_date.text){
+
                         val minTime = timeSdf.parse(tv_event_restriction_time.text.toString())
+                        Log.e("Peter","STARTTIME?? 333    ${tv_event_restriction_time.text}")
+                        Log.e("Peter","STARTTIME?? 333    ${tv_event_restriction_time.text.split(":")}")
+
                         val hour = tv_event_restriction_time.text.split(":")[0].toInt()
-                        val minute = tv_event_start_time.text.split(":")[1].toInt()
+                        val minute = tv_event_restriction_time.text.split(":")[1].toInt()
 
                         timePicker.setMin(hour, minute)
+                    } else {
+                        val nowDate = dateSdf.format(nowTime)
+                        val choosedDate = dateSdf.format(dateSdf.parse(tv_event_start_date.text.toString()))
+                        Log.e("Peter","tv_event_restriction_time  minuteSdf  $nowDate   $choosedDate")
+                        if(nowDate == chooseDate2){
+                            val hour = hourSdf.format(nowTime).toInt()+2
+                            val minute = minuteSdf.format(nowTime).toInt()
+                            Log.e("Peter","tv_event_restriction_time  minuteSdf  $minute   $hour")
+
+                            timePicker.setMin(hour, minute)
+                        }
                     }
 
                     timePicker.show()
@@ -219,11 +244,24 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                     val day = tv_event_start_date.text.split("-")[2].toInt()
                     datePicker.updateDate(year, month, day)
 
+                } else {
+//                    val year = yearSdf.format(nowTime).toInt()+1
+//                    val month = monthSdf.format(nowTime).toInt()
+//                    val day = daySdf.format(nowTime).toInt()
+//                    datePicker.updateDate(year, month, day)
+
                 }
+
                 if(!TextUtils.isEmpty(tv_event_restriction_date.text)){
 
                     val minDate = dateSdf.parse(tv_event_restriction_date.text.toString())
                     datePicker.datePicker.minDate = minDate.time
+                    Log.e("Peter","STARTTIME?? 1 ")
+
+                } else {
+                    datePicker.datePicker.minDate = Date().time
+                    Log.e("Peter","STARTTIME?? 2   ${Date().time}")
+
                 }
                 datePicker.show()
             }
@@ -261,6 +299,7 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         val minTime = timeSdf.parse(tv_event_start_time.text.toString())
                         val hour = tv_event_start_time.text.split(":")[0].toInt()
                         val minute = tv_event_start_time.text.split(":")[1].toInt()
+                        timePicker.updateTime(hour,minute)
 
                         timePicker.setMin(hour, minute)
                     }
@@ -328,6 +367,23 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         }
 
                     }
+                    if(!TextUtils.isEmpty(tv_event_start_time.text)){
+                        val nowDate = dateSdf.format(dateSdf.parse(tv_event_start_date.text.toString()))
+                        val choosedDate = dateSdf.format(dateSdf.parse(tv_event_restriction_date.text.toString()))
+                        Log.e("Peter","tv_event_restriction_time  minuteSdf  $nowDate   $choosedDate")
+                        if(nowDate == chooseDate2){
+//                            val maxHour = hourSdf.format(hourSdf.parse(tv_event_start_time.text.toString())).toInt()
+//                            val maxMinute = minuteSdf.format(minuteSdf.parse(tv_event_start_time.text.toString())).toInt()
+                            val hour = tv_event_start_time.text.split(":")[0].toInt()
+                            val minute = tv_event_start_time.text.split(":")[1].toInt()
+                            Log.e("Peter","tv_event_restriction_time  maxHour  $hour   $minute")
+
+                            timePicker.setMax(hour-1, minute)
+                            timePicker.updateTime(hour-1, minute)
+                        }
+
+
+                    }
 
                     timePicker.show()
 
@@ -340,6 +396,10 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                     Log.e("Peter","ll_choose_end_time update $year   $month   $day")
                     datePicker.updateDate(year, month, day)
 
+                }
+                if(!TextUtils.isEmpty(tv_event_start_date.text)){
+                    val maxDate = dateSdf.parse(tv_event_start_date.text.toString())
+                    datePicker.datePicker.maxDate = maxDate.time
                 }
                 datePicker.datePicker.minDate = Date().time
                 datePicker.show()

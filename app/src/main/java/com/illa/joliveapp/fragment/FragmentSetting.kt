@@ -3,6 +3,8 @@ package com.illa.joliveapp.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -50,7 +52,7 @@ class FragmentSetting : BaseFragment() {
     override fun onResume() {
         super.onResume()
         callApis()
-        setTitle("Settings")
+        setTitle("設定")
 
     }
 
@@ -61,6 +63,10 @@ class FragmentSetting : BaseFragment() {
         initMenuButtons()
         tv_user_phone.text = PrefHelper.userPhone
         ll_logout.setOnClickListener(onClick)
+        cl_service_provision.setOnClickListener(onClick)
+        cl_privacy_policy.setOnClickListener(onClick)
+        cl_official_website.setOnClickListener(onClick)
+        cl_facebook_website.setOnClickListener(onClick)
 
     }
 
@@ -78,7 +84,7 @@ class FragmentSetting : BaseFragment() {
         cl_hide_age.setting_switch.visibility = View.VISIBLE
 
         cl_change_language.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_change_language))
-        cl_change_language.tv_title.text = getString(R.string.change_language)
+        cl_change_language.tv_title.text = getString(R.string.language)
         cl_change_language.v_divider_line.visibility = View.INVISIBLE
         cl_change_language.tv_value.text = "繁體中文"
 
@@ -115,6 +121,30 @@ class FragmentSetting : BaseFragment() {
                 }
                 val dialog = builder.create()
                 dialog.show()
+            }
+            R.id.cl_service_provision -> {
+                val myIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.service_provision_url)))
+                this.startActivity(myIntent)
+            }
+            R.id.cl_privacy_policy -> {
+                val myIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.privacy_policy_url)))
+                this.startActivity(myIntent)
+            }
+            R.id.cl_official_website -> {
+                val myIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.official_website_url)))
+                this.startActivity(myIntent)
+            }
+            R.id.cl_facebook_website -> {
+                val myIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.facebook_website_url)))
+                this.startActivity(myIntent)
             }
         }
     }

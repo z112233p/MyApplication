@@ -80,6 +80,7 @@ class FragmentCreateEvent_step2 : BaseFragment() {
             ed_event_location_address.setText(act.intentDataBody.data.location_address)
             getLatitude = act.intentDataBody.data.location_gps_latitude
             getLongitude = act.intentDataBody.data.location_gps_longitude
+            getLocation = act.intentDataBody.data.location_title
             Log.e("Peter","FragmentCreateEvent_step2   ${act.intentDataBody.data.users_limit}")
             ed_event_users_limit.setText(act.intentDataBody.data.users_limit.toString())
             ed_event_budget.setText(act.intentDataBody.data.budget.toString())

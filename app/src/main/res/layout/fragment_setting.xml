@@ -16,6 +16,7 @@
             android:id="@+id/ll_top_menu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:paddingTop="16dp"
             android:paddingBottom="20dp"
             android:background="@color/colorMainBackground"
@@ -123,6 +124,7 @@
         <include
             android:id="@+id/cl_ban"
             layout="@layout/item_setting"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -132,6 +134,7 @@
         <include
             android:id="@+id/cl_hide_age"
             layout="@layout/item_setting"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -227,6 +230,7 @@
         <LinearLayout
             android:id="@+id/ll_buy_back"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="30dp"

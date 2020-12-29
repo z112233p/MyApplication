@@ -188,6 +188,10 @@ interface ApiService {
     @GET("notification?page=1&limit=10")
     fun getNotice(): Observable<Notice>
 
+    //Notice Single Read
+    @POST("notification/read/{id}")
+    fun setNoticeRead(@Path ("id") id: String): Observable<String>
+
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

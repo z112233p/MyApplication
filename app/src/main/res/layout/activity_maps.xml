@@ -44,21 +44,37 @@
         android:id="@+id/ed_event_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar"
-        android:layout_marginTop="11dp"
+        android:singleLine="true"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="15dp"
-        android:textStyle="normal"
-        android:textSize="16sp"
-        android:textColor="@color/colorNavBtn"
+        android:background="@drawable/bg_editview_search"
         android:lineSpacingExtra="6sp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:hint="一起揪更好玩！"
+        android:textColor="@color/colorNavBtn"
         android:textColorHint="@color/colorNavBtn"
-        android:background="@drawable/bg_editview_search"/>
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar"
+        map:layout_constraintBottom_toTopOf="@+id/map"
+        map:layout_constraintEnd_toStartOf="@+id/tv_search" />
+
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="搜尋"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:padding="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        map:layout_constraintBottom_toTopOf="@+id/map"
+        map:layout_constraintStart_toEndOf="@+id/ed_event_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar"/>
 
     <fragment
         android:id="@+id/map"
@@ -178,6 +194,26 @@
             android:layout_gravity="center_horizontal"
             android:textSize="20sp"
             android:text="確定"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_search_result"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/colorMainBackground"
+        android:layout_marginTop="15dp"
+        map:layout_constraintTop_toBottomOf="@+id/ed_event_title"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_result"
+            android:layout_width="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="@+id/tv_event_location"
         app:layout_constraintBottom_toTopOf="@+id/tv_event_time"
         android:src="@mipmap/ic_event_location"
         />

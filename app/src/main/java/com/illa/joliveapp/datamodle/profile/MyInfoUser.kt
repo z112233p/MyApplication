@@ -24,4 +24,6 @@ data class MyInfoUser(
     var photos: ArrayList<MyInfoPhoto>? = null,
     var gold: MyInfoGold,
     var geo: MyInfoGeo,
+    var follows_count: Int = 0,
+    var fans_count: Int = 0,
     var interests:ArrayList<MyInfoInterest>? = null)

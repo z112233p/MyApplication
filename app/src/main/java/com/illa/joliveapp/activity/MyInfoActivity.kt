@@ -30,6 +30,7 @@ class MyInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_myinfo)
         setSupportActionBar(toolbar)
+        ProgressDialogController.setContext(this)
         title = ""
         getIntentData()
         init()

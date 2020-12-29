@@ -108,6 +108,7 @@
                 tools:text="Algernon Bertram" />
 
             <TextView
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -161,19 +162,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_share"/>
+
         <TextView
+            android:id="@+id/tv_diif_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:gravity="end"
+            android:paddingEnd="15dp"
             android:textColor="@color/colorWhite"
             android:lineSpacingExtra="3sp"
             tools:text="3d 5h 46m"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
 
         <TextView
@@ -188,7 +190,7 @@
             android:background="@drawable/bg_clickable_btn"
             android:textColor="@color/colorWhite"
             android:lineSpacingExtra="1sp"
-            android:text="Join"
+            android:text="報名"
             android:layout_weight="1"/>
 
         <TextView
@@ -203,7 +205,7 @@
             android:background="@drawable/bg_event_cancel_btn"
             android:textColor="@color/colorWhite"
             android:lineSpacingExtra="1sp"
-            android:text="Cancel"
+            android:text="取消報名"
             android:layout_weight="1"/>
     </LinearLayout>
 
