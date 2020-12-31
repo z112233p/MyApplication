@@ -10,6 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
+import com.illa.joliveapp.datamodle.follows.Follow
+import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.profile.MyInfo
 import com.illa.joliveapp.datamodle.profile.MyInfoData
 import com.illa.joliveapp.datamodle.profile.MyInfoPhoto
@@ -45,6 +47,9 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val updateMyInfoResponse: SingleLiveEvent<UpdateMyInfoResponse> = SingleLiveEvent<UpdateMyInfoResponse>()
     private val userInfo:MutableLiveData<UserInfo> = MutableLiveData<UserInfo>()
     private val deleteMyPhoto: SingleLiveEvent<DeleteMyPhotoResponse> = SingleLiveEvent<DeleteMyPhotoResponse>()
+    private val follows: MutableLiveData<Follows> = MutableLiveData<Follows>()
+    private val postFollowResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val postUnFollowResponse: MutableLiveData<String> = MutableLiveData<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -79,7 +84,15 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     fun getUpdateMyInfoResponse(): LiveData<UpdateMyInfoResponse> {
         return updateMyInfoResponse
     }
-
+    fun getFollowsData(): LiveData<Follows> {
+        return follows
+    }
+    fun getFollowResponse(): LiveData<String> {
+        return postFollowResponse
+    }
+    fun getUnFollowResponse(): LiveData<String> {
+        return postUnFollowResponse
+    }
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
         val getEventsObserver = object : Observer<EventList>{
@@ -296,6 +309,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
 
 
     fun getUserInfo(userLabel: String){
+        Log.e("Peter2", "getMyInfo  userLabel:  $userLabel")
+
         val myInfoObserver: Observer<UserInfo> = object  : Observer<UserInfo>{
             override fun onComplete() {
                 progressStatus.value = true
@@ -372,6 +387,80 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
         }
         ApiMethods.deleteMyPhoto(deleteMyPhotoObserver, dataBody)
+    }
+
+    fun getFollows(){
+        val followsObserver: Observer<Follows> = object  : Observer<Follows>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: Follows) {
+                follows.value = t
+                Log.e("Peter2", "getFollows  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "getFollows  onError:  "+e.message)
+
+            }
+        }
+        ApiMethods.getFollows(followsObserver)
+    }
+
+    fun postFollow(label: String){
+        val postFollowObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                postFollowResponse.value = t
+                Log.e("Peter2", "postFollow  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "postFollow  onError:  "+e.message)
+            }
+        }
+        ApiMethods.postFollow(postFollowObserver, label)
+    }
+
+    fun postUnFollow(label: String){
+        val postUnFollowObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                postUnFollowResponse.value = t
+                Log.e("Peter2", "postUnFollow  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "postUnFollow  onError:  "+e.message)
+            }
+        }
+        ApiMethods.postUnFollow(postUnFollowObserver, label)
     }
 
 }

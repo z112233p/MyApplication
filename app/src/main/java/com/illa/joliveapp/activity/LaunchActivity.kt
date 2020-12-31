@@ -7,9 +7,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.google.firebase.FirebaseApp
 import com.google.firebase.iid.FirebaseInstanceId
@@ -152,11 +150,12 @@ class  LaunchActivity: AppCompatActivity() {
     private fun initObserve(){
 
         profileActivityVM.getInterestListData().observe(this, Observer {
-            MyApp.get()!!.interestDataList = it
+
+            MyApp.get()!!.setInterest(it)
         })
 
         profileActivityVM.getJbListData().observe(this, Observer {
-            MyApp.get()!!.jobDataList = it
+            MyApp.get()!!.setJob(it)
         })
 
 

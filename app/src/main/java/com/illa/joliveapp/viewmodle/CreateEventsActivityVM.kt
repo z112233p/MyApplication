@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.chat.chatroom_list.ChatRoomList
 import com.illa.joliveapp.datamodle.event.detail.EventDetail
+import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.list.TypeLists
 import com.illa.joliveapp.datamodle.event.review.EventReview
@@ -26,7 +27,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
     private val mContent: Context? = application.applicationContext
 
     private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
-    private val eventDetail: MutableLiveData<EventDetail> = MutableLiveData<EventDetail>()
+    private val eventDetail: MutableLiveData<EventDetailV2> = MutableLiveData<EventDetailV2>()
     private val eventReview: MutableLiveData<EventReview> = MutableLiveData<EventReview>()
     private val paymentMethod: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
     private val currencyType: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
@@ -41,7 +42,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
     fun getEvents(): LiveData<EventList> {
         return events
     }
-    fun getEventDetail(): LiveData<EventDetail> {
+    fun getEventDetail(): LiveData<EventDetailV2> {
         return eventDetail
     }
     fun getEventReview(): LiveData<EventReview> {
@@ -100,7 +101,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
     }
 
     fun getEventDetail(label: String?){
-        val getEventDetailObserver = object : Observer<EventDetail>{
+        val getEventDetailObserver = object : Observer<EventDetailV2>{
             override fun onComplete() {
                 progressStatus.value = true
             }
@@ -110,7 +111,7 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
 
             }
 
-            override fun onNext(t: EventDetail) {
+            override fun onNext(t: EventDetailV2) {
                 Log.e("Peter","getEventDetail  onNext    $t")
                 eventDetail.value = t
             }
@@ -121,6 +122,30 @@ class CreateEventsActivityVM (application: Application) : AndroidViewModel(appli
             }
         }
         ApiMethods.getEventDetail(getEventDetailObserver,label)
+    }
+
+    fun getEventDetailById(eventId: String?){
+        val getEventDetailObserver = object : Observer<EventDetailV2>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
+            }
+
+            override fun onNext(t: EventDetailV2) {
+                Log.e("Peter","getEventDetail  onNext    $t")
+                eventDetail.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter","getEventDetail  onError    "+e.message)
+            }
+        }
+        ApiMethods.getEventDetailById(getEventDetailObserver,eventId)
     }
 
     fun getReviewList(eventID: String?){

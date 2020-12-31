@@ -68,19 +68,7 @@ class FragmentInputVerify : BaseFragment() {
         ed_input_verify.addTextChangedListener {
             Log.e("Peter","ed_input_verify.addTextChangedListener   ${it?.length}")
 
-            tv_verify_1.text = ""
-            iv_verify_1.visibility = View.VISIBLE
-            tv_verify_2.text = ""
-            iv_verify_2.visibility = View.VISIBLE
-            tv_verify_3.text = ""
-            iv_verify_3.visibility = View.VISIBLE
-            tv_verify_4.text = ""
-            iv_verify_4.visibility = View.VISIBLE
-            tv_verify_5.text = ""
-            iv_verify_5.visibility = View.VISIBLE
-            tv_verify_6.text = ""
-            iv_verify_6.visibility = View.VISIBLE
-
+            clearVerify()
 
             if (it != null) {
                 for(i in 1.. it.length){
@@ -115,6 +103,21 @@ class FragmentInputVerify : BaseFragment() {
         }
     }
 
+    private fun clearVerify(){
+        tv_verify_1.text = ""
+        iv_verify_1.visibility = View.VISIBLE
+        tv_verify_2.text = ""
+        iv_verify_2.visibility = View.VISIBLE
+        tv_verify_3.text = ""
+        iv_verify_3.visibility = View.VISIBLE
+        tv_verify_4.text = ""
+        iv_verify_4.visibility = View.VISIBLE
+        tv_verify_5.text = ""
+        iv_verify_5.visibility = View.VISIBLE
+        tv_verify_6.text = ""
+        iv_verify_6.visibility = View.VISIBLE
+    }
+
     @SuppressLint("WrongConstant", "ShowToast")
     private var onClick :View.OnClickListener ?= View.OnClickListener {
         Tools.hideSoftKeyboard(getMContext().get() as Activity)
@@ -129,8 +132,8 @@ class FragmentInputVerify : BaseFragment() {
             R.id.tv_shelter -> {
 
             }
-            R.id.tv_resend_verify -> mainActVM.resendSMS(resendSMS = ResendSMS(phone.toInt()))
-            R.id.ll_send_code_btn -> mainActVM.login(loginData = LoginData(phone.toInt(), ed_input_verify.text.toString()))
+            R.id.tv_resend_verify -> mainActVM.resendSMS(resendSMS = ResendSMS(phone))
+            R.id.ll_send_code_btn -> mainActVM.login(loginData = LoginData(phone, ed_input_verify.text.toString()))
 
         }
     }
@@ -149,6 +152,8 @@ class FragmentInputVerify : BaseFragment() {
 
             if(it.code != 0){
                 Tools.toast(getMContext().get(), "驗證碼輸入不正確")
+                ed_input_verify.setText("")
+                clearVerify()
                 return@Observer
             }
             Tools.toast(getMContext().get(), "登錄成功")
@@ -181,9 +186,7 @@ class FragmentInputVerify : BaseFragment() {
 
             } else {
                 PrefHelper.setChatName(it.user.nickname)
-
                 getMContext().get()?.let { it1 -> IntentHelper.gotoEventActivity(it1) }
-
             }
         })
     }

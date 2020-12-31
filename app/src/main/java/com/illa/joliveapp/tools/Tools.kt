@@ -458,4 +458,16 @@ object Tools {
         dialog.show()
     }
 
+    //防止onClick連點而重複呼叫，用法:在onClick下加isFastDoubleClick()的 if 判斷，回傳true return、回傳false則做原本onClick要做的事
+    private var lastClickTime: Long = 0
+    fun isFastDoubleClick(): Boolean {
+        val time = System.currentTimeMillis()
+        val timeD = time - lastClickTime
+        if (0 < timeD && timeD < 1000) {
+            return true
+        }
+        lastClickTime = time
+        return false
+    }
+
 }

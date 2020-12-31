@@ -98,7 +98,11 @@ class FragmentEventReviewV2 : BaseFragment(){
 
     private fun initObserve(){
         eventDetailActVM.getEventReview().observe(viewLifecycleOwner, Observer {
-            Log.e("Peter","FragmentEventReview getEventReview   22c  ${it.data.users}")
+            eventID = it.data.event.id.toString()
+//            Log.e("Peter","FragmentEventReview getEventReview V2  22c  ${it.data.event.id}")
+            if(it.code != 0){
+                return@Observer
+            }
             memberHasChecked.clear()
             memberNotCheck.clear()
             it.data.users.forEach {

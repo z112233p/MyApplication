@@ -15,18 +15,26 @@ import kotlinx.android.synthetic.main.item_anim_view_btn.view.*
 
 
 @Suppress("UNREACHABLE_CODE")
-class DialogEventDetailOption(context: Context) : Dialog(context, R.style.FullScreenDialogStyle) {
+class DialogEventDetailOption(context: Context, joinType: Any?) : Dialog(context, R.style.FullScreenDialogStyle) {
 
     private var lastX = 0
     private var lastY = 0
     private var upMoveTotal = 0
     private var downMoveTotal = 0
+    private var joinType: Any = 0
 
     private lateinit var dialogWindow : Window
     private lateinit var dialogWindowManager: WindowManager.LayoutParams
     private lateinit var seeDetailOnclick: View.OnClickListener
     private lateinit var goChatOnclick: View.OnClickListener
+    private lateinit var reportOnclick: View.OnClickListener
+    private lateinit var closeEventClick: View.OnClickListener
 
+    init {
+        if (joinType != null) {
+            this.joinType = joinType
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,17 +44,28 @@ class DialogEventDetailOption(context: Context) : Dialog(context, R.style.FullSc
         tv_see_detail.tv_btn_text.text = "出席名單"
         tv_event_status.tv_btn_text.text = "前往聊天"
         tv_score.tv_btn_text.text = "檢舉活動"
-        tv_report.tv_btn_text.text = "給予評價"
+        tv_report.tv_btn_text.text = "刪除活動"
 
 
         tv_see_detail.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_eye))
         tv_event_status.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_chat_white))
         tv_score.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_report))
-        tv_report.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_score_start))
+        tv_report.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_close))
 
+        tv_report.setOnClickListener(closeEventClick)
+        tv_score.setOnClickListener(reportOnclick)
         tv_see_detail.setOnClickListener(seeDetailOnclick)
         tv_event_status.setOnClickListener(goChatOnclick)
 
+        Log.e("Peter","DialogEventDetailOption  joinType   $joinType")
+
+        if(joinType != 9.0){
+            tv_report.alpha = 0.2F
+            tv_report.isClickable = false
+        } else {
+            tv_score.alpha = 0.2F
+            tv_score.isClickable = false
+        }
 
         dialog_main.setOnClickListener {
             Log.e("Peter"," dialog_main.setOnClickListener  dismiss")
@@ -107,6 +126,14 @@ class DialogEventDetailOption(context: Context) : Dialog(context, R.style.FullSc
 
     fun setGoChatOnclick(onClick: View.OnClickListener){
         goChatOnclick = onClick
+    }
+
+    fun setReportOnclick(onClick: View.OnClickListener){
+        reportOnclick = onClick
+    }
+
+    fun setCloseEventClick(onClick: View.OnClickListener){
+        closeEventClick = onClick
     }
 
 

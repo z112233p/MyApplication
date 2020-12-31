@@ -20,6 +20,7 @@ import com.illa.joliveapp.datamodle.event.list.TypeLists
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.event.review.EventReview
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate
 import com.illa.joliveapp.datamodle.profile.MyInfo
@@ -118,7 +119,7 @@ interface ApiService {
 
     //Event Detail
     @GET("event/detail/{label}")
-    fun getEventDetail(@Path("label") label: String): Observable<EventDetail>
+    fun getEventDetail(@Path("label") label: String): Observable<EventDetailV2>
 
     //Event Detail V2
     @GET("event/detail/{label}")
@@ -147,7 +148,6 @@ interface ApiService {
     //rollCall Sign Up Member
     @POST("event/rollCall")
     fun postEventRollCall(@Body body: ReviewMember?): Observable<String>
-
 
     //list paymentMethod 消費模式
     @GET("list/paymentMethod")
@@ -185,12 +185,32 @@ interface ApiService {
     fun getNoticeTemplate(): Observable<NoticeTemplate>
 
     //Notice
-    @GET("notification?page=1&limit=10")
+    @GET("notification?page=1&limit=50")
     fun getNotice(): Observable<Notice>
 
     //Notice Single Read
     @POST("notification/read/{id}")
     fun setNoticeRead(@Path ("id") id: String): Observable<String>
+
+    //Get Follows
+    @GET("me/follows")
+    fun getFollows(): Observable<Follows>
+
+    //Follow someBody
+    @POST("user/{label}/follow")
+    fun postFollow(@Path ("label") label: String): Observable<String>
+
+    //UnFollow someBody
+    @POST("user/{label}/unfollow")
+    fun postUnFollow(@Path ("label") label: String): Observable<String>
+
+    //Close event
+    @POST("event/close/{eventId}")
+    fun closeEvent(@Path ("eventId") eventId: String): Observable<String>
+
+    //Notice All Read
+    @POST("notification/read_all")
+    fun noticeAllRead():Observable<String>
 
 
     companion object {

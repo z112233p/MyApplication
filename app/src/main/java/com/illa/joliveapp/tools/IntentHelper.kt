@@ -67,6 +67,19 @@ object IntentHelper {
         val intent = Intent(ctx, CreateEventActivity::class.java)
         val b = Bundle()
         b.putString("Label", label)
+        b.putString("eventId", "")
+
+        intent.putExtras(b)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoCreateEventActivityById(ctx: Context, eventId: String){
+        val intent = Intent(ctx, CreateEventActivity::class.java)
+        val b = Bundle()
+        b.putString("eventId", eventId)
+        b.putString("Label", "")
+
         intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
@@ -145,6 +158,15 @@ object IntentHelper {
         b.putString("eventsCategorysId", eventsCategorysId)
         intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
+
+    fun gotoFollowsActivity(ctx: Context, position: Int){
+        val intent = Intent(ctx, FollowsActivity::class.java)
+        val b = Bundle()
+        b.putInt("position", position)
+        intent.putExtras(b)
+        intent.flags =  Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
 }

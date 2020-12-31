@@ -49,13 +49,13 @@
 
         <ImageView
             android:id="@+id/iv_create_event"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/fl_banner"
-            android:src="@mipmap/ic_create_event"/>
+            android:src="@mipmap/ic_create_event_v2"/>
 
         <FrameLayout
             android:id="@+id/fl_banner"

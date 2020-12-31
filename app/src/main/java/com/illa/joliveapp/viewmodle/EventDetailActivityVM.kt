@@ -27,6 +27,7 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     private val cancelJoinEventResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val joinEventResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val postEventReviewResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
+    private val closeEventResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
@@ -35,6 +36,7 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     fun getEventDetailV2(): LiveData<EventDetailV2> {
         return eventDetail
     }
+
     fun getEventReview(): LiveData<EventReview> {
         return eventReview
     }
@@ -50,6 +52,11 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
 
     fun getPostEventReviewResponse(): LiveData<String>{
         return postEventReviewResponse
+    }
+
+    //closeEventResponse
+    fun getCloseEventResponse(): LiveData<String>{
+        return closeEventResponse
     }
 
     fun getErrorMsg(): LiveData<String> {
@@ -156,6 +163,8 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     }
 
     fun getReviewList(eventID: String?){
+        Log.e("Peter","getReviewList  eventID  $eventID ")
+
         val getReviewListObserver = object : Observer<EventReview>{
             override fun onComplete() {
                 progressStatus.value = true
@@ -169,7 +178,7 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
             override fun onNext(t: EventReview) {
 
                 eventReview.value = t
-                Log.e("Peter","getReviewList  onNext    $t")
+                Log.e("Peter","getReviewList  onNext  $eventID  $t")
             }
 
             override fun onError(e: Throwable) {
@@ -212,6 +221,46 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
         }
         ApiMethods.postEventReview(eventReviewObserver, dataBody)
     }
+
+    fun closeEvent(eventId: String){
+        val closeEventObserver = object : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+
+            }
+
+            override fun onNext(t: String) {
+                progressStatus.value = true
+
+                Log.e("Peter","closeEvent  onNext    $t")
+                val jsonData = JSONObject(t)
+
+                Log.e("Peter","closeEvent  onNext    $t")
+                if (jsonData.get("code") != 0){
+                    errorMsg.value = jsonData.get("data").toString()
+                }
+                else {
+                    errorMsg.value = "刪除成功"
+
+                }
+                closeEventResponse.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter","closeEvent  onError    "+e.message)
+            }
+
+        }
+        ApiMethods.closeEvent(closeEventObserver, eventId)
+    }
+
+
+
 
     fun postEventRollCall(dataBody: ReviewMember){
         val eventReviewObserver = object : Observer<String>{

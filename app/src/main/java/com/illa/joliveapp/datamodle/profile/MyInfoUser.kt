@@ -26,4 +26,5 @@ data class MyInfoUser(
     var geo: MyInfoGeo,
     var follows_count: Int = 0,
     var fans_count: Int = 0,
+    var is_follow: Boolean = false,
     var interests:ArrayList<MyInfoInterest>? = null)

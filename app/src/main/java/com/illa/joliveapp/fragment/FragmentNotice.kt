@@ -11,8 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.R
+import com.illa.joliveapp.activity.NoticeActivity
+import com.illa.joliveapp.tools.IntentHelper
+import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.MainActivityVM
-import kotlinx.android.synthetic.main.dialog_event_detail_option.*
 
 import kotlinx.android.synthetic.main.fragment_notice.*
 import me.illa.jolive.adapter.Adapter_Notice
@@ -33,15 +35,12 @@ class FragmentNotice : BaseFragment() {
 
     @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         Log.e("Peter","isNavigationViewInit ")
 
         if(!isNavigationViewInit){
             Log.e("Peter","isNavigationViewInit  ININ ")
             super.onViewCreated(view, savedInstanceState)
             init()
-            initObserve()
             setHasOptionsMenu(true)
             isNavigationViewInit = true
         }
@@ -49,8 +48,11 @@ class FragmentNotice : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        getMContext().get()?.let { ProgressDialogController.setContext(it) }
+
+        initObserve()
         callApis()
-        setTitle("Notice")
+        setTitle("通知中心")
 
     }
 
@@ -63,9 +65,32 @@ class FragmentNotice : BaseFragment() {
             override fun onItemClick(
                 view: View?,
                 position: Int,
-                noticeId: String
+                noticeId: String,
+                template: String,
+                link: String
             ) {
                 mainActVM.setNoticeRead(noticeId)
+                when(template){
+                    "EVENT_TO_START",
+                    "EVENT_CLOSE",
+                    "EVENT_UPDATE",
+                    "YOUR_EVENT_APPROVED",
+                    "YOUR_FOLLOW_CREATE_NEW_EVENT",
+                    "EVENT_CHANGE_NAME" -> {
+                        getMContext().get()?.let { IntentHelper.gotoEventDetailActivity(it, link, false)}
+                    }
+                    "SOMEBODY_PEEK_YOU",
+                    "SOMEBODY_CANCEL_EVENT",
+                    "SOMEBODY_FOLLOW_YOU",
+                    "SOMEBODY_CHANGE_NAME" -> {
+                        getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it, link) }
+                    }
+                    "REVIEW_END_EXPIRED",
+                    "SOMEBODY_WANT_TO_JOIN" -> {
+                        getMContext().get()?.let { IntentHelper.gotoEventReviewActivity(it,link, link) }
+                    }
+
+                }
             }
 
         })
@@ -91,6 +116,12 @@ class FragmentNotice : BaseFragment() {
 
     private fun initObserve(){
         mainActVM.getNoticeData().observe(viewLifecycleOwner, Observer {
+            it.data.forEach {
+                if(!it.is_read){
+                    (getMContext().get() as NoticeActivity).setActionReadClickable()
+                    return@forEach
+                }
+            }
             adapter.setData(it.data)
         })
 

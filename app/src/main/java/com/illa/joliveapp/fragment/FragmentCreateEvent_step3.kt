@@ -9,6 +9,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.CreateEventActivity
 import com.illa.joliveapp.tools.Tools
@@ -43,7 +44,7 @@ class FragmentCreateEvent_step3 : BaseFragment() {
 
             super.onViewCreated(view, savedInstanceState)
             init()
-            initObserve()
+//            initObserve()
             checkIntentData()
             isNavigationViewInit = true
         }
@@ -51,7 +52,10 @@ class FragmentCreateEvent_step3 : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        initObserve()
         setTitle("建立活動")
+        act.stepThree()
+        act.showPreview()
 
     }
 
@@ -71,6 +75,14 @@ class FragmentCreateEvent_step3 : BaseFragment() {
     private fun init(){
         act = getMContext().get() as CreateEventActivity
         act.stepThree()
+        act.showPreview()
+        act.setPreviewOnclickListener(View.OnClickListener {
+            act.dataBody.description = ed_event_contain.text.toString()
+            act.dataBody.currency_id = "1"
+            act.dataBody.payment_method_id = "1"
+            findNavController().navigate(R.id.action_FragmentCreateEvent_step3_to_FragmentPreviewEvent)
+        })
+        act.setPreviewUnClick()
 
         tv_next_step.setOnClickListener(onClick)
         ed_event_contain.addTextChangedListener {
@@ -78,6 +90,11 @@ class FragmentCreateEvent_step3 : BaseFragment() {
                 tv_next_step.isClickable = true
                 tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)
                 tv_next_step.setTextColor(getMContext().get()!!.resources.getColor(R.color.colorWhite))
+
+                act.setPreviewClick()
+            } else {
+                act.setPreviewUnClick()
+
             }
         }
 
@@ -105,8 +122,12 @@ class FragmentCreateEvent_step3 : BaseFragment() {
                 Log.e("Peter","dataclassAsMap:   ${ketSet[4]}")
 
                 if(TextUtils.isEmpty(act.eventLabel)){
+                    Log.e("Peter","CreateEvent :   createEvent")
+
                     createEventsActVM.createEvent(dataclassAsMap, (getMContext().get() as CreateEventActivity).file)
                 } else {
+                    Log.e("Peter","CreateEvent :   updateEvent")
+
                     createEventsActVM.updateEvent(dataclassAsMap, act.file,
                         act.intentDataBody.data.id.toString()
                     )
@@ -117,6 +138,8 @@ class FragmentCreateEvent_step3 : BaseFragment() {
     }
     private fun initObserve(){
         createEventsActVM.getCreateEventResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Log.e("Peter","CreateEvent :   getCreateEventResponse   $it")
+
             if(!TextUtils.isEmpty(it)){
                 val jsonData = JSONObject(it)
                 if (jsonData.get("code") == 0){

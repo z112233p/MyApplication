@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
-import com.illa.joliveapp.datamodle.event.detail.Data
+import com.illa.joliveapp.datamodle.event.detailv2.Data
 import com.illa.joliveapp.tools.Config
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.Tools

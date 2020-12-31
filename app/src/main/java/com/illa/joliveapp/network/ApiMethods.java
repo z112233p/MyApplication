@@ -28,6 +28,7 @@ import com.illa.joliveapp.datamodle.event.list.TypeLists;
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents;
 import com.illa.joliveapp.datamodle.event.review.EventReview;
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember;
+import com.illa.joliveapp.datamodle.follows.Follows;
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice;
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate;
 import com.illa.joliveapp.datamodle.profile.MyInfo;
@@ -135,7 +136,7 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getReviewList(id)), pbObserver);
     }
 
-    public static void getEventDetail(Observer<EventDetail> pbObserver, String label){
+    public static void getEventDetail(Observer<EventDetailV2> pbObserver, String label){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getEventDetail(label)), pbObserver);
     }
 
@@ -285,4 +286,23 @@ public class ApiMethods {
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getUserEvents(userLabel)), pbObserver);
     }
 
+    public static void getFollows(Observer< Follows > pbObserver ){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getFollows()), pbObserver);
+    }
+
+    public static void postFollow(Observer< String > pbObserver, String label){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).postFollow(label)), pbObserver);
+    }
+
+    public static void postUnFollow(Observer< String > pbObserver, String label){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).postUnFollow(label)), pbObserver);
+    }
+
+    public static void closeEvent(Observer< String > pbObserver, String eventId){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).closeEvent(eventId)), pbObserver);
+    }
+
+    public static void noticeAllRead(Observer< String > pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).noticeAllRead()), pbObserver);
+    }
 }

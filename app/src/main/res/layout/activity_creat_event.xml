@@ -60,6 +60,15 @@
                 android:textSize="20sp"
                 android:layout_gravity="center"
                 tools:text="標題"/>
+
+            <ImageView
+                android:id="@+id/iv_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:tint="@color/colorGray43"
+                android:layout_marginEnd="20dp"
+                android:src="@mipmap/ic_eye"/>
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

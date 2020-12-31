@@ -1,8 +1,10 @@
 package com.illa.joliveapp.custom_view
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +37,8 @@ class EventDataLayout(context: Context) : ConstraintLayout(context) {
         tv_score.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_score_start))
         tv_report.iv_btn_img.setImageDrawable(context.resources.getDrawable(R.mipmap.ic_report))
 
+        tv_score.alpha = 0.2F
+
         tv_see_detail.setOnClickListener {
             val myIntent = Intent(
                 Intent.ACTION_VIEW,
@@ -44,6 +48,19 @@ class EventDataLayout(context: Context) : ConstraintLayout(context) {
 
         tv_event_status.setOnClickListener {
             IntentHelper.gotoEventDetailActivity(context, data.data.label, false)
+        }
+
+        tv_report.setOnClickListener {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.setMessage("確定要檢舉？")
+            builder.setPositiveButton("確定") {
+                    p0, p1 -> Log.e("Peter","dialog ok")
+            }
+            builder.setNegativeButton("取消") {
+                    p0, p1 -> Log.e("Peter","dialog cancel")
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
     }
 

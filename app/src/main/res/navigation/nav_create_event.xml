@@ -29,6 +29,14 @@
         android:id="@+id/FragmentCreateEvent_step3"
         android:name="com.illa.joliveapp.fragment.FragmentCreateEvent_step3"
         tools:layout="@layout/fragment_create_event_step_3">
+        <action
+            android:id="@+id/action_FragmentCreateEvent_step3_to_FragmentPreviewEvent"
+            app:destination="@id/FragmentPreviewEvent" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/FragmentPreviewEvent"
+        android:name="com.illa.joliveapp.fragment.FragmentPreviewEvent"
+        tools:layout="@layout/fragment_event_detial">
     </fragment>
 </navigation>

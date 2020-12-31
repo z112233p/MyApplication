@@ -21,6 +21,8 @@ object ProgressDialogController {
     }
 
     fun showProgress(){
+        Log.e("peter", "ProgressDialogController showProgress")
+
         if((mContext as Activity).isFinishing){
         } else {
             progressDialog?.show()
@@ -28,6 +30,8 @@ object ProgressDialogController {
     }
 
     fun dismissProgress(){
+        Log.e("peter", "ProgressDialogController dismissProgress")
+
         progressDialog?.dismiss()
     }
 }

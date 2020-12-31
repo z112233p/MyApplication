@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.chat.chatroom_list.ChatRoomList
 import com.illa.joliveapp.datamodle.chat_room.Token.ChatRoomToken
 import com.illa.joliveapp.datamodle.event.detail.EventDetail
+import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.index.EventIndex
 import com.illa.joliveapp.datamodle.event.list.TypeLists
@@ -31,7 +32,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
     private val eventIndex: MutableLiveData<EventIndex> = MutableLiveData<EventIndex>()
 
-    private val eventDetail: SingleLiveEvent<EventDetail> = SingleLiveEvent<EventDetail>()
+    private val eventDetail: SingleLiveEvent<EventDetailV2> = SingleLiveEvent<EventDetailV2>()
     private val eventReview: MutableLiveData<EventReview> = MutableLiveData<EventReview>()
     private val paymentMethod: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
     private val currencyType: MutableLiveData<TypeLists> = MutableLiveData<TypeLists>()
@@ -50,7 +51,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     fun getEventIndexData(): LiveData<EventIndex> {
         return eventIndex
     }
-    fun getEventDetail(): LiveData<EventDetail> {
+    fun getEventDetail(): LiveData<EventDetailV2> {
         return eventDetail
     }
     fun getEventReview(): LiveData<EventReview> {
@@ -107,7 +108,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     }
 
     fun getEventDetail(label: String?){
-        val getEventDetailObserver = object : Observer<EventDetail>{
+        val getEventDetailObserver = object : Observer<EventDetailV2>{
             override fun onComplete() {
                 progressStatus.value = true
             }
@@ -117,7 +118,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
 
             }
 
-            override fun onNext(t: EventDetail) {
+            override fun onNext(t: EventDetailV2) {
                 Log.e("Peter","getEventDetail  onNext    $t")
                 eventDetail.value = t
             }

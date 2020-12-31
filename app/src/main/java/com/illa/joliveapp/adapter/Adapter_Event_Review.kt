@@ -37,14 +37,14 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
 
     fun setData(dealData: List<User>?) {
         dataList.clear()
-
-        if (dealData == null || dealData.isEmpty()) {
-        } else {
-            dataList.addAll(dealData.filter {
-                it.id.toString() != PrefHelper.userID
-            })
-        }
-
+//
+//        if (dealData == null || dealData.isEmpty()) {
+//        } else {
+//            dataList.addAll(dealData.filter {
+//                it.id.toString() != PrefHelper.userID
+//            })
+//        }
+        dealData?.let { dataList.addAll(it) }
         notifyDataSetChanged()
     }
 

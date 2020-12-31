@@ -38,7 +38,7 @@ class FragmentCreateEvent_step2 : BaseFragment() {
     private var hasLocation = false
     private var hasPeople = false
     private var hasCost = false
-    private var hasReward = false
+    private var hasReward = true
 
     private lateinit var act: CreateEventActivity
 
@@ -68,6 +68,7 @@ class FragmentCreateEvent_step2 : BaseFragment() {
         super.onResume()
         setTitle("建立活動")
         (getMContext().get() as CreateEventActivity).stepTwo()
+        act.hidePreview()
 
     }
 
@@ -145,8 +146,8 @@ class FragmentCreateEvent_step2 : BaseFragment() {
                 (getMContext().get() as CreateEventActivity).dataBody.location_gps_longitude = getLongitude
                 (getMContext().get() as CreateEventActivity).dataBody.users_limit = ed_event_users_limit.text.toString()
                 (getMContext().get() as CreateEventActivity).dataBody.budget = ed_event_budget.text.toString()
-                (getMContext().get() as CreateEventActivity).dataBody.award_count = ed_award_count.text.toString()
-
+//                (getMContext().get() as CreateEventActivity).dataBody.award_count = ed_award_count.text.toString()
+                (getMContext().get() as CreateEventActivity).dataBody.award_count = "1"
             }
 
             R.id.tv_fix_location -> getMContext().get()?.let { it1 ->

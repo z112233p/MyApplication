@@ -51,10 +51,9 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val noticeTemplate: MutableLiveData<NoticeTemplate> = MutableLiveData<NoticeTemplate>()
     private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
     private val noticeRead: MutableLiveData<String> = MutableLiveData<String>()
-
+    private var noticeAllRead: MutableLiveData<String> = MutableLiveData<String>()
 
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
-
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
 
@@ -105,6 +104,10 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
     fun getNoticeRead(): LiveData<String> {
         return noticeRead
+    }
+
+    fun noticeAllReadResponse(): LiveData<String> {
+        return noticeAllRead
     }
 
 
@@ -407,6 +410,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onNext(t: Notice) {
+                progressStatus.value = true
+
                 notice.value = t
             }
 
@@ -417,22 +422,25 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     fun setNoticeRead(noticeId: String){
         val noticeReadObserver: Observer<String> = object : Observer<String>{
             override fun onComplete() {
-                progressStatus.value = true
+//                progressStatus.value = true
             }
 
             override fun onSubscribe(d: Disposable) {
-                progressStatus.value = false
+//                progressStatus.value = false
             }
 
             override fun onError(e: Throwable) {
-                progressStatus.value = true
+//                progressStatus.value = true
 
                 Log.e("Peter2", "setNoticeRead onError:  $e")
 
             }
 
             override fun onNext(t: String) {
+//                progressStatus.value = true
+
                 val jsonData = JSONObject(t)
+//                progressStatus.value = true
 
                 Log.e("Peter","setNoticeRead  onNext    $t")
                 if (jsonData.get("code") != 0){
@@ -448,10 +456,42 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         ApiMethods.setNoticeRead(noticeReadObserver, noticeId)
     }
 
+    fun setNoticeAllRead(){
+        val noticeAllReadObserver: Observer<String> = object : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "setNoticeAllRead onError:  $e")
+            }
+
+            override fun onNext(t: String) {
+                progressStatus.value = true
+                val jsonData = JSONObject(t)
+
+                Log.e("Peter","setNoticeAllRead  onNext    $t")
+                if (jsonData.get("code") != 0){
+                    errorMsg.value = jsonData.get("data").toString()
+                } else {
+
+                    noticeAllRead.value = t
+                }
+
+            }
+
+        }
+        ApiMethods.noticeAllRead(noticeAllReadObserver)
+    }
+
+
     fun test(register: Register){
         Objects.requireNonNull(ApiService.create(false).register(register)
-
-
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

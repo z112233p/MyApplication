@@ -59,14 +59,19 @@ class EventReviewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.e("peter", "c  EventReviewActivity onResume")
+
         ProgressDialogController.setContext(this)
 
     }
 
     private fun getIntentData(){
+        Log.e("Peter","EventReviewActivity")
         val b = intent.extras
         eventLabel = b?.getString("Label")!!
         eventID = b?.getString("eventId")!!
+        Log.e("Peter","EventReviewActivity")
+
     }
 
 
@@ -273,7 +278,7 @@ class EventReviewActivity : AppCompatActivity() {
                 false
             }
             R.id.action_edit -> {
-                IntentHelper.gotoCreateEventActivity(this, eventLabel)
+                IntentHelper.gotoCreateEventActivityById(this, eventID)
                 false
             }
             else -> false

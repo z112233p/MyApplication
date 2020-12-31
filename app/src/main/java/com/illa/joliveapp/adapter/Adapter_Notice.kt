@@ -12,6 +12,7 @@ import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.notice.template.Data
 import com.illa.joliveapp.tools.ImgHelper
+import com.illa.joliveapp.tools.IntentHelper
 
 import com.stfalcon.chatkit.utils.DateFormatter
 import java.text.SimpleDateFormat
@@ -39,7 +40,9 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
         fun onItemClick(
             view: View?,
             position: Int,
-            noticeId: String
+            noticeId: String,
+            template: String,
+            link: String
         )
     }
 
@@ -108,9 +111,40 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
         if(dataList.size == 0){return}
         val data = dataList[position]
 
-        ImgHelper.loadNormalImg(mContext, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ data.navigation.image +".jpg", holder.ivUserPhoto)
+        when(data.template){
+            "EVENT_TO_START",
+            "EVENT_CLOSE",
+            "EVENT_UPDATE",
+            "YOUR_EVENT_APPROVED",
+            "EVENT_CHANGE_NAME" -> {
+                //BuildConfig.CHATROOM_IMAGE_URL+"event/"+data.fname.replace("event_", "")+".jpg"
+                ImgHelper.loadNormalImg(mContext, BuildConfig.CHATROOM_IMAGE_URL+"event/label/"+ data.navigation.image +".jpg", holder.ivUserPhoto)
+            }
+            "SOMEBODY_PEEK_YOU",
+            "SOMEBODY_CANCEL_EVENT",
+            "SOMEBODY_FOLLOW_YOU",
+            "SOMEBODY_CHANGE_NAME",
+            "REVIEW_END_EXPIRED",
+            "YOUR_FOLLOW_CREATE_NEW_EVENT",
+            "SOMEBODY_WANT_TO_JOIN" -> {
+                ImgHelper.loadNormalImg(mContext, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ data.navigation.image +".jpg", holder.ivUserPhoto)
+            }
 
-        holder.tvNoticeInfo.text = getFormat(data.template).format(*(data.args).toTypedArray())
+        }
+        Log.e("Peter","data.template  ${(data.template)}    ${data.args}")
+
+        val templateSize = getFormat(data.template).split("%s").size
+        val templateSize2 = "你報名%s主辦的『%s".split("%s").size
+
+        Log.e("Peter","data.template  templateSize2   ${templateSize2}    ${data.args}")
+
+        if(templateSize-1 == data.args.size){
+            holder.tvNoticeInfo.text = getFormat(data.template).format(*(data.args).toTypedArray())
+
+        } else {
+            holder.tvNoticeInfo.text = ""
+
+        }
 
 //        Log.e("Peter","e04 xup6su;6   ${sdf.parse("2008-07-10 19:20:00")}")
         when {
@@ -133,7 +167,7 @@ class Adapter_Notice() :RecyclerView.Adapter<Adapter_Notice.ViewHolder>() {
         }
 
         holder.itemView.setOnClickListener {
-            mOnItemClickListener?.onItemClick(it, position, data._id.`$oid`)
+            mOnItemClickListener?.onItemClick(it, position, data._id.`$oid`, data.template, data.navigation.link)
         }
     }
 

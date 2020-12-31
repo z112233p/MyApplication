@@ -64,7 +64,7 @@ class FragmentInputPhone : BaseFragment() {
                     Tools.toast(getMContext().get(),"請輸入手機號碼")
                     return@OnClickListener
                 }
-                mainActVM.register(register = Register(ed_phone_number.text.toString().toInt(), "1"))
+                mainActVM.register(register = Register(ed_phone_number.text.toString(), "1"))
 //                mainActVM.test(register = Register(ed_phone_number.text.toString().toInt(), "1"))
             }
         }

@@ -1,6 +1,7 @@
 package com.illa.joliveapp.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -43,18 +44,20 @@ import java.util.*
 class FragmentEventDetailV2 : BaseFragment() {
 
     private val eventDetailActVM: EventDetailActivityVM by activityViewModels()
+
     private lateinit var eventDetailData: Data
     private lateinit var act: EventDetailActivity
+
     private var locationLatitude = ""
     private var locationLongitude = ""
     private var ChatId = ""
     private var dateSdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private var nowTime =  Date()
+    private var joinType:Any = 0.0
 
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_event_main_v2
-
     }
 
     @SuppressLint("NewApi")
@@ -140,7 +143,7 @@ class FragmentEventDetailV2 : BaseFragment() {
             tv_location_detail.text = eventDetailData.location_address
             tv_event_title.text = eventDetailData.title
             tv_event_budget.text = eventDetailData.budget.toString()
-            tv_event_users_limit.text = eventDetailData.users_limit.toString()
+            tv_event_users_limit.text = eventDetailData.users_limit.toString()+ "人"
             tv_event_reward.text = eventDetailData.award_count.toString()
             tv_event_content.text = eventDetailData.description
 
@@ -157,7 +160,7 @@ class FragmentEventDetailV2 : BaseFragment() {
             Log.e("Peter"," getEventDetailV2  diffTime !  $diffDay    $diffHour   $diffMinute")
 
             act.dealEventStatus(eventDetailData.join_type, newDate)
-
+            joinType = eventDetailData.join_type
 
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
 
@@ -172,6 +175,10 @@ class FragmentEventDetailV2 : BaseFragment() {
                 ll_participant.addView(joins)
 
             }
+        })
+
+        eventDetailActVM.getCloseEventResponse().observe(viewLifecycleOwner, Observer {
+            act.onBackPressed()
         })
     }
 
@@ -199,7 +206,7 @@ class FragmentEventDetailV2 : BaseFragment() {
         Log.e("Peter","onOptionsItemSelected FRA")
         return when (item.itemId) {
             R.id.action_option -> {
-                val dialog = getMContext().get()?.let { DialogEventDetailOption(it) }
+                val dialog = getMContext().get()?.let { DialogEventDetailOption(it, joinType) }
                 dialog?.setSeeDetailOnclick(View.OnClickListener {
 
                     val bundle = bundleOf("eventID" to act.eventID)
@@ -218,6 +225,35 @@ class FragmentEventDetailV2 : BaseFragment() {
                         act.eventID.toString()
                     ) }
                     dialog.dismiss()
+
+                })
+                dialog?.setReportOnclick(View.OnClickListener {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(getMContext().get())
+                    builder.setMessage("確定要檢舉？")
+                    builder.setPositiveButton("確定") {
+                            p0, p1 -> Log.e("Peter","dialog ok")
+                    }
+                    builder.setNegativeButton("取消") {
+                            p0, p1 -> Log.e("Peter","dialog cancel")
+                    }
+                    val dialog = builder.create()
+
+                    dialog.show()
+                })
+
+                dialog?.setCloseEventClick(View.OnClickListener {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(getMContext().get())
+                    builder.setMessage("確定要刪除？")
+                    builder.setPositiveButton("確定") {
+                            p0, p1 -> eventDetailActVM.closeEvent(eventId = act.eventID.toString())
+                    }
+                    builder.setNegativeButton("取消") {
+                            p0, p1 -> Log.e("Peter","dialog cancel")
+                    }
+                    val dialog = builder.create()
+
+                    dialog.show()
+
 
                 })
 

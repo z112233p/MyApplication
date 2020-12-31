@@ -1,6 +1,7 @@
 package com.illa.joliveapp.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +13,7 @@ import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.AdapterPager
 import com.illa.joliveapp.fragment.*
 import com.illa.joliveapp.tools.IntentHelper
+import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.activity_myinfo.*
@@ -23,8 +25,13 @@ class MyInfoActivity : AppCompatActivity() {
 
     private var f1 = FragmentMyinfo_info()
     private var f2 = FragmentMyinfo_event()
+    private lateinit var actionItem: MenuItem
+    private lateinit var optionItem: MenuItem
+    private lateinit var reportItem: MenuItem
+
     private var currentPosition = 0
     var userLabel = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +60,10 @@ class MyInfoActivity : AppCompatActivity() {
     }
 
     private fun init(){
+        Log.e("Peter","MyInfoActivity init")
+
+
+
         val tabTitle = mutableListOf<String>(*resources.getStringArray(R.array.my_info_pager))
         val myInfoFragments : ArrayList<Fragment> = arrayListOf()
         myInfoFragments.add(f1)
@@ -77,7 +88,22 @@ class MyInfoActivity : AppCompatActivity() {
         })
     }
 
-
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        actionItem = menu!!.findItem(R.id.action_edit)
+        optionItem = menu.findItem(R.id.action_option)
+        reportItem = menu.findItem(R.id.action_report)
+        Log.e("Peter","MyInfoActivity onPrepareOptionsMenu")
+        if(userLabel == PrefHelper.chatLable){
+            actionItem.isVisible = true
+            optionItem.isVisible = true
+            reportItem.isVisible = false
+        } else {
+            actionItem.isVisible = false
+            optionItem.isVisible = false
+            reportItem.isVisible = true
+        }
+        return true
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_my_info, menu)
@@ -98,6 +124,20 @@ class MyInfoActivity : AppCompatActivity() {
                 Log.e("Peter","MyInfoActivity onOptionsItemSelected action_edit")
 
                 IntentHelper.gotoEditMyInfoActivity(this)
+                false
+            }
+            R.id.action_report -> {
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder.setMessage("確定要檢舉？")
+                builder.setPositiveButton("確定") {
+                        p0, p1 -> Log.e("Peter","dialog ok")
+                }
+                builder.setNegativeButton("取消") {
+                        p0, p1 -> Log.e("Peter","dialog cancel")
+                }
+                val dialog = builder.create()
+                dialog.show()
                 false
             }
             else -> false

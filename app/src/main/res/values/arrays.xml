@@ -13,6 +13,11 @@
         <item>活動紀錄</item>
     </array>
 
+    <array name="follow_tab">
+        <item>追蹤</item>
+        <item>粉絲</item>
+    </array>
+
     <array name="constellation_cn">
         <item>牡羊座</item>
         <item>金牛座</item>

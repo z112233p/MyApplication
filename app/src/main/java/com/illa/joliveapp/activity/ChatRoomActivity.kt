@@ -401,7 +401,9 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
         payload.setImgClickListener(iii)
         payload.setAvatarOnClickListener(object : BaseMessageViewHolder.OnAvatarClickListener{
             override fun onAvatarClick(message: Message, itemView: View) {
-
+                if(Tools.isFastDoubleClick()){
+                    return
+                }
                 Log.e("Peter","onAvatarClick  message    ${message.author.id}")
                 Log.e("Peter","onAvatarClick  message    ${message.author.name}")
 
@@ -632,7 +634,7 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
 
             } else{
                 tv_send_msg.linksClickable = true
-                tv_send_msg.setTextColor(Color.BLUE)
+                tv_send_msg.setTextColor(Color.WHITE)
             }
         }
 
@@ -832,6 +834,10 @@ class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_option -> {
+                if(Tools.isFastDoubleClick()){
+                    return true
+                }
+
                 initAnimaView()
 
                 layoutHeight = eventDataLayout.height + 250

@@ -12,8 +12,7 @@ import java.util.HashMap
 
 class MyApp : Application(){
     val location: HashMap<String, Int> = HashMap()
-    var interestDataList:interest = interest(0, ArrayList<Data>(), "")
-    var jobDataList: job = job(0, ArrayList<com.illa.joliveapp.datamodle.profile.job.Data>(), "")
+
 
     override fun onCreate() {
         super.onCreate()
@@ -55,11 +54,21 @@ class MyApp : Application(){
         }
         return ""
     }
+    
+    
+    fun setInterest(it: interest) {
+        interestDataList = it
+    }
+    
+    fun setJob(it: job) {
+        jobDataList = it
+    }
 
     companion object {
         val TAG = MyApp::class.java.simpleName
         private var _instance: MyApp? = null
-
+        var interestDataList:interest = interest(0, ArrayList<Data>(), "")
+        var jobDataList: job = job(0, ArrayList<com.illa.joliveapp.datamodle.profile.job.Data>(), "")
         @JvmStatic
         fun get(): MyApp? {
             return _instance

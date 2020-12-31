@@ -3,11 +3,14 @@ package com.illa.joliveapp.fragment
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.view.TextureView
 import android.view.View
 import android.widget.AdapterView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.MyApp
@@ -16,6 +19,9 @@ import com.illa.joliveapp.activity.MyInfoActivity
 import com.illa.joliveapp.adapter.Adapter_Events
 import com.illa.joliveapp.adapter.CircleViewPager
 import com.illa.joliveapp.controller.BannerController
+import com.illa.joliveapp.datamodle.profile.interest.interest
+import com.illa.joliveapp.datamodle.profile.job.Data
+import com.illa.joliveapp.datamodle.profile.job.job
 import com.illa.joliveapp.dialog.DialogIGLogin
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.IntentHelper
@@ -32,8 +38,10 @@ class FragmentMyinfo_info : BaseFragment() {
 
     private val profileActivityVM: ProfileActivityVM by activityViewModels()
     private lateinit var myEventAdapter: Adapter_Events
-    private lateinit var bannerController: BannerController
+    private var bannerController: BannerController ?= null
     private lateinit var imageList: ArrayList<String>
+    private var interestMap: ArrayList<Int> = ArrayList<Int>()
+    private var interestDataList: interest ?= null
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_my_info_detail
@@ -55,6 +63,10 @@ class FragmentMyinfo_info : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        if(bannerController != null){
+            bannerController!!.stopSwipe()
+            bannerController!!.stopLooper()
+        }
         callApis()
         Log.e("peter","FragmentMyinfo_info    onResume")
 
@@ -73,14 +85,6 @@ class FragmentMyinfo_info : BaseFragment() {
         imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
 //        tv_follow_btn.setOnClickListener(onClick)
         tv_follow_btn
-        if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
-            tv_follow_btn.visibility = View.GONE
-
-        } else {
-            tv_follow_btn.visibility = View.VISIBLE
-
-
-        }
 
         myEventAdapter = Adapter_Events(getMContext().get(), 3, false)
         val layoutManager =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.HORIZONTAL, false)
@@ -94,9 +98,27 @@ class FragmentMyinfo_info : BaseFragment() {
                 }
             }
         })
+
+        ll_follow.setOnClickListener(onClick)
+        ll_fan.setOnClickListener(onClick)
+        tv_follow_btn.setOnClickListener(onClick)
+
+        if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
+            tv_follow_btn.visibility = View.GONE
+
+        } else {
+            tv_follow_btn.visibility = View.VISIBLE
+            ll_follow.isClickable = false
+            ll_fan.isClickable = false
+
+        }
     }
 
     private fun initUserPhoto(){
+        if(bannerController != null){
+            bannerController!!.stopSwipe()
+            bannerController!!.stopLooper()
+        }
         Log.e("Peter","FRAG  CircleViewPager   $imageList")
         bannerController = BannerController(getMContext().get()!!, imageList.size, vp_banner_view_pager, ll_dot_layout)
 
@@ -126,10 +148,6 @@ class FragmentMyinfo_info : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
-        if(bannerController != null){
-            bannerController.stopSwipe()
-            bannerController.stopLooper()
-        }
 
         Log.e("peter","onPause    ")
 
@@ -149,19 +167,58 @@ class FragmentMyinfo_info : BaseFragment() {
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
         when (it.id) {
+//            R.id.tv_follow_btn -> {
+//                val dialog = getMContext().get()?.let { it1 -> DialogIGLogin(it1) }
+//                dialog?.show()
+//            }
+            R.id.ll_fan -> getMContext().get()?.let { it1 -> IntentHelper.gotoFollowsActivity(it1,1) }
+            R.id.ll_follow -> getMContext().get()?.let { it1 -> IntentHelper.gotoFollowsActivity(it1,0) }
             R.id.tv_follow_btn -> {
-                val dialog = getMContext().get()?.let { it1 -> DialogIGLogin(it1) }
-                dialog?.show()
-            }
 
+                if(tv_follow_btn.text == "已追蹤"){
+                    profileActivityVM.postUnFollow((getMContext().get() as MyInfoActivity).userLabel)
+
+                } else {
+                    profileActivityVM.postFollow((getMContext().get() as MyInfoActivity).userLabel)
+
+                }
+            }
         }
     }
 
+    private fun dealInterest(){
+        var interests = ""
+        interestMap.forEach { id ->
+            if(id == interestMap.last()){
+                interests += MyApp.get()!!.getInterest(id)
+
+            } else {
+                interests += MyApp.get()!!.getInterest(id)+", "
+
+            }
+        }
+        tv_my_interest.text = interests
+    }
+
+    private fun checkInterest(){
+        if(interestDataList != null && interestMap.size > 0){
+            dealInterest()
+        }
+    }
 
     private fun initObserve(){
         profileActivityVM.getUserInfoData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             val it = it.data
             val constellationTitle = mutableListOf<String>(*MyApp.get()!!.resources.getStringArray(R.array.constellation_cn))
+
+            if(it.user.is_follow){
+                tv_follow_btn.text = "已追蹤"
+                tv_follow_btn.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_event_type_btn)
+            } else {
+                tv_follow_btn.text = "追蹤"
+                tv_follow_btn.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)
+
+            }
 
             ImgHelper.loadNormalImg(getMContext().get(),BuildConfig.IMAGE_URL+ it.user.photos!![0].url, iv_my_photo)
             imageList.clear()
@@ -174,13 +231,16 @@ class FragmentMyinfo_info : BaseFragment() {
 
 //            ImgHelper.loadNormalImgNoCache(getMContext().get(),BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ it.user.label +".jpg", iv_my_photo)
             tv_name.text = it.user.nickname
-            val birth = "Taipei City, "+it.user.age+", "+constellationTitle[it.user.constellation_id]
+            val birth = "Taipei City, "+it.user.age+", "+constellationTitle[it.user.constellation_id-1]
 
 //            val birth = "Taipei City, "+it.user.age+", "+Tools.getConstellation(it.user.birthday.split("-")[1],it.user.birthday.split("-")[2])
             tv_birth.text = birth
 
             var interests = ""
+            interestMap.clear()
             it.user.interest_map?.forEach { id ->
+                interestMap.add(id)
+
                 if(id == it.user.interest_map!!.last()){
                     interests += MyApp.get()!!.getInterest(id)
 
@@ -190,7 +250,15 @@ class FragmentMyinfo_info : BaseFragment() {
                 }
             }
             tv_my_interest.text = interests
-            tv_my_job.text = MyApp.get()!!.getJob(it.user.job_id.toInt())
+            checkInterest()
+
+
+            if(TextUtils.isEmpty(MyApp.get()!!.getJob(it.user.job_id.toInt()))){
+                profileActivityVM.getJbList()
+            } else {
+                tv_my_job.text = MyApp.get()!!.getJob(it.user.job_id.toInt())
+
+            }
             if(it.user.gender == 0){
                 iv_gender.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_gender_woman))
             } else {
@@ -217,7 +285,10 @@ class FragmentMyinfo_info : BaseFragment() {
             tv_birth.text = birth
 
             var interests = ""
+            interestMap.clear()
             it.user.interest_map?.forEach { id ->
+                interestMap.add(id)
+
                 if(id == it.user.interest_map!!.last()){
                     interests += MyApp.get()!!.getInterest(id)
 
@@ -227,6 +298,9 @@ class FragmentMyinfo_info : BaseFragment() {
                 }
             }
             tv_my_interest.text = interests
+            checkInterest()
+
+
             tv_my_job.text = MyApp.get()!!.getJob(it.user.job_id.toInt())
             if(it.user.gender == 0){
                 iv_gender.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_gender_woman))
@@ -241,8 +315,30 @@ class FragmentMyinfo_info : BaseFragment() {
         })
 
         profileActivityVM.getMyEventsData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            myEventAdapter.setData(it.data.processing)
+            myEventAdapter.setData(it.data.processing.filter { it.author.nickname == PrefHelper.chatName })
             tv_event_count.text = (it.data.history.size + it.data.processing.size).toString()
+            if(it.data.processing.isEmpty()){
+                tv_my_event.visibility = View.GONE
+                tv_divider_line_three.visibility = View.GONE
+            }
+        })
+
+        profileActivityVM.getFollowResponse().observe(viewLifecycleOwner, Observer {
+            callApis()
+        })
+
+        profileActivityVM.getUnFollowResponse().observe(viewLifecycleOwner, Observer {
+            callApis()
+        })
+
+        profileActivityVM.getInterestListData().observe(viewLifecycleOwner, Observer {
+            MyApp.get()!!.setInterest(it)
+            interestDataList = it
+
+        })
+
+        profileActivityVM.getJbListData().observe(viewLifecycleOwner, Observer {
+            MyApp.get()!!.setJob(it)
         })
     }
 
@@ -250,6 +346,7 @@ class FragmentMyinfo_info : BaseFragment() {
         if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
             profileActivityVM.getMyInfo()
             profileActivityVM.getMyEvents()
+//            profileActivityVM.getUserEvents((getMContext().get() as MyInfoActivity).userLabel)
 
 
         } else {

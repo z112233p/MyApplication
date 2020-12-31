@@ -118,7 +118,9 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     override fun onResume() {
         super.onResume()
         setTitle("建立活動")
-        (getMContext().get() as CreateEventActivity).stepOne()
+        act.stepOne()
+        act.hidePreview()
+
 
 
     }
@@ -131,7 +133,6 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun init(){
         act = getMContext().get() as CreateEventActivity
-
         paymentList = ArrayList()
         currencyList = ArrayList()
         eventCategoryList = ArrayList()

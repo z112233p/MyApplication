@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -13,6 +14,7 @@ import androidx.navigation.Navigation
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.create.CreateEvent
 import com.illa.joliveapp.datamodle.event.detail.EventDetail
+import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import kotlinx.android.synthetic.main.activity_creat_event.*
@@ -26,8 +28,10 @@ class CreateEventActivity  : AppCompatActivity() {
     var file : File = File("")
     val dataBody = CreateEvent()
     var eventLabel = ""
+    var eventId = ""
+
     var isEditMode = false
-    lateinit var intentDataBody : EventDetail
+    lateinit var intentDataBody : EventDetailV2
     private lateinit var navController: NavController
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -38,9 +42,9 @@ class CreateEventActivity  : AppCompatActivity() {
         setContentView(R.layout.activity_creat_event)
         title = ""
         navController= Navigation.findNavController(this, R.id.nav_host_fragment)
+        initObserve()
 
         getIntentData()
-        initObserve()
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -50,8 +54,14 @@ class CreateEventActivity  : AppCompatActivity() {
 
         val b = intent.extras ?: return
         eventLabel = b.getString("Label")!!
+        eventId = b.getString("eventId")!!
         isEditMode = !TextUtils.isEmpty(eventLabel)
-        createEventsActVM.getEventDetail(eventLabel)
+        if(!TextUtils.isEmpty(eventLabel)){
+            createEventsActVM.getEventDetail(eventLabel)
+
+        } else if(!TextUtils.isEmpty(eventId)){
+            createEventsActVM.getEventDetailById(eventId)
+        }
         Log.e("Peter","CreateEventActivity getIntentData   $eventLabel")
 
     }
@@ -119,5 +129,28 @@ class CreateEventActivity  : AppCompatActivity() {
     fun stepThree(){
         v_step_two.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
         v_step_three.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
+    }
+
+    fun showPreview(){
+        iv_preview.visibility = View.VISIBLE
+    }
+
+    fun hidePreview(){
+        iv_preview.visibility = View.GONE
+    }
+
+    fun setPreviewClick(){
+        iv_preview.setColorFilter(this.resources.getColor(R.color.colorWhite))
+        iv_preview.isClickable = true
+
+    }
+
+    fun setPreviewUnClick(){
+        iv_preview.setColorFilter(this.resources.getColor(R.color.colorGray43))
+        iv_preview.isClickable = false
+    }
+
+    fun setPreviewOnclickListener(onClickListener: View.OnClickListener){
+        iv_preview.setOnClickListener(onClickListener)
     }
 }

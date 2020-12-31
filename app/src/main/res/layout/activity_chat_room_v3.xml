@@ -75,9 +75,13 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_click_to_bottom"
             android:visibility="gone"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            app:backgroundTint="@android:color/transparent"
+            android:src="@mipmap/ic_click_down"
             android:layout_gravity="end|bottom"
+            app:fabSize="mini"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp" />
@@ -175,7 +179,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="end"
-                android:src="@drawable/ic_send"
+                android:src="@mipmap/ic_close"
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp" />
         </FrameLayout>
@@ -262,7 +266,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="end"
-                android:src="@drawable/ic_send"
+                android:src="@mipmap/ic_close"
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp" />
             <Button

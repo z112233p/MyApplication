@@ -41,7 +41,7 @@ class FragmentRegister : BaseFragment() {
 
     private fun init(){
         button_first.setOnClickListener {
-            mainActVM.register(register = Register(et_phone.text.toString().toInt(), et_language_id.text.toString()))
+            mainActVM.register(register = Register(et_phone.text.toString(), et_language_id.text.toString()))
             button_first.isClickable = false
 
         }

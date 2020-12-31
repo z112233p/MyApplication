@@ -123,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:visibility="invisible"
             android:textSize="13sp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
@@ -135,11 +136,9 @@
         android:id="@+id/ll_option"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"/>
+        android:background="@color/transparent"
+        android:orientation="horizontal">
+
     </LinearLayout>
 
     <LinearLayout
@@ -208,6 +207,13 @@
             android:text="取消報名"
             android:layout_weight="1"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        app:layout_anchor="@+id/ll_option"
+        app:layout_anchorGravity="center" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

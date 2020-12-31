@@ -50,13 +50,12 @@
                 android:id="@+id/iv_verify_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
-                android:text="1"
                 android:layout_gravity="center"
                 android:textColor="@color/colorWhite"/>
         </FrameLayout>
@@ -74,7 +73,7 @@
                 android:id="@+id/iv_verify_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_2"
                 android:layout_width="wrap_content"
@@ -97,7 +96,7 @@
                 android:id="@+id/iv_verify_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_3"
                 android:layout_width="wrap_content"
@@ -120,7 +119,7 @@
                 android:id="@+id/iv_verify_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_4"
                 android:layout_width="wrap_content"
@@ -143,7 +142,7 @@
                 android:id="@+id/iv_verify_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_5"
                 android:layout_width="wrap_content"
@@ -166,7 +165,7 @@
                 android:id="@+id/iv_verify_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_verify"/>
+                android:src="@mipmap/ic_verify_gray"/>
             <TextView
                 android:id="@+id/tv_verify_6"
                 android:layout_width="wrap_content"
