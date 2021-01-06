@@ -13,9 +13,9 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.AppBarLayout
 import com.illa.joliveapp.R
 import com.illa.joliveapp.tools.Tools
-import com.google.android.material.appbar.AppBarLayout
 import java.lang.ref.WeakReference
 
 @Suppress("CAST_NEVER_SUCCEEDS")
@@ -82,6 +82,26 @@ abstract class BaseFragment : Fragment(){
     fun showToolBar(){
         actionBar?.show()
         toolbarMain.visibility = View.VISIBLE
+    }
+
+    fun hideNavigationIcon(){
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+
+    }
+    fun showNavigationIcon(){
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    fun clearToolBarFlag(){
+        val params = toolbarMain.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = 0
+    }
+
+    fun setToolBarSlide(){
+        val params = toolbarMain.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
     }
 
     fun expandToolbar(expend: Boolean){

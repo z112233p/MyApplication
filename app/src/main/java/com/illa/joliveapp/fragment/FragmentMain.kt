@@ -4,7 +4,11 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +23,7 @@ import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.layout_input_rv.view.*
+import org.w3c.dom.Text
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,26 +43,54 @@ class FragmentMain : BaseFragment() {
     private lateinit var eventTypeAdapter: Adapter_Event_Type_Main_Page
     private lateinit var eventCategoryList: ArrayList<String>
 
+    private lateinit var ivChooseCountry: ImageView
+    private lateinit var ivCreateEvent: ImageView
+    private lateinit var tvChoseCountry: TextView
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_main
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        ivChooseCountry = requireActivity().findViewById(R.id.iv_choose_country)
+        ivCreateEvent = requireActivity().findViewById(R.id.iv_create_event)
+        tvChoseCountry = requireActivity().findViewById(R.id.tv_chose_country)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         expandToolbar(true)
-        hideToolBar()
+//        hideToolBar()
+        showToolBar()
+        clearToolBarFlag()
         hideTitle()
         init()
         initObserve()
         initHotEvents()
         initComingEvents()
         initMayLikeEvents()
+
         iv_choose_country.setOnClickListener {
-//            findNavController().navigate(R.id.action_FragmentMain_to_FragmentChooseLocation)
             val dialog = getMContext().get()?.let { it1 -> DialogChooseCountry(it1) }
             dialog?.show()
+        }
+        ivChooseCountry.setOnClickListener {
+            val dialog = getMContext().get()?.let { it1 -> DialogChooseCountry(it1) }
+            dialog?.show()
+        }
+        tvChoseCountry.setOnClickListener {
+            val dialog = getMContext().get()?.let { it1 -> DialogChooseCountry(it1) }
+            dialog?.show()
+        }
+
+
+        ivCreateEvent.setOnClickListener {
+            getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
         }
         iv_create_event.setOnClickListener {
             getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }

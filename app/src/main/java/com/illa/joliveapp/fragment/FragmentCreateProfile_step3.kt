@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -80,9 +81,29 @@ class FragmentCreateProfile_step3 : BaseFragment() {
     override fun onResume() {
         super.onResume()
         setTitle("即將完成")
+        showNavigationIcon()
         act.setSubTitle("請上傳一張照片，建立基本資訊")
         (getMContext().get() as ProfileActivity).setStepThree()
 
+        hasName = !TextUtils.isEmpty(act.dataBody["nickname"])
+        hasBirth = !TextUtils.isEmpty(act.dataBody["birthday"])
+        hasGender = !TextUtils.isEmpty(act.dataBody["gender"])
+        hasPhoto = act.file != null
+
+        ed_user_name.setText(act.dataBody["nickname"])
+        ed_user_birth.setText(act.dataBody["birthday"])
+
+        if(!TextUtils.isEmpty(act.dataBody["gender"])){
+            ed_user_gender.setText(genderList[act.dataBody["gender"]!!.toInt()])
+            selectedGender = act.dataBody["gender"]!!.toInt()
+        }
+
+        Log.e("Peter","FragmentCreateProfile_step3    onResume  hasBirth  $hasBirth")
+        Log.e("Peter","FragmentCreateProfile_step3    onResume  hasGender  $hasGender")
+        Log.e("Peter","FragmentCreateProfile_step3    onResume  hasName  $hasName")
+        Log.e("Peter","FragmentCreateProfile_step3    onResume  hasPhoto  $hasPhoto")
+
+        checkNextStep()
     }
 
 
@@ -92,8 +113,8 @@ class FragmentCreateProfile_step3 : BaseFragment() {
         act = getMContext().get() as ProfileActivity
 
         genderList = ArrayList()
-        genderList.add("Female")
-        genderList.add("male")
+        genderList.add("女")
+        genderList.add("男")
         val listAdapter = ArrayAdapter<String>(getMContext().get()!!, android.R.layout.simple_spinner_item, genderList)
         sp_gender.adapter = listAdapter
         sp_gender.onItemSelectedListener = onItemSelectedListener
@@ -116,6 +137,8 @@ class FragmentCreateProfile_step3 : BaseFragment() {
             if(it!!.isNotEmpty()){
                 hasName = true
                 checkNextStep()
+                act.dataBody["nickname"] = ed_user_name.text.toString()
+
             }
         }
 
@@ -146,6 +169,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                     override fun onFemaleClick(gender: String) {
                         ed_user_gender.setText(gender)
                         selectedGender = 0
+                        act.dataBody["gender"] = selectedGender.toString()
                         hasGender = true
                         checkNextStep()
                     }
@@ -153,6 +177,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                     override fun onMaleClick(gender: String) {
                         ed_user_gender.setText(gender)
                         selectedGender = 1
+                        act.dataBody["gender"] = selectedGender.toString()
                         hasGender = true
                         checkNextStep()
                     }
@@ -221,6 +246,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
         }
 
         ed_user_birth.setText(sdf.format(myCalendar.time))
+        act.dataBody["birthday"] = ed_user_birth.text.toString()
     }
 
     private fun initObserve(){
@@ -238,6 +264,8 @@ class FragmentCreateProfile_step3 : BaseFragment() {
 
             dealProfilePhoto(BuildConfig.IMAGE_URL+it[0].url)
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+it[0].url, iv_profile_photo)
+            iv_background_icon.visibility = View.GONE
+
 
         })
 
@@ -322,6 +350,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                 val result = CropImage.getActivityResult(data)
                 Tools.saveCropImage(result.uri)
                 val file = Tools.dealCropImage()
+                act.file = Tools.dealCropImage()
                 Tools.deleteCropImage()
                 profileActivityVM.updateMyPhoto("0", file)
                 iv_background_icon.visibility = View.GONE

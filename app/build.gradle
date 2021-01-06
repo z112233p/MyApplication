@@ -16,19 +16,20 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        buildConfigField "String", 'RESTFUL_URL', '"https://dev.illa.me/api/"'
-//        buildConfigField "String", 'CHATROOM_URL', '"https://dev.illa.me:8443"'
-//        buildConfigField "String", 'IMAGE_URL', '"https://dev.illa.me/"'
-//        buildConfigField "String", 'CHATROOM_IMAGE_URL', '"https://dev.illa.me/images/chatroom/"'
+        buildConfigField "String", 'RESTFUL_URL', '"https://dev.illa.me/api/"'
+        buildConfigField "String", 'CHATROOM_URL', '"https://dev.illa.me:8443"'
+        buildConfigField "String", 'IMAGE_URL', '"https://dev.illa.me/"'
+        buildConfigField "String", 'CHATROOM_IMAGE_URL', '"https://dev.illa.me/images/chatroom/"'
 
-        buildConfigField "String", 'RESTFUL_URL', '"https://api.illa.me/api/"'
-        buildConfigField "String", 'CHATROOM_URL', '"https://api.illa.me:8443"'
-        buildConfigField "String", 'IMAGE_URL', '"https://api.illa.me/"'
-        buildConfigField "String", 'CHATROOM_IMAGE_URL', '"https://api.illa.me/images/chatroom/"'
+
     }
 
     buildTypes {
         release {
+            buildConfigField "String", 'RESTFUL_URL', '"https://api.illa.me/api/"'
+            buildConfigField "String", 'CHATROOM_URL', '"https://api.illa.me:8443"'
+            buildConfigField "String", 'IMAGE_URL', '"https://api.illa.me/"'
+            buildConfigField "String", 'CHATROOM_IMAGE_URL', '"https://api.illa.me/images/chatroom/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -137,5 +138,6 @@ dependencies {
 
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
-
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
 }

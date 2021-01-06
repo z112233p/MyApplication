@@ -104,5 +104,13 @@ class ItemInterestView(context: Context?) : ConstraintLayout(context) {
 
     fun setIsSelected(param: Boolean){
         isSelected = param
+        if(param){
+            tv_item_name.background = context.resources.getDrawable(R.drawable.bg_profile_item_selected)
+            val gd = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(Color.parseColor("#"+selectedColor), Color.parseColor("#d18412"))
+            )
+            gd.cornerRadius = 0f
+            tv_item_name.setBackgroundDrawable(gd)
+        }
     }
 }

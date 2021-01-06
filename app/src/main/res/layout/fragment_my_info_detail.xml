@@ -412,8 +412,6 @@
         android:layout_height="wrap_content"
         android:textStyle="normal"
         android:layout_marginTop="10dp"
-        android:paddingBottom="30dp"
-
         android:textSize="16sp"
         android:textColor="@color/colorWhite"
         android:lineSpacingExtra="1sp"
@@ -425,6 +423,107 @@ importance and wonderful aspects of life …more"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_about_me"/>
+
+    <TextView
+        android:id="@+id/tv_divider_line_four"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorGray70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_about_me_data"/>
+
+    <TextView
+        android:id="@+id/tv_instagram"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorYellowD1"
+        android:lineSpacingExtra="1sp"
+        android:text="Instagram"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rv_instagram"
+        app:layout_constraintTop_toBottomOf="@+id/tv_divider_line_four"/>
+    <TextView
+        android:id="@+id/tv_instagram_disconnect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorGray9F"
+        android:lineSpacingExtra="1sp"
+        android:gravity="end"
+        android:text="取消連結"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rv_instagram"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_divider_line_four"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_instagram"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_instagram"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_instagram"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_instagram"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@drawable/bg_gray_radius5"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_instagram"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:layout_gravity="center_vertical"
+                android:textStyle="normal"
+                android:layout_marginStart="17dp"
+                android:textSize="14sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="3sp"
+                android:text="連結Instagram"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textStyle="normal"
+                android:textSize="14sp"
+                android:textColor="#ec663c"
+                android:lineSpacingExtra="3sp"
+                android:text="連線"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -38,8 +38,11 @@ class FragmentChatRoomList : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        expandToolbar(false)
-        showToolBar()
+//        setToolBarSlide()
+//        expandToolbar(false)
+//        showToolBar()
+
+        hideToolBar()
         showTitle()
         setTitle(getMContext().get()!!.resources.getString(R.string.chat_room))
         WebSocketHelper.connect()

@@ -21,6 +21,7 @@ import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.event.review.EventReview
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
 import com.illa.joliveapp.datamodle.follows.Follows
+import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate
 import com.illa.joliveapp.datamodle.profile.MyInfo
@@ -212,6 +213,13 @@ interface ApiService {
     @POST("notification/read_all")
     fun noticeAllRead():Observable<String>
 
+    //Instagram Set Token
+    @POST("instagram/auth")
+    fun setIgToken(@Body igBody: IgDataBody?):Observable<String>
+
+    //Instagram Disconnect
+    @POST("instagram/disconnect")
+    fun igDisconnect():Observable<String>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

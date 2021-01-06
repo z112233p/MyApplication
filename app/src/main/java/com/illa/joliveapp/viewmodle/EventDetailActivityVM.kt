@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
+import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.review.EventReview
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
 import com.illa.joliveapp.network.ApiMethods
@@ -28,11 +29,16 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     private val joinEventResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val postEventReviewResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
     private val closeEventResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
+    private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
 
     //get
+    fun getEvents(): LiveData<EventList> {
+        return events
+    }
+
     fun getEventDetailV2(): LiveData<EventDetailV2> {
         return eventDetail
     }
@@ -260,6 +266,30 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     }
 
 
+    fun getEventsApi(label: String?, eventsCategorysId: String?){
+        val getEventsObserver = object : Observer<EventList>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onNext(t: EventList) {
+                events.value = t
+                Log.e("Peter","getEventsApi  onNext    $t")
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter","getEventsApi  onError    "+e.message)
+            }
+
+        }
+        ApiMethods.getEvents(getEventsObserver,label, eventsCategorysId)
+    }
 
 
     fun postEventRollCall(dataBody: ReviewMember){

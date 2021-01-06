@@ -12,6 +12,7 @@ import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.follows.Follow
 import com.illa.joliveapp.datamodle.follows.Follows
+import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.profile.MyInfo
 import com.illa.joliveapp.datamodle.profile.MyInfoData
 import com.illa.joliveapp.datamodle.profile.MyInfoPhoto
@@ -50,6 +51,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val follows: MutableLiveData<Follows> = MutableLiveData<Follows>()
     private val postFollowResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val postUnFollowResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val setIgTokenResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val igDisconnectResponse: MutableLiveData<String> = MutableLiveData<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -93,6 +96,14 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     fun getUnFollowResponse(): LiveData<String> {
         return postUnFollowResponse
     }
+    fun getIgTokenResponse(): LiveData<String> {
+        return setIgTokenResponse
+    }
+    fun getIgDisconnectResponse(): LiveData<String> {
+        return igDisconnectResponse
+    }
+
+
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
         val getEventsObserver = object : Observer<EventList>{
@@ -463,4 +474,51 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
         ApiMethods.postUnFollow(postUnFollowObserver, label)
     }
 
+    fun setIgToken(dataBody: IgDataBody){
+        val setIgTokenObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                setIgTokenResponse.value = t
+                Log.e("Peter2", "postUnFollow  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "postUnFollow  onError:  "+e.message)
+            }
+        }
+        ApiMethods.setIgToken(setIgTokenObserver, dataBody)
+    }
+    //igDisconnect
+    fun igDisconnect(){
+        val igDisconnectObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                igDisconnectResponse.value = t
+                Log.e("Peter2", "igDisconnect  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "igDisconnect  onError:  "+e.message)
+            }
+        }
+        ApiMethods.igDisconnect(igDisconnectObserver)
+    }
 }

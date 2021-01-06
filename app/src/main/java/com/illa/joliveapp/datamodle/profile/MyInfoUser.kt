@@ -21,6 +21,8 @@ data class MyInfoUser(
     var label:String = "",
     var stamina: String = "",
     var interest_map: Array<Int>? = null,
+    var instargam_images: Array<String>? = null,
+    var instargam_connection: Boolean = false,
     var photos: ArrayList<MyInfoPhoto>? = null,
     var gold: MyInfoGold,
     var geo: MyInfoGeo,

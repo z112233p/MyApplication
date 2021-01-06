@@ -79,13 +79,13 @@ class Adapter_Choose_Location() :RecyclerView.Adapter<Adapter_Choose_Location.Vi
         }
 
 
-        holder.parent.setOnClickListener {
-            oldHighLight = currentPosition
-            currentPosition = position
-            notifyItemChanged(oldHighLight)
-            notifyItemChanged(currentPosition)
-
-        }
+//        holder.parent.setOnClickListener {
+//            oldHighLight = currentPosition
+//            currentPosition = position
+//            notifyItemChanged(oldHighLight)
+//            notifyItemChanged(currentPosition)
+//
+//        }
     }
 
 

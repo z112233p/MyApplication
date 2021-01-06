@@ -18,13 +18,14 @@ class MyApp : Application(){
         super.onCreate()
         _instance = this
 
-        location["taipei"] = R.mipmap.ph_taipei
-        location["taichung"] = R.mipmap.ph_taichung
-        location["kaohsiung"] = R.mipmap.ph_kaohsiung
-        location["san_srancisco"] = R.mipmap.ph_san_srancisco
-        location["osaka"] = R.mipmap.ph_osaka
-        location["tokyo"] = R.mipmap.ph_tokyo
-        location["hong_kong"] = R.mipmap.ph_hong_kong
+        location["台北"] = R.mipmap.ph_taipei
+        location["台中"] = R.mipmap.ph_taichung_gray
+        location["高雄"] = R.mipmap.ph_kaohsiung_gray
+        location["舊金山"] = R.mipmap.ph_san_srancisco_gray
+        location["大阪"] = R.mipmap.ph_osaka_gray
+        location["東京"] = R.mipmap.ph_tokyo_gray
+        location["香港"] = R.mipmap.ph_hong_kong_gray
+        location["其他"] = R.mipmap.ph_other_gray
 
         startKoin {
             // Android context

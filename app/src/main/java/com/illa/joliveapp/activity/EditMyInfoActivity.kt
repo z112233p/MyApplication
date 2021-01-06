@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.illa.joliveapp.R
+import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -19,6 +20,8 @@ class EditMyInfoActivity : AppCompatActivity() {
     val dataBody :HashMap<String, String> = HashMap()
     val interestArrayList = ArrayList<Int>()
     var jobId: Int = -1
+    private lateinit var actionItem: MenuItem
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,20 @@ class EditMyInfoActivity : AppCompatActivity() {
                 ProgressDialogController.showProgress()
             }
         })
+    }
+
+    fun hideActionItem(){
+        actionItem.isVisible = false
+    }
+
+    fun showActionItem(){
+//        actionItem.isVisible = true
+    }
+
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        actionItem = menu!!.findItem(R.id.action_store)
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

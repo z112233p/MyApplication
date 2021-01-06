@@ -64,6 +64,8 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         if(!isNavigationViewInit){
             Log.e("Peter","isNavigationViewInit  ININ ")
             super.onViewCreated(view, savedInstanceState)
+            act = getMContext().get() as EditMyInfoActivity
+            act.showActionItem()
 
             setHasOptionsMenu(true)
             isNavigationViewInit = true
@@ -77,14 +79,12 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         init()
         initObserve()
         callApis()
-
     }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private fun init(){
-        act = getMContext().get() as EditMyInfoActivity
 
         date = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             myCalendar[Calendar.YEAR] = year
@@ -271,6 +271,8 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 it.user.interest_map?.forEach {
                     act.interestArrayList.add(it)
                 }
+                Log.e("peter","act.interestArrayList2    ${act.interestArrayList}")
+
             } else {
                 cl_edit_interest.ed_data.setText(MyApp.get()!!.getInterest(it.user.interest_map!![0]))
                 cl_edit_interest.ed_data.visibility = View.VISIBLE
@@ -280,6 +282,8 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 it.user.interest_map?.forEach {
                     act.interestArrayList.add(it)
                 }
+                Log.e("peter","act.interestArrayList3    ${act.interestArrayList}")
+
             }
 
             if(act.jobId == -1){

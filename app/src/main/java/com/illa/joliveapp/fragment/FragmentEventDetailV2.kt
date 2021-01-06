@@ -17,9 +17,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.EventDetailActivity
+import com.illa.joliveapp.adapter.Adapter_Events
 import com.illa.joliveapp.custom_view.ItemJoins
 import com.illa.joliveapp.datamodle.event.detailv2.Data
 import com.illa.joliveapp.dialog.DialogEventDetailOption
@@ -34,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_location
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_start_time
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_title
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_users_limit
+import kotlinx.android.synthetic.main.layout_input_rv.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,11 +50,15 @@ class FragmentEventDetailV2 : BaseFragment() {
 
     private lateinit var eventDetailData: Data
     private lateinit var act: EventDetailActivity
+    private lateinit var mayLikeEventAdapter: Adapter_Events
 
     private var locationLatitude = ""
     private var locationLongitude = ""
     private var ChatId = ""
     private var dateSdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private var daySdf = SimpleDateFormat("MM/dd/yyyy(E)")
+    private var timeSdf = SimpleDateFormat("hh:mm a")
+
     private var nowTime =  Date()
     private var joinType:Any = 0.0
 
@@ -93,6 +100,19 @@ class FragmentEventDetailV2 : BaseFragment() {
         act = getMContext().get() as EventDetailActivity
         tv_event_location.setOnClickListener(onClick)
         tv_location_detail.setOnClickListener(onClick)
+
+        mayLikeEventAdapter = Adapter_Events(getMContext().get(), 2, true)
+        mayLikeEventAdapter.setOnItemClickListener(object : Adapter_Events.OnItemClickListener{
+            override fun onItemClick(view: View?, position: Int, label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoEventDetailActivity(it, label, false)
+                }
+            }
+        })
+
+        val layoutManager =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.HORIZONTAL, false)
+        rv_events.layoutManager = layoutManager
+        rv_events.adapter = mayLikeEventAdapter
     }
 
 
@@ -138,7 +158,6 @@ class FragmentEventDetailV2 : BaseFragment() {
             locationLatitude = eventDetailData.location_gps_latitude
             locationLongitude = eventDetailData.location_gps_longitude
 
-            tv_event_start_time.text = eventDetailData.start_time
             tv_event_location.text = eventDetailData.location_title
             tv_location_detail.text = eventDetailData.location_address
             tv_event_title.text = eventDetailData.title
@@ -147,6 +166,19 @@ class FragmentEventDetailV2 : BaseFragment() {
             tv_event_reward.text = eventDetailData.award_count.toString()
             tv_event_content.text = eventDetailData.description
 
+            val startDay = daySdf.format(dateSdf.parse(eventDetailData.start_time))
+            val endDay = daySdf.format(dateSdf.parse(eventDetailData.end_time))
+            val startTime = timeSdf.format(dateSdf.parse(eventDetailData.start_time))
+            val endTime = timeSdf.format(dateSdf.parse(eventDetailData.end_time))
+
+            if(startDay == endDay){
+                val startSting = "$startDay $startTime - $endTime"
+                tv_event_start_time.text = startSting
+
+            } else {
+                val startSting = "$startDay $startTime to \n$endDay $endTime"
+                tv_event_start_time.text = startSting
+            }
 
             val restrictionTime = dateSdf.parse(eventDetailData.review_time)
             val newDate = restrictionTime.time - nowTime.time
@@ -180,6 +212,10 @@ class FragmentEventDetailV2 : BaseFragment() {
         eventDetailActVM.getCloseEventResponse().observe(viewLifecycleOwner, Observer {
             act.onBackPressed()
         })
+        eventDetailActVM.getEvents().observe(viewLifecycleOwner, Observer {
+            mayLikeEventAdapter.setData(it.data.event)
+        })
+
     }
 
 
@@ -188,6 +224,8 @@ class FragmentEventDetailV2 : BaseFragment() {
 
         ll_participant.removeAllViews()
         eventDetailActVM.getEventDetailV2(act.eventLabel)
+        eventDetailActVM.getEventsApi("popular", null)
+
     }
 
     private fun checkIntentData(){

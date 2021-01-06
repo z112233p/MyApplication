@@ -5,23 +5,23 @@ import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.TextureView
 import android.view.View
 import android.widget.AdapterView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.MyApp
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.MyInfoActivity
 import com.illa.joliveapp.adapter.Adapter_Events
+import com.illa.joliveapp.adapter.Adapter_Instagram_Photo
 import com.illa.joliveapp.adapter.CircleViewPager
 import com.illa.joliveapp.controller.BannerController
+import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.profile.interest.interest
-import com.illa.joliveapp.datamodle.profile.job.Data
-import com.illa.joliveapp.datamodle.profile.job.job
 import com.illa.joliveapp.dialog.DialogIGLogin
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.IntentHelper
@@ -37,9 +37,12 @@ import kotlin.collections.ArrayList
 class FragmentMyinfo_info : BaseFragment() {
 
     private val profileActivityVM: ProfileActivityVM by activityViewModels()
+
     private lateinit var myEventAdapter: Adapter_Events
-    private var bannerController: BannerController ?= null
     private lateinit var imageList: ArrayList<String>
+    private lateinit var adapter: Adapter_Instagram_Photo
+
+    private var bannerController: BannerController ?= null
     private var interestMap: ArrayList<Int> = ArrayList<Int>()
     private var interestDataList: interest ?= null
 
@@ -99,9 +102,17 @@ class FragmentMyinfo_info : BaseFragment() {
             }
         })
 
+        adapter = getMContext().get()?.let { Adapter_Instagram_Photo(it) }!!
+        val vfr = GridLayoutManager(getMContext().get(), 3)
+        rv_instagram.layoutManager = vfr
+        rv_instagram.adapter = adapter
+
         ll_follow.setOnClickListener(onClick)
         ll_fan.setOnClickListener(onClick)
         tv_follow_btn.setOnClickListener(onClick)
+        ll_instagram.setOnClickListener(onClick)
+        tv_instagram_disconnect.setOnClickListener(onClick)
+
 
         if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
             tv_follow_btn.visibility = View.GONE
@@ -167,10 +178,19 @@ class FragmentMyinfo_info : BaseFragment() {
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
         when (it.id) {
-//            R.id.tv_follow_btn -> {
-//                val dialog = getMContext().get()?.let { it1 -> DialogIGLogin(it1) }
-//                dialog?.show()
-//            }
+            R.id.tv_instagram_disconnect -> profileActivityVM.igDisconnect()
+
+            R.id.ll_instagram -> {
+                val dialog = getMContext().get()?.let { it1 -> DialogIGLogin(it1,R.style.FullScreenDialogStyle) }
+                dialog?.setCallBack(object : DialogIGLogin.onUrlSuccess{
+                    override fun codeResponse(code: String?) {
+                        Log.e("Peter", "DialogIGLogin  callback code  $code")
+                        profileActivityVM.setIgToken(IgDataBody(code.toString()))
+                    }
+
+                })
+                dialog?.show()
+            }
             R.id.ll_fan -> getMContext().get()?.let { it1 -> IntentHelper.gotoFollowsActivity(it1,1) }
             R.id.ll_follow -> getMContext().get()?.let { it1 -> IntentHelper.gotoFollowsActivity(it1,0) }
             R.id.tv_follow_btn -> {
@@ -209,7 +229,25 @@ class FragmentMyinfo_info : BaseFragment() {
     private fun initObserve(){
         profileActivityVM.getUserInfoData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             val it = it.data
+
+            Log.e("peter","getUserInfoData  USER IGCO   ${it.user.instargam_connection}")
+            if(it.user.instargam_images!!.isNotEmpty()){
+                tv_divider_line_four.visibility = View.VISIBLE
+                tv_instagram.visibility = View.VISIBLE
+                rv_instagram.visibility = View.VISIBLE
+
+            } else {
+                tv_divider_line_four.visibility = View.GONE
+                tv_instagram.visibility = View.GONE
+                rv_instagram.visibility = View.GONE
+
+            }
+            ll_instagram.visibility = View.GONE
+            tv_instagram_disconnect.visibility = View.GONE
+
             val constellationTitle = mutableListOf<String>(*MyApp.get()!!.resources.getStringArray(R.array.constellation_cn))
+
+            adapter.setData(it.user.instargam_images)
 
             if(it.user.is_follow){
                 tv_follow_btn.text = "已追蹤"
@@ -272,6 +310,20 @@ class FragmentMyinfo_info : BaseFragment() {
 
 
         profileActivityVM.getMyInfoData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.setData(it.user.instargam_images)
+
+            if(it.user.instargam_connection){
+
+                ll_instagram.visibility = View.GONE
+                tv_instagram_disconnect.visibility = View.VISIBLE
+
+            } else {
+                ll_instagram.visibility = View.VISIBLE
+                tv_instagram_disconnect.visibility = View.GONE
+
+            }
+
+
             ImgHelper.loadNormalImgNoCache(getMContext().get(),BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ it.user.label +".jpg", iv_my_photo)
             imageList.clear()
             it.user.photos!!.forEach {
@@ -340,6 +392,17 @@ class FragmentMyinfo_info : BaseFragment() {
         profileActivityVM.getJbListData().observe(viewLifecycleOwner, Observer {
             MyApp.get()!!.setJob(it)
         })
+
+        profileActivityVM.getIgTokenResponse().observe(viewLifecycleOwner, Observer {
+            callApis()
+            Log.e("peter","getIgTokenResponse INACT")
+        })
+
+        profileActivityVM.getIgDisconnectResponse().observe(viewLifecycleOwner, Observer {
+            callApis()
+
+        })
+
     }
 
     private fun callApis(){

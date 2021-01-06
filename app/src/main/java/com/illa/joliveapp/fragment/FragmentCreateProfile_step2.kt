@@ -46,8 +46,16 @@ class FragmentCreateProfile_step2 : BaseFragment() {
     override fun onResume() {
         super.onResume()
         setTitle("哈囉")
+        showNavigationIcon()
         act.setSubTitle("請選擇您目前的職業")
         (getMContext().get() as ProfileActivity).setStepTwo()
+        if(act.dataBody["job_id"] != null){
+            currentId = act.dataBody["job_id"]!!.toInt()
+            refreshItem()
+            tv_next_step.isClickable = true
+            tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)
+            tv_next_step.setTextColor(getMContext().get()!!.resources.getColor(R.color.colorWhite))
+        }
     }
 
 
@@ -84,6 +92,10 @@ class FragmentCreateProfile_step2 : BaseFragment() {
                 textView.setItemId(it.id)
                 fl_tag_main.addView(textView)
             }
+            if(act.dataBody["job_id"] != null){
+                currentId = act.dataBody["job_id"]!!.toInt()
+                refreshItem()
+            }
         })
     }
 
@@ -91,6 +103,7 @@ class FragmentCreateProfile_step2 : BaseFragment() {
       val itemView = it as ItemJobView
         itemView.selected()
         currentId = itemView.getItemId()!!
+        act.dataBody["job_id"] = currentId.toString()
         refreshItem()
         tv_next_step.isClickable = true
         tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)

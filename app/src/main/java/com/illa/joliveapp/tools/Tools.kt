@@ -24,6 +24,7 @@ import android.util.Log
 import android.view.ViewConfiguration
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import com.illa.joliveapp.MyApp
 import com.illa.joliveapp.R
 import okhttp3.*
@@ -469,5 +470,19 @@ object Tools {
         lastClickTime = time
         return false
     }
+
+    fun shareLink(activity: Activity?, url: String?) {
+        ShareCompat.IntentBuilder.from(activity!!)
+            .setType("text/plain")
+            .setChooserTitle("Chooser title")
+            .setText(url)
+            .startChooser()
+    }
+
+    fun makeShareLink(label: String): String? {
+
+        return "https://jolive.illa.me/zhTW/activity/$label"
+    }
+
 
 }

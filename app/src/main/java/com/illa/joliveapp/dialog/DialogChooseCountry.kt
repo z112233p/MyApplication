@@ -26,13 +26,15 @@ class DialogChooseCountry(context: Context) : Dialog(context,R.style.MyFullScree
         rv_country.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         rv_country.adapter = adapter
         val dataList = ArrayList<String>()
-        dataList.add("taipei")
-        dataList.add("taichung")
-        dataList.add("kaohsiung")
-        dataList.add("san_srancisco")
-        dataList.add("osaka")
-        dataList.add("tokyo")
-        dataList.add("hong_kong")
+        dataList.add("台北")
+        dataList.add("台中")
+        dataList.add("高雄")
+        dataList.add("舊金山")
+        dataList.add("大阪")
+        dataList.add("東京")
+        dataList.add("香港")
+        dataList.add("其他")
+
         adapter.setData(dataList)
 
         toolbar.setNavigationOnClickListener {

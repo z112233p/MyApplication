@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.EditMyInfoActivity
 import com.illa.joliveapp.custom_view.ItemInterestView
+import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_1.fl_tag_main
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_1.tv_next_step
@@ -39,6 +40,7 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
             Log.e("Peter","isNavigationViewInit  ININ ")
             super.onViewCreated(view, savedInstanceState)
             init()
+            initButtons()
             initObserve()
             callApis()
             isNavigationViewInit = true
@@ -47,7 +49,8 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle("")
+        setTitle("請選擇您近期喜歡或參與的興趣")
+
 //        act.setSubTitle("請選擇您近期喜歡或參與的興趣")
 //        (getMContext().get() as ProfileActivity).setStepOne()
 //        act.dataBody.keys.forEach {
@@ -63,6 +66,8 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
     private fun init(){
         tv_next_step.isClickable = false
         act = getMContext().get() as EditMyInfoActivity
+        act.hideActionItem()
+
         tv_next_step.setOnClickListener(onClick)
         tv_next_step.isClickable = false
 
@@ -91,6 +96,24 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
             }
         }
     }
+    private fun initButtons(){
+        Log.e("peter","FragmentEditMyInfo_Interest  initButtons   ${act.interestArrayList}")
+
+        act.interestArrayList.forEach {
+            for(i in 0 until fl_tag_main.childCount){
+                val itemView = fl_tag_main[i] as ItemInterestView
+                Log.e("peter","FragmentEditMyInfo_Interest  id   $it    itemView.getItemId()    ${itemView.getItemId()} ")
+
+                if(it == itemView.getItemId()){
+                    itemView.setIsSelected(true)
+                }
+            }
+        }
+        tv_next_step.isClickable = true
+        tv_next_step.background = getMContext().get()!!.resources.getDrawable(R.drawable.bg_clickable_btn)
+        tv_next_step.setTextColor(getMContext().get()!!.resources.getColor(R.color.colorWhite))
+        act.hideActionItem()
+    }
 
     private fun initObserve() {
         profileActivityVM.getInterestListData()
@@ -109,7 +132,7 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
                             for(i in 0 until fl_tag_main.childCount){
                                 val itemView = fl_tag_main[i] as ItemInterestView
                                 if(itemView.getIsSelected()!!){
-                                   nextStepCheck++
+                                    nextStepCheck++
                                 }
                             }
                             Log.e("Peter", "nextStepCheck $nextStepCheck  ")
@@ -123,6 +146,8 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
 
                             if(nextStepCheck >= 8 ){
                                 textView.setClickAble(false)
+                                Tools.toast(getMContext().get(),"最多選擇8個興趣")
+
                             } else {
                                 textView.setClickAble(true)
                             }
@@ -142,6 +167,8 @@ class FragmentEditMyInfo_Interest : BaseFragment() {
                     })
                     fl_tag_main.addView(textView)
                 }
+                initButtons()
+
             })
     }
 

@@ -29,6 +29,7 @@ import com.illa.joliveapp.datamodle.event.my_events.MyEvents;
 import com.illa.joliveapp.datamodle.event.review.EventReview;
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember;
 import com.illa.joliveapp.datamodle.follows.Follows;
+import com.illa.joliveapp.datamodle.instagram.IgDataBody;
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice;
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate;
 import com.illa.joliveapp.datamodle.profile.MyInfo;
@@ -304,5 +305,13 @@ public class ApiMethods {
 
     public static void noticeAllRead(Observer< String > pbObserver){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).noticeAllRead()), pbObserver);
+    }
+
+    public static void setIgToken(Observer<String> pbObserver, IgDataBody dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).setIgToken(dataBody)), pbObserver);
+    }
+
+    public static void igDisconnect(Observer<String> pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).igDisconnect()), pbObserver);
     }
 }

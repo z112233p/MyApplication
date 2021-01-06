@@ -49,6 +49,7 @@ class FragmentCreateProfile_step1 : BaseFragment() {
     override fun onResume() {
         super.onResume()
         setTitle("哈囉")
+        hideNavigationIcon()
         act.setSubTitle("請選擇您近期喜歡或參與的興趣")
         (getMContext().get() as ProfileActivity).setStepOne()
 

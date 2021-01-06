@@ -10,12 +10,14 @@ import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 
 class ProfileActivity : AppCompatActivity() {
 
     val profileActivityVM: ProfileActivityVM by viewModel()
     val dataBody :HashMap<String, String> = HashMap()
+    var file: File ?= null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

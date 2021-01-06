@@ -32,7 +32,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:layout_gravity="center"
-                android:text="Where is Your Location?"/>
+                android:text="活動地點"/>
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

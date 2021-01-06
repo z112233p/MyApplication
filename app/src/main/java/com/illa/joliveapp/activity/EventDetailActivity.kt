@@ -75,6 +75,7 @@ class EventDetailActivity : AppCompatActivity() {
         tv_event_join_btn.setOnClickListener(onClick)
         tv_event_cancel_btn.setOnClickListener(onClick)
         ll_event_owner.setOnClickListener(onClick)
+        iv_share.setOnClickListener(onClick)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -94,6 +95,7 @@ class EventDetailActivity : AppCompatActivity() {
                 IntentHelper.gotoMyInfoActivity(this,userLabel)
                 this.finish()
             }
+            R.id.iv_share -> Tools.shareLink(this, Tools.makeShareLink(eventLabel))
         }
     }
 
