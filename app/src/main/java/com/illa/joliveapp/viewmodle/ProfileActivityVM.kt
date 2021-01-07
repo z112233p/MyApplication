@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
-import com.illa.joliveapp.datamodle.follows.Follow
 import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.profile.MyInfo
@@ -20,6 +19,8 @@ import com.illa.joliveapp.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.illa.joliveapp.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
 import com.illa.joliveapp.datamodle.profile.interest.interest
 import com.illa.joliveapp.datamodle.profile.job.job
+import com.illa.joliveapp.datamodle.profile.sort_photo.SortMyPhoto
+import com.illa.joliveapp.datamodle.profile.sort_photo.SortPhotoDataBody
 import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse
 import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
@@ -53,6 +54,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val postUnFollowResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val setIgTokenResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val igDisconnectResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val sortMyPhotoResponse: MutableLiveData<SortMyPhoto> = MutableLiveData<SortMyPhoto>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -102,7 +104,9 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     fun getIgDisconnectResponse(): LiveData<String> {
         return igDisconnectResponse
     }
-
+    fun getSortMyPhotoResponse(): LiveData<SortMyPhoto> {
+    return sortMyPhotoResponse
+    }
 
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
@@ -497,7 +501,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
         }
         ApiMethods.setIgToken(setIgTokenObserver, dataBody)
     }
-    //igDisconnect
+
     fun igDisconnect(){
         val igDisconnectObserver: Observer<String> = object  : Observer<String>{
             override fun onComplete() {
@@ -520,5 +524,29 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
         }
         ApiMethods.igDisconnect(igDisconnectObserver)
+    }
+
+    fun sortMyPhoto(dataBody: SortPhotoDataBody){
+        val sortMyPhotoObserver: Observer<SortMyPhoto> = object  : Observer<SortMyPhoto>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: SortMyPhoto) {
+                sortMyPhotoResponse.value = t
+                Log.e("Peter2", "igDisconnect  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "igDisconnect  onError:  "+e.message)
+            }
+        }
+        ApiMethods.sortMyPhoto(sortMyPhotoObserver, dataBody)
     }
 }

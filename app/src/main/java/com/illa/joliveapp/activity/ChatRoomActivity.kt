@@ -31,7 +31,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
-import com.illa.joliveapp.`interface`.WebSocketModle
+import com.illa.joliveapp.interface_class.WebSocketModle
 import com.illa.joliveapp.adapter.Adapter_Chat_Room_Message
 import com.illa.joliveapp.adapter.holder.BaseMessageViewHolder
 import com.illa.joliveapp.adapter.holder.CustomInComingTextMessageViewHolder
@@ -66,7 +66,8 @@ import kotlin.properties.Delegates
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "DEPRECATION")
-class ChatRoomActivity : AppCompatActivity(), WebSocketModle {
+class ChatRoomActivity : AppCompatActivity(),
+    WebSocketModle {
 
     private val chatRoomActVM: ChatRoomActivityVM by viewModel()
     private var updateOption: Boolean = true

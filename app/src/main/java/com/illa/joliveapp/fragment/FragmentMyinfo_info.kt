@@ -53,10 +53,10 @@ class FragmentMyinfo_info : BaseFragment() {
 
     @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("Peter","isNavigationViewInit ")
+        Log.e("Peter","FragmentMyinfo_info  isNavigationViewInit ")
 
         if(!isNavigationViewInit){
-            Log.e("Peter","isNavigationViewInit  ININ ")
+            Log.e("Peter","FragmentMyinfo_info  isNavigationViewInit  ININ ")
             super.onViewCreated(view, savedInstanceState)
             init()
             initObserve()

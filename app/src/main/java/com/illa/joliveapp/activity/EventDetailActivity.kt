@@ -157,21 +157,36 @@ class EventDetailActivity : AppCompatActivity() {
             0.0 ,1.0-> {
                 Log.e("Peter","dealEventStatus 1")
                 if(newDate < 0){
-                    ll_event_status.visibility = View.GONE
+                    ll_event_status.visibility = View.VISIBLE
+                    tv_event_status.text = getString(R.string.sign_up_deadline)
+                    tv_event_status.visibility = View.VISIBLE
+                    tv_event_cancel_btn.visibility = View.GONE
+                    tv_event_join_btn.visibility = View.GONE
 
                 } else {
                     ll_event_status.visibility = View.VISIBLE
+                    tv_event_cancel_btn.visibility = View.VISIBLE
+                    tv_event_join_btn.visibility = View.GONE
 
                 }
-                tv_event_cancel_btn.visibility = View.VISIBLE
-                tv_event_join_btn.visibility = View.GONE
+
                 actionItem.isVisible = false
                 optionItem.isVisible = true
             }
             9.0 ->{
                 Log.e("Peter","dealEventStatus 9")
 
-                ll_event_status.visibility = View.GONE
+                ll_event_status.visibility = View.VISIBLE
+                tv_diif_time.visibility = View.GONE
+                tv_event_status.visibility = View.VISIBLE
+
+                if(newDate < 0){
+                    tv_event_status.text = getString(R.string.event_incoming)
+                } else {
+                    tv_event_status.text = getString(R.string.invite_friend)
+                }
+                tv_event_cancel_btn.visibility = View.GONE
+                tv_event_join_btn.visibility = View.GONE
                 actionItem.isVisible = true
                 optionItem.isVisible = true
 
@@ -180,14 +195,19 @@ class EventDetailActivity : AppCompatActivity() {
                 Log.e("Peter","dealEventStatus else")
 
                 if(newDate < 0){
-                    ll_event_status.visibility = View.GONE
+                    ll_event_status.visibility = View.VISIBLE
+                    tv_event_status.text = getString(R.string.sign_up_deadline)
+                    tv_event_status.visibility = View.VISIBLE
+
+                    tv_event_cancel_btn.visibility = View.GONE
+                    tv_event_join_btn.visibility = View.GONE
 
                 } else {
                     ll_event_status.visibility = View.VISIBLE
-
+                    tv_event_cancel_btn.visibility = View.GONE
+                    tv_event_join_btn.visibility = View.VISIBLE
                 }
-                tv_event_cancel_btn.visibility = View.GONE
-                tv_event_join_btn.visibility = View.VISIBLE
+
                 actionItem.isVisible = false
                 optionItem.isVisible = true
 

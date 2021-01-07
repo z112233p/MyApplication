@@ -16,7 +16,7 @@ import android.os.Message
 import android.text.format.DateFormat
 import android.util.Log
 import cn.trinea.android.common.util.FileUtils
-import com.illa.joliveapp.`interface`.AudioInterface
+import com.illa.joliveapp.interface_class.AudioInterface
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -81,7 +81,7 @@ object AudioRecordHelper{
         countThread = CountTread()
         currentPositionThread = SeekBarThread()
         currentPositionThread.start()
-        callbacks = object: AudioInterface{
+        callbacks = object: AudioInterface {
             override fun setAudioDuration(duration: Int) {
                 Log.e("Peter","setAudioDuration default")
             }

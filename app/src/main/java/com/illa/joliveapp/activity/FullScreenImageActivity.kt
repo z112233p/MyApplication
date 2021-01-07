@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.illa.joliveapp.R
-import com.illa.joliveapp.`interface`.ImageLoaderModle
+import com.illa.joliveapp.interface_class.ImageLoaderModle
 import com.illa.joliveapp.tools.ImgHelper
 import kotlinx.android.synthetic.main.dialog_full_screen_image.*
 
@@ -33,7 +33,8 @@ class FullScreenImageActivity : AppCompatActivity() {
         tv_close.setOnClickListener(onClick)
         ActivityCompat.postponeEnterTransition(this);
 
-        ImgHelper.setImageLoaderModle(object : ImageLoaderModle{
+        ImgHelper.setImageLoaderModle(object :
+            ImageLoaderModle {
             override fun onSuccess() {
                 ActivityCompat.startPostponedEnterTransition(this@FullScreenImageActivity);
             }

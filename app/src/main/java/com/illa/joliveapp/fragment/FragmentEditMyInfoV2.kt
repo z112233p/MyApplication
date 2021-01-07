@@ -18,18 +18,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.illa.joliveapp.MyApp
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.EditMyInfoActivity
 import com.illa.joliveapp.adapter.Adapter_Profile_PhotoV2
 import com.illa.joliveapp.datamodle.profile.delete_photo.DeleteMyPhoto
+import com.illa.joliveapp.datamodle.profile.sort_photo.SortPhotoDataBody
 import com.illa.joliveapp.tools.PrefHelper
+import com.illa.joliveapp.tools.RZItemTouchHelperCallback
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_edit_my_info.view.tv_title
 import kotlinx.android.synthetic.main.fragment_edit_my_info.*
-import kotlinx.android.synthetic.main.fragment_edit_my_info.sp_gender
 import kotlinx.android.synthetic.main.item_edit_my_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,6 +50,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
     private lateinit var date: DatePickerDialog.OnDateSetListener
     private lateinit var genderList: ArrayList<String>
     private lateinit var act: EditMyInfoActivity
+    private lateinit var touchHelperCallback: RZItemTouchHelperCallback
 
 
     override fun getLayoutId(): Int {
@@ -59,13 +62,14 @@ class FragmentEditMyInfoV2 : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
-        Log.e("Peter","isNavigationViewInit ")
+        Log.e("Peter","FragmentEditMyInfoV2  isNavigationViewInit ")
 
         if(!isNavigationViewInit){
-            Log.e("Peter","isNavigationViewInit  ININ ")
+            Log.e("Peter","FragmentEditMyInfoV2  isNavigationViewInit  ININ ")
             super.onViewCreated(view, savedInstanceState)
             act = getMContext().get() as EditMyInfoActivity
             act.showActionItem()
+            init()
 
             setHasOptionsMenu(true)
             isNavigationViewInit = true
@@ -74,9 +78,10 @@ class FragmentEditMyInfoV2 : BaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onResume() {
+        Log.e("Peter","FragmentEditMyInfoV2  onResume ")
+
         super.onResume()
         setTitle("編輯個人檔案")
-        init()
         initObserve()
         callApis()
     }
@@ -155,12 +160,21 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 profileActivityVM.deleteMyPhoto(dataBody)
             }
 
+            override fun onSort(sortDataList: String) {
+                profileActivityVM.sortMyPhoto(SortPhotoDataBody(sortDataList))
+            }
+
         })
         val vfr = GridLayoutManager(getMContext().get(), 3)
 
 
         rv_my_photos.layoutManager = vfr//GridLayoutManager(getMContext().get(), 2, RecyclerView.VERTICAL, false)
         rv_my_photos.adapter = adapter
+
+        touchHelperCallback = RZItemTouchHelperCallback(adapter,6)
+        val itemTouchHelper = ItemTouchHelper(touchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(rv_my_photos);
+
     }
 
 
@@ -217,6 +231,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         profileActivityVM.getMyInfoData().observe(viewLifecycleOwner, Observer {
 
             adapter.setData(it.user.photos)
+            it.user.photos?.size?.let { it1 -> touchHelperCallback.setListSize(it1) }
             currentPhotoSize = it.user.photos?.size!!
 
             cl_edit_nickname.ed_data.setText(it.user.nickname)
@@ -309,12 +324,18 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         profileActivityVM.getMyPhoto().observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
             currentPhotoSize = it.size
+            touchHelperCallback.setListSize(currentPhotoSize)
         })
 
         profileActivityVM.getDeleteMyPhoto().observe(viewLifecycleOwner, Observer {
             if(it.code == 0){
                 profileActivityVM.getMyInfo()
             }
+        })
+
+        profileActivityVM.getSortMyPhotoResponse().observe(viewLifecycleOwner, Observer {
+            profileActivityVM.getMyInfo()
+
         })
 
     }
@@ -367,7 +388,9 @@ class FragmentEditMyInfoV2 : BaseFragment() {
                 Tools.saveUserPhoto(result.uri, photoPosition)
                 val file = Tools.dealUserPhoto(photoPosition)
                 Tools.deleteUserPhoto(photoPosition)
-                profileActivityVM.updateMyPhoto(photoPosition.toString(), file)
+//                profileActivityVM.updateMyPhoto(photoPosition.toString(), file)
+                profileActivityVM.updateMyPhoto(currentPhotoSize.toString(), file)
+
 //                iv_background_icon.visibility = View.GONE
 //                hasPhoto = true
 //                checkNextStep()

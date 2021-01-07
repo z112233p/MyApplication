@@ -1,8 +1,10 @@
 package com.illa.joliveapp.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,28 +12,54 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.profile.MyInfoPhoto
+import com.illa.joliveapp.interface_class.ItemMoveSwipeListener
 import com.illa.joliveapp.tools.ImgHelper
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
-class Adapter_Profile_PhotoV2(): RecyclerView.Adapter<Adapter_Profile_PhotoV2.ViewHolder>(){
+class Adapter_Profile_PhotoV2(): RecyclerView.Adapter<Adapter_Profile_PhotoV2.ViewHolder>(),
+    ItemMoveSwipeListener {
 
     private lateinit var dataList: MutableList<MyInfoPhoto>
+    private lateinit var sortDataList: MutableList<Int>
+    private lateinit var oldDataList: ArrayList<Int>
+
+    private lateinit var sortData: String
     private lateinit var mContext: Context
     private var isEditMode by Delegates.notNull<Boolean>()
     private var mOnItemClickListener: OnItemClickListener? = null
     private var hasPhoto: Boolean = false
-
+    private var hasMove = false
 
     constructor(context: Context, isEditMode: Boolean) : this(){
         this.isEditMode = isEditMode
         dataList = ArrayList()
         mContext = context
+        sortDataList = ArrayList()
+        oldDataList = ArrayList()
 
+        oldDataList.clear()
+        sortDataList.clear()
+
+        dataList.forEach {
+            if(it.sort != -1){
+                sortDataList.add(it.sort)
+                oldDataList.add(it.sort)
+            }
+        }
+        if(sortDataList.size < 6){
+            for(t in sortDataList.size until  6){
+                sortDataList.add(t)
+                oldDataList.add(t)
+            }
+        }
     }
 
     interface OnItemClickListener {
         fun onItemClick(view: View?, position: Int, url: String)
         fun onDeletePhoto(view: View?, position: Int, url: String)
+        fun onSort(sortDataList: String)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -57,12 +85,37 @@ class Adapter_Profile_PhotoV2(): RecyclerView.Adapter<Adapter_Profile_PhotoV2.Vi
         notifyDataSetChanged()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cell = LayoutInflater.from(mContext).inflate(R.layout.item_profile_photo_v2, parent, false)
         val viewHolder = ViewHolder(cell)
         viewHolder.ivProfilePhoto = cell.findViewById(R.id.iv_profile_photo)
         viewHolder.ivUploadPhotoIcon = cell.findViewById(R.id.iv_upload_photo_icon)
         viewHolder.ivDeletePhoto = cell.findViewById(R.id.iv_delete_photo)
+
+
+        viewHolder.itemView.setOnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    Log.e("Peter","itemMOVE setOnTouchListener!!!   ACTION_DOWN  ")
+
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    Log.e("Peter","itemMOVE setOnTouchListener!!!   ACTION_MOVE  ")
+
+                }
+                MotionEvent.ACTION_UP -> {
+                    Log.e("Peter","itemMOVE setOnTouchListener!!!   ACTION_UP  ")
+
+
+
+
+                }
+                else -> Log.e("Peter","itemMOVE setOnTouchListener!!!   else  ${motionEvent.action}")
+
+            }
+            false
+        }
 
         return viewHolder
     }
@@ -121,5 +174,54 @@ class Adapter_Profile_PhotoV2(): RecyclerView.Adapter<Adapter_Profile_PhotoV2.Vi
         lateinit var ivProfilePhoto: ImageView
         lateinit var ivUploadPhotoIcon: ImageView
         lateinit var ivDeletePhoto: ImageView
+
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        Log.e("Peter","itemMOVE onItemMove   $fromPosition      $toPosition")
+        hasMove = true
+
+        val old = ArrayList<Int>()
+        oldDataList.forEach {
+            old.add(it)
+        }
+
+        sortDataList.clear()
+        for(i in 0 until 6){
+            sortDataList.add(i)
+        }
+        sortDataList.removeAt(fromPosition)
+        sortDataList.add(toPosition,fromPosition)
+        Log.e("Peter","itemMOVEsortDataList   $sortDataList      ")
+        Log.e("Peter","itemMOVEsortDataList old  $old      ")
+
+        oldDataList.clear()
+        Log.e("Peter","itemMOVEsortDataList old  $old      ")
+
+        sortDataList.forEach {
+            oldDataList.add(old[it])
+        }
+
+        sortData = oldDataList.toString().replace("[","").replace("]","").replace(" ","")
+        Collections.swap(dataList, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+//        notifyDataSetChanged()
+        return true
+    }
+
+    override fun onItemSwipe(position: Int) {
+        Log.e("Peter","itemMOVE onItemSwipe    $position")
+
+    }
+
+    override fun onFinish() {
+        if(hasMove){
+            mOnItemClickListener?.onSort(sortData)
+            oldDataList.clear()
+            for(i in 0 until 6){
+                oldDataList.add(i)
+            }
+        }
+        hasMove = false
     }
 }

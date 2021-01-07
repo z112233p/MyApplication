@@ -176,6 +176,21 @@
             tools:text="3d 5h 46m"
             android:layout_weight="2"/>
 
+        <TextView
+            android:id="@+id/tv_event_status"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:paddingEnd="15dp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="3sp"
+            tools:text="3d 5h 46m"
+            android:layout_weight="2"/>
+
 
         <TextView
             android:id="@+id/tv_event_join_btn"

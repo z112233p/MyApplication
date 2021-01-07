@@ -1,4 +1,4 @@
-package com.illa.joliveapp.`interface`
+package com.illa.joliveapp.interface_class
 
 
 interface ImageLoaderModle {

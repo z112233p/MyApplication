@@ -20,7 +20,6 @@ import com.illa.joliveapp.datamodle.chat.text_message.TextMessage;
 import com.illa.joliveapp.datamodle.chat.text_message.response.TextResponse;
 import com.illa.joliveapp.datamodle.chat_room.Token.ChatRoomToken;
 import com.illa.joliveapp.datamodle.dating.DatingSearch;
-import com.illa.joliveapp.datamodle.event.detail.EventDetail;
 import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2;
 import com.illa.joliveapp.datamodle.event.event_list.EventList;
 import com.illa.joliveapp.datamodle.event.index.EventIndex;
@@ -37,6 +36,8 @@ import com.illa.joliveapp.datamodle.profile.delete_photo.DeleteMyPhoto;
 import com.illa.joliveapp.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse;
 import com.illa.joliveapp.datamodle.profile.interest.interest;
 import com.illa.joliveapp.datamodle.profile.job.job;
+import com.illa.joliveapp.datamodle.profile.sort_photo.SortMyPhoto;
+import com.illa.joliveapp.datamodle.profile.sort_photo.SortPhotoDataBody;
 import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse;
 import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo;
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse;
@@ -313,5 +314,9 @@ public class ApiMethods {
 
     public static void igDisconnect(Observer<String> pbObserver){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).igDisconnect()), pbObserver);
+    }
+
+    public static void sortMyPhoto(Observer< SortMyPhoto > pbObserver, SortPhotoDataBody dataBdy){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).sortMyPhoto(dataBdy)), pbObserver);
     }
 }

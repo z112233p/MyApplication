@@ -10,13 +10,14 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.illa.joliveapp.R
-import com.illa.joliveapp.`interface`.AudioInterface
+import com.illa.joliveapp.interface_class.AudioInterface
 import com.illa.joliveapp.tools.AudioRecordHelper
 import com.masoudss.lib.SeekBarOnProgressChanged
 import com.masoudss.lib.WaveformSeekBar
 import kotlinx.android.synthetic.main.layout_audio_player.view.*
 
-class AudioPlayerLayout(context: Context?, attrs: AttributeSet?) : LinearLayout(context, attrs), AudioInterface {
+class AudioPlayerLayout(context: Context?, attrs: AttributeSet?) : LinearLayout(context, attrs),
+    AudioInterface {
     private var audioPlayer: MediaPlayer
     private var seekBarThread: Thread
     private var isSeeking: Boolean

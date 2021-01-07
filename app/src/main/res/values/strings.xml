@@ -78,6 +78,10 @@
     <string name="logout">登出</string>
     <string name="female">女</string>
     <string name="male">男</string>
+    <string name="no_join_event">目前沒有參與任何活動</string>
+    <string name="event_incoming">活動即將開始</string>
+    <string name="sign_up_deadline">報名已截止</string>
+    <string name="invite_friend">邀請朋友來參加</string>
 
 
 </resources>

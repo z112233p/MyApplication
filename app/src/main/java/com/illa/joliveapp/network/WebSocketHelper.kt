@@ -3,7 +3,7 @@ package com.illa.joliveapp.network
 import android.app.Activity
 import android.util.Log
 import com.illa.joliveapp.BuildConfig
-import com.illa.joliveapp.`interface`.WebSocketModle
+import com.illa.joliveapp.interface_class.WebSocketModle
 import com.illa.joliveapp.datamodle.chat.*
 import com.illa.joliveapp.datamodle.chat.MessageReceived.message_received_args.MessageReceivedArgs2
 import com.illa.joliveapp.tools.LogUtil

@@ -17,11 +17,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
-import com.illa.joliveapp.`interface`.ImageLoaderModle
+import com.illa.joliveapp.interface_class.ImageLoaderModle
 
 
 object ImgHelper {
-    private var callback: ImageLoaderModle = object : ImageLoaderModle{
+    private var callback: ImageLoaderModle = object :
+        ImageLoaderModle {
         override fun onSuccess() {
             Log.e("Peter","IMG onSuccess   ")
         }

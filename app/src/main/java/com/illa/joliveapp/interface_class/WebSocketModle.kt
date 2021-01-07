@@ -1,4 +1,4 @@
-package com.illa.joliveapp.`interface`
+package com.illa.joliveapp.interface_class
 
 import com.illa.joliveapp.datamodle.chat.MessageReceived.message_received_args.MessageReceivedArgs2
 
