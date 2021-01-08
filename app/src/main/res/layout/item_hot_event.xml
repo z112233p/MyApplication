@@ -53,6 +53,7 @@
                     app:cardCornerRadius="13dp">
                     <ImageView
                         android:id="@+id/iv_owner"
+                        android:foreground="@drawable/ripple_main_color"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </androidx.cardview.widget.CardView>

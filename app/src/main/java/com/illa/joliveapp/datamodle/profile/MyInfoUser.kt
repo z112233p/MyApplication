@@ -17,7 +17,7 @@ data class MyInfoUser(
     var city_id:String = "",
     var village_id: String = "",
     var age:String = "",
-    var constellation_id: Int = 0,
+    var constellation_id: Int = 1,
     var label:String = "",
     var stamina: String = "",
     var interest_map: Array<Int>? = null,

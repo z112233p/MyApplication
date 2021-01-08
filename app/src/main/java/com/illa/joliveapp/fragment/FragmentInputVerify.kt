@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.authorization.LoginData
 import com.illa.joliveapp.datamodle.authorization.ResendSMS
+import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.tools.Config
 import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.tools.PrefHelper
@@ -165,6 +166,7 @@ class FragmentInputVerify : BaseFragment() {
             PrefHelper.setChatLable(it.data.label)
 
             mainActVM.getMyInfo()
+            mainActVM.setFCM(SetFCM(PrefHelper.fcmToken.toString()))
 
         })
 

@@ -2,6 +2,7 @@ package com.illa.joliveapp.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.core.os.bundleOf
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.Adapter_Events
 import com.illa.joliveapp.tools.Config
+import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.fragment_events_main.*
 
@@ -43,6 +45,13 @@ class FragmentEventsMain : BaseFragment(), View.OnClickListener{
             override fun onItemClick(view: View?, position: Int, label: String) {
                 val bundle = bundleOf(Config.EVENT_LABEL to label)
                 findNavController().navigate(R.id.action_FragmentEventsMain_to_FragmentEventDetail, bundle)
+            }
+
+            override fun onAvatarClick(label: String) {
+                Log.e("Peter","onAvatarClick")
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
             }
         })
 

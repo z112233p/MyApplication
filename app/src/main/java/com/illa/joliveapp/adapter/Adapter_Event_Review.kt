@@ -1,10 +1,10 @@
 package com.illa.joliveapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +12,17 @@ import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.review.User
 import com.illa.joliveapp.tools.ImgHelper
-import com.illa.joliveapp.tools.PrefHelper
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHolder>() {
-    private var dataList: MutableList<User> = ArrayList()
-    private lateinit var mContext: Context
-    private var mOnItemClickListener: OnItemClickListener? = null
 
+    private lateinit var mContext: Context
+    private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private var dataList: MutableList<User> = ArrayList()
+    private var mOnItemClickListener: OnItemClickListener? = null
+    private var startTime: String = ""
 
     constructor(context: Context?) : this(){
         if (context != null) {
@@ -35,7 +39,11 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         mOnItemClickListener = listener
     }
 
-    fun setData(dealData: List<User>?) {
+    fun setData(
+        dealData: List<User>?,
+        startTime: String
+    ) {
+        this.startTime = startTime
         dataList.clear()
 //
 //        if (dealData == null || dealData.isEmpty()) {
@@ -61,6 +69,11 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         return dataList.size
     }
 
+    private fun getTime(): Date {
+        val curDate = Date(System.currentTimeMillis())
+        return curDate
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(dataList.size == 0){return}
 
@@ -75,9 +88,20 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
 //            2 -> holder.tvReview.text = "已點名"
 //        }
 
-        when(data.status){
-            0 -> holder.tvReview.visibility = View.VISIBLE
-            else -> holder.tvReview.visibility = View.GONE
+
+        val start = formatter.parse(startTime)
+
+        Log.e("Peter","Adapter_Event_Review   start  $start")
+        Log.e("Peter","Adapter_Event_Review   getTime()  ${getTime()}")
+        Log.e("Peter","Adapter_Event_Review   diff()  ${getTime().time - start.time}")
+
+        if(getTime().time - start.time < 0){
+            when(data.status){
+                0 -> holder.tvReview.visibility = View.VISIBLE
+                else -> holder.tvReview.visibility = View.GONE
+            }
+        } else {
+            holder.tvReview.visibility = View.GONE
         }
 
         holder.tvReview.setOnClickListener {

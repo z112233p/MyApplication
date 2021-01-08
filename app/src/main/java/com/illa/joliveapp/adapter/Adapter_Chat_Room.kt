@@ -134,11 +134,12 @@ class Adapter_Chat_Room() : RecyclerView.Adapter<Adapter_Chat_Room.ViewHolder>()
         val username = if(data.lastMessage.u.username == PrefHelper.chatLable){
             "你"
         } else {
-            if(data.lastMessage != null){
-                data.lastMessage.u.name
-            } else {
-                ""
-            }
+//            if(data.lastMessage != null){
+//                data.lastMessage.u.name
+//            } else {
+//                ""
+//            }
+            "其他人"
         }
 
         if(data.lastMessage.attachments != null){

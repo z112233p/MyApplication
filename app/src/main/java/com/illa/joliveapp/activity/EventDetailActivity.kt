@@ -65,9 +65,19 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     private fun getIntentData(){
-        val b = intent.extras
-        eventLabel = b?.getString("Label")!!
-        gotoReview = b.getBoolean("gotoReview")
+        Log.e("Peter","DEEPLINK  IN ${intent.dataString}")
+
+        if(intent.dataString == null){
+            val b = intent.extras
+            eventLabel = b?.getString("Label")!!
+            gotoReview = b.getBoolean("gotoReview")
+        } else {
+            val uri = intent.dataString
+            Log.e("Peter","DEEPLINK  ${uri?.split("/")}")
+            val splitArray = uri?.split("/")
+            eventLabel = splitArray?.get(splitArray.size -1) ?: ""
+        }
+
     }
 
 
@@ -218,10 +228,13 @@ class EventDetailActivity : AppCompatActivity() {
     fun setOwnerData(author: Author) {
         userLabel = author.label
         tv_owner_name.text = author.nickname
-        val ff: Date = dateSdf.parse(author.birthday)
+        if(author.birthday != null){
+            val ff: Date = dateSdf.parse(author.birthday)
+            tv_age.text = DateGetAge.getAge(ff).toString()+"歲"
+            Log.e("Peter","setOwnerData    $ff  ${author.birthday}")
+        }
 
-        tv_age.text = DateGetAge.getAge(ff).toString()+"歲"
-        Log.e("Peter","setOwnerData    $ff  ${author.birthday}")
+
 
 //        ImgHelper.loadNormalImg(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)
         ImgHelper.loadNormalImgNoCache(this, BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ author.label +".jpg", iv_owner)

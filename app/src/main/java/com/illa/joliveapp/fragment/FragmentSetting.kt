@@ -12,6 +12,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import com.illa.joliveapp.R
+import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.Tools
@@ -115,9 +116,11 @@ class FragmentSetting : BaseFragment() {
                 val builder: AlertDialog.Builder = AlertDialog.Builder(getMContext().get())
                 builder.setMessage("確定要登出？")
                 builder.setPositiveButton("確定") {
-                        p0, p1 ->  Tools.logout()
+                        p0, p1 ->
+                    mainActVM.deleteFCM(SetFCM(PrefHelper.fcmToken.toString()))
                     (getMContext().get() as Activity).finish()
                     getMContext().get()?.let { it1 -> IntentHelper.gotoPersonalActivity(it1) }
+                    Tools.logout()
 
                 }
                 builder.setNegativeButton("取消") {

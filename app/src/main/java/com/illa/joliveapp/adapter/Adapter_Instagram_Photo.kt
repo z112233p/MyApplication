@@ -1,6 +1,7 @@
 package com.illa.joliveapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class Adapter_Instagram_Photo(): RecyclerView.Adapter<Adapter_Instagram_Photo.Vi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cell = LayoutInflater.from(mContext).inflate(R.layout.item_profile_photo_v2, parent, false)
+        val cell = LayoutInflater.from(mContext).inflate(R.layout.item_instagram_photo, parent, false)
         val viewHolder = ViewHolder(cell)
         viewHolder.ivProfilePhoto = cell.findViewById(R.id.iv_profile_photo)
         viewHolder.ivUploadPhotoIcon = cell.findViewById(R.id.iv_upload_photo_icon)
@@ -63,6 +64,8 @@ class Adapter_Instagram_Photo(): RecyclerView.Adapter<Adapter_Instagram_Photo.Vi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(dataList.size == 0){return}
+        Log.e("Peter2", "Adapter_Instagram_Photo  :  "+BuildConfig.IMAGE_URL+dataList[position])
+
         ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+dataList[position], holder.ivProfilePhoto)
 
     }

@@ -7,11 +7,14 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.illa.joliveapp.datamodle.authorization.*
-import com.illa.joliveapp.tools.SingleLiveEvent
+import com.illa.joliveapp.datamodle.authorization.LoginData
+import com.illa.joliveapp.datamodle.authorization.LoginResponse
+import com.illa.joliveapp.datamodle.authorization.ResendResponse
+import com.illa.joliveapp.datamodle.authorization.ResendSMS
 import com.illa.joliveapp.datamodle.authorization.register.Register
 import com.illa.joliveapp.datamodle.authorization.register.RegisterResponse
 import com.illa.joliveapp.datamodle.chat.chatroom_list.ChatRoomList
+import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate
 import com.illa.joliveapp.datamodle.profile.MyInfo
@@ -19,11 +22,12 @@ import com.illa.joliveapp.datamodle.profile.MyInfoData
 import com.illa.joliveapp.datamodle.profile.MyInfoPhoto
 import com.illa.joliveapp.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.illa.joliveapp.datamodle.profile.delete_photo.response.DeleteMyPhotoResponse
-import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse
+import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.illa.joliveapp.network.ApiMethods
 import com.illa.joliveapp.network.ApiService
+import com.illa.joliveapp.tools.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -52,6 +56,8 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
     private val noticeRead: MutableLiveData<String> = MutableLiveData<String>()
     private var noticeAllRead: MutableLiveData<String> = MutableLiveData<String>()
+    private var setFCM: MutableLiveData<String> = MutableLiveData<String>()
+
 
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
@@ -110,6 +116,10 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
         return noticeAllRead
     }
 
+    //setFCmResponse
+    fun setFCmResponse(): LiveData<String> {
+        return setFCM
+    }
 
     fun getErrorMsg(): LiveData<String> {
         return errorMsg
@@ -487,6 +497,48 @@ class MainActivityVM(application: Application) : AndroidViewModel(application) {
 
         }
         ApiMethods.noticeAllRead(noticeAllReadObserver)
+    }
+
+    fun setFCM(dataBody: SetFCM){
+        var setFCMObserver: Observer<String> =
+            object : Observer<String> {
+                override fun onSubscribe(d: Disposable) {
+
+                }
+                override fun onNext(s: String) {
+                    Log.i("MyFirebaseService", "setFCM onNext $s   ${dataBody.firebase_id}")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.i("MyFirebaseService", "setFCM onError " + e.message)
+                }
+
+                override fun onComplete() {
+
+                }
+            }
+        ApiMethods.setFcmToken(setFCMObserver, dataBody)
+    }
+
+    fun deleteFCM(dataBody: SetFCM){
+        var setFCMObserver: Observer<String> =
+            object : Observer<String> {
+                override fun onSubscribe(d: Disposable) {
+
+                }
+                override fun onNext(s: String) {
+                    Log.i("MyFirebaseService ", "deleteFCM onNext $s   ${dataBody.firebase_id}")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.i("MyFirebaseService", "deleteFCM onError " + e.message)
+                }
+
+                override fun onComplete() {
+
+                }
+            }
+        ApiMethods.deleteFcmToken(setFCMObserver, dataBody)
     }
 
 

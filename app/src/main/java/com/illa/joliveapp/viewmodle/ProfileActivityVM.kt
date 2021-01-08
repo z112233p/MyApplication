@@ -200,7 +200,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
 
             override fun onNext(t: MyInfo) {
-                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
+                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.instargam_images)
                 myInfoData.value = t.data
             }
 
@@ -337,7 +337,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
 
             override fun onNext(t: UserInfo) {
-                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
+                Log.e("Peter2", "getMyInfo22  onNext:  "+t.data.user.instargam_images)
                 userInfo.value = t
             }
 

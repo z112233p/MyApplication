@@ -9,13 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.R
-import com.illa.joliveapp.activity.EventDetailActivity
 import com.illa.joliveapp.activity.EventReviewActivity
 import com.illa.joliveapp.adapter.Adapter_Event_Review
 import com.illa.joliveapp.datamodle.event.review.User
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
 import com.illa.joliveapp.tools.IntentHelper
-import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.EventDetailActivityVM
 import kotlinx.android.synthetic.main.fragment_event_review.*
 
@@ -113,8 +111,8 @@ class FragmentEventReviewV2 : BaseFragment(){
                 }
             }
 
-            adapter.setData(memberHasChecked)
-            adapterNotCheck.setData(memberNotCheck)
+            adapter.setData(memberHasChecked, it.data.event.start_time)
+            adapterNotCheck.setData(memberNotCheck, it.data.event.start_time)
         })
 
     }

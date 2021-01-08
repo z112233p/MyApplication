@@ -44,6 +44,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host=" "
+                    android:scheme="jolive"/>
             </intent-filter>
         </activity>
         <activity
@@ -95,6 +100,16 @@
             android:name="com.illa.joliveapp.activity.EventDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="event"
+                    android:scheme="jolive"/>
+            </intent-filter>
         </activity>
         <activity
             android:name="com.illa.joliveapp.activity.EventReviewActivity"

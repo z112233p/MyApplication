@@ -53,6 +53,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(view: View?, position: Int, label: String)
+        fun onAvatarClick(label: String)
     }
 
     fun setOnItemClickListener(listener: Adapter_Events.OnItemClickListener) {
@@ -130,6 +131,13 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.itemView.setOnClickListener {
             mOnItemClickListener?.onItemClick(holder.itemView, position, data.label)
         }
+        holder.ivOwner.setOnClickListener {
+            mOnItemClickListener?.onAvatarClick(data.author.label)
+        }
+        holder.tvOwner.setOnClickListener {
+            mOnItemClickListener?.onAvatarClick(data.author.label)
+        }
+
 
         Glide.with(mContext)
             .asBitmap()

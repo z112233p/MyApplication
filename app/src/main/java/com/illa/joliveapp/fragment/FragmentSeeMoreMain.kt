@@ -63,6 +63,13 @@ class FragmentSeeMoreMain : BaseFragment() {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
+
+            override fun onAvatarClick(label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
+                Log.e("Peter","onAvatarClick")
+            }
         })
 
         rv_events.layoutManager = LinearLayoutManager(getMContext().get(), RecyclerView.VERTICAL, false)

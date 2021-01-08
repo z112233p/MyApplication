@@ -19,6 +19,7 @@ import com.illa.joliveapp.datamodle.event.list.TypeLists
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.event.review.EventReview
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
@@ -225,6 +226,14 @@ interface ApiService {
     //Sort My Photo
     @POST("me/sort_photos")
     fun sortMyPhoto(@Body dataBody: SortPhotoDataBody?):Observable<SortMyPhoto>
+
+    //Set Firebase Id
+    @POST("fcm/register")
+    fun setFcmToken(@Body dataBody: SetFCM?):Observable<String>
+
+    //Delete Firebase Id
+    @POST("fcm/logout ")
+    fun deleteFcmToken(@Body dataBody: SetFCM?):Observable<String>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

@@ -1,6 +1,5 @@
 package com.illa.joliveapp.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -23,7 +22,6 @@ import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.viewmodle.EventsActivityVM
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.layout_input_rv.view.*
-import org.w3c.dom.Text
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -190,6 +188,13 @@ class FragmentMain : BaseFragment() {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
+
+            override fun onAvatarClick(label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
+                Log.e("Peter","onAvatarClick")
+            }
         })
 
         ll_hot_events.run {
@@ -211,6 +216,13 @@ class FragmentMain : BaseFragment() {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
+
+            override fun onAvatarClick(label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
+                Log.e("Peter","onAvatarClick")
+            }
         })
 
         ll_coming_events.run {
@@ -230,6 +242,13 @@ class FragmentMain : BaseFragment() {
                 getMContext().get()?.let {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
+            }
+
+            override fun onAvatarClick(label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
+                Log.e("Peter","onAvatarClick")
             }
         })
 

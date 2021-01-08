@@ -17,7 +17,12 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.illa.joliveapp.R;
 import com.illa.joliveapp.activity.LaunchActivity;
 import com.illa.joliveapp.activity.MainActivity;
+import com.illa.joliveapp.datamodle.firebase.SetFCM;
+import com.illa.joliveapp.network.ApiMethods;
 import com.illa.joliveapp.tools.PrefHelper;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     @Override
@@ -39,8 +44,9 @@ public class MyFirebaseService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.i("MyFirebaseService",
-                "token "+s);
+        Log.i("MyFirebaseService", "token "+s);
+
+        PrefHelper.INSTANCE.setFCMToken(s);
     }
 
     private void sendNotification(String messageTitle,String messageBody) {
@@ -54,8 +60,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setContentTitle(messageTitle)
-                        .setSmallIcon(R.mipmap.ic_black_chocolate)
-
+                        .setSmallIcon(R.mipmap.ic_home)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)

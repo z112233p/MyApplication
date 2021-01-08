@@ -100,6 +100,13 @@ class FragmentMyinfo_info : BaseFragment() {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
                 }
             }
+
+            override fun onAvatarClick(label: String) {
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
+                }
+                Log.e("Peter","onAvatarClick")
+            }
         })
 
         adapter = getMContext().get()?.let { Adapter_Instagram_Photo(it) }!!
@@ -269,6 +276,9 @@ class FragmentMyinfo_info : BaseFragment() {
 
 //            ImgHelper.loadNormalImgNoCache(getMContext().get(),BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ it.user.label +".jpg", iv_my_photo)
             tv_name.text = it.user.nickname
+            if(it.user.constellation_id == 0){
+                it.user.constellation_id = 1
+            }
             val birth = "Taipei City, "+it.user.age+", "+constellationTitle[it.user.constellation_id-1]
 
 //            val birth = "Taipei City, "+it.user.age+", "+Tools.getConstellation(it.user.birthday.split("-")[1],it.user.birthday.split("-")[2])
@@ -290,13 +300,15 @@ class FragmentMyinfo_info : BaseFragment() {
             tv_my_interest.text = interests
             checkInterest()
 
+            if(it.user.job_id != null){
+                if(TextUtils.isEmpty(MyApp.get()!!.getJob(it.user.job_id.toInt()))){
+                    profileActivityVM.getJbList()
+                } else {
+                    tv_my_job.text = MyApp.get()!!.getJob(it.user.job_id.toInt())
 
-            if(TextUtils.isEmpty(MyApp.get()!!.getJob(it.user.job_id.toInt()))){
-                profileActivityVM.getJbList()
-            } else {
-                tv_my_job.text = MyApp.get()!!.getJob(it.user.job_id.toInt())
-
+                }
             }
+
             if(it.user.gender == 0){
                 iv_gender.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_gender_woman))
             } else {

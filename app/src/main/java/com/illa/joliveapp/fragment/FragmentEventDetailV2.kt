@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_location
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_start_time
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_title
 import kotlinx.android.synthetic.main.fragment_event_main_v2.tv_event_users_limit
-import kotlinx.android.synthetic.main.layout_input_rv.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -106,6 +105,13 @@ class FragmentEventDetailV2 : BaseFragment() {
             override fun onItemClick(view: View?, position: Int, label: String) {
                 getMContext().get()?.let {
                     IntentHelper.gotoEventDetailActivity(it, label, false)
+                }
+            }
+
+            override fun onAvatarClick(label: String) {
+                Log.e("Peter","onAvatarClick")
+                getMContext().get()?.let {
+                    IntentHelper.gotoMyInfoActivity(it, label)
                 }
             }
         })

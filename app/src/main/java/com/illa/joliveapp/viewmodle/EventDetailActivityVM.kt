@@ -213,7 +213,7 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
 
                 Log.e("Peter","joinEvent  onNext    $t")
                 if (jsonData.get("code") != "0"){
-                    errorMsg.value = jsonData.get("data").toString()
+//                    errorMsg.value = jsonData.get("data").toString()
                 }
 
                 getReviewList(dataBody.event_id.toString())
