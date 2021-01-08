@@ -140,6 +140,11 @@ class FragmentMyinfo_event : BaseFragment() {
             myEventAdapter.setData(it.data.processing)
             historyEventAdapter.setData(it.data.history)
             joinEventAdapter.setData(it.data.signing)
+
+            tv_event_going_count.text = it.data.processing.size.toString()
+            tv_event_history_count.text = it.data.history.size.toString()
+            tv_event_join_count.text = it.data.signing.size.toString()
+
         })
     }
 

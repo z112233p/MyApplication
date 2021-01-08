@@ -167,7 +167,6 @@ class EventDetailActivity : AppCompatActivity() {
                     ll_event_status.visibility = View.VISIBLE
                     tv_event_cancel_btn.visibility = View.VISIBLE
                     tv_event_join_btn.visibility = View.GONE
-
                 }
 
                 actionItem.isVisible = false

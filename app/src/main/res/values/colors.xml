@@ -18,7 +18,9 @@
     <color name="colorPinkOrange">#f7bf9d</color>
     <color name="colorGrayA8">#a8a8a8</color>
     <color name="colorNavBtnBar">#323136</color>
-    <color name="colorNavBtn">#96959b</color>
+    <color name="colorGray96959b">#96959b</color>
+
+    <color name="colorNavBtn">@color/colorGray96959b</color>
     <color name="colorYellowD1">#d1c087</color>
     <color name="colorGray71">#717171</color>
     <color name="colorMsgBubble">#333232</color>

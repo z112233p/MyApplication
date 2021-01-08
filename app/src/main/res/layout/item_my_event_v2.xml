@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_event_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="3sp"
+        android:paddingStart="5dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@+id/cv_event_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="11月24日 10:00PM (六)"/>
+
+    <TextView
+        android:id="@+id/tv_event_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:paddingStart="5dp"
+        android:textSize="14sp"
+        android:textColor="#d1c087"
+        android:lineSpacingExtra="6sp"
+        android:paddingTop="7dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@+id/cv_event_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_event_time"
+        tools:text="感恩節派對"/>
+
+    <LinearLayout
+        android:id="@+id/ll_event_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_weight="1"
+        android:paddingTop="8dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/cv_event_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_event_title">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="2dp"
+            android:src="@mipmap/ic_event_detail_location"/>
+        <TextView
+            android:id="@+id/tv_event_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:visibility="visible"
+            android:text="@string/event_location"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:paddingTop="8dp"
+        android:paddingStart="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/cv_event_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_event_location">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_event_member_one"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:cardBackgroundColor="@color/colorMainBackground"
+            app:cardCornerRadius="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="13dp">
+
+            <ImageView
+                android:id="@+id/iv_event_member_one"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ph_hong_kong"/>
+        </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_event_member_two"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="18dp"
+            app:cardBackgroundColor="@color/colorMainBackground"
+            app:cardCornerRadius="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="13dp">
+
+            <ImageView
+                android:id="@+id/iv_event_member_two"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ph_hong_kong"/>
+        </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_event_member_three"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="36dp"
+            app:cardBackgroundColor="@color/colorMainBackground"
+            app:cardCornerRadius="15dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="13dp">
+
+                <ImageView
+                    android:id="@+id/iv_event_member_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ph_kaohsiung"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tv_event_member_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="80dp"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="2sp"
+            tools:text="+12 Going"
+            tools:ignore="SmallSp" />
+    </FrameLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_event_photo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardCornerRadius="15dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintDimensionRatio="h,160:104"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_event_time"
+        app:layout_constraintBottom_toTopOf="@+id/tv_divider_line">
+
+    <ImageView
+        android:id="@+id/iv_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_upload_photo" />
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tv_divider_line"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@drawable/bg_divider_line_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_owner"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="20dp">
+
+        <ImageView
+            android:id="@+id/iv_event_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:alpha="0.9"
+            tools:ignore="ContentDescription" />
+        <ImageView
+            android:id="@+id/iv_owner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_event_detail_location"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:singleLine="true"
+        android:textColor="@color/colorGrayA8"
+        android:textSize="11sp"
+        android:text="@string/event_description"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_owner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorWhite"
+        android:lineSpacingExtra="1sp"
+        tools:text="Peter Wu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

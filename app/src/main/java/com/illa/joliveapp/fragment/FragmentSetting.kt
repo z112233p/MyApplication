@@ -74,6 +74,10 @@ class FragmentSetting : BaseFragment() {
         cl_push.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_setting_push))
         cl_push.tv_title.text = getString(R.string.notice_push)
         cl_push.setting_switch.visibility = View.VISIBLE
+        cl_push.setting_switch.setOnCheckedChangeListener { compoundButton, b ->
+            Log.e("peter","setting_switch    $b")
+            PrefHelper.setPushSetting(b)
+        }
 
         cl_ban.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_ban))
         cl_ban.tv_title.text = getString(R.string.ban_list)

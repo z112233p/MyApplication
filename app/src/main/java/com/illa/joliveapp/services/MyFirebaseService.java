@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.illa.joliveapp.R;
 import com.illa.joliveapp.activity.LaunchActivity;
 import com.illa.joliveapp.activity.MainActivity;
+import com.illa.joliveapp.tools.PrefHelper;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     @Override
@@ -27,7 +28,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
             Log.i("MyFirebaseService","title "+remoteMessage.getNotification().getTitle());
             Log.i("MyFirebaseService","body "+remoteMessage.getNotification().getBody());
 
-            sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+            if(PrefHelper.INSTANCE.getPushSetting()){
+                sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+
+            }
         }
 
     }

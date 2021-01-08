@@ -15,6 +15,7 @@ object PrefHelper {
     private const val CHAT_Name = "chat_name"
     private const val CHAT_ROOM_ID = "chat_room_id"
     private const val USER_PHONE = "user_iduser_phone"
+    private const val PUSH_SETTING = "push_setting"
 
 
     private var _preferences: SharedPreferences? = null
@@ -89,6 +90,14 @@ object PrefHelper {
 
     val chatRoomId: String?
         get() = instance.getString(CHAT_ROOM_ID, "")
+
+    //Push Setting
+    fun setPushSetting(value: Boolean) {
+        savePref(PUSH_SETTING, value)
+    }
+
+    val pushSetting: Boolean?
+        get() = instance.getBoolean(PUSH_SETTING, true)
 
     //===============
     private fun savePref(key: String, value: String) {
