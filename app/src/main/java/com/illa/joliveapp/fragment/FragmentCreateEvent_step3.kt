@@ -19,12 +19,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.android.synthetic.main.fragment_create_event_step_3.*
 import kotlinx.android.synthetic.main.fragment_create_event_step_3.tv_next_step
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "CAST_NEVER_SUCCEEDS")
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "CAST_NEVER_SUCCEEDS",
+    "EqualsBetweenInconvertibleTypes"
+)
 class FragmentCreateEvent_step3 : BaseFragment() {
 
     private val createEventsActVM: CreateEventsActivityVM  by activityViewModels()
+
+    private var nowTime =  Date()
+    private var dateSdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private lateinit var act: CreateEventActivity
 
 
@@ -56,7 +63,7 @@ class FragmentCreateEvent_step3 : BaseFragment() {
         setTitle("建立活動")
         act.stepThree()
         act.showPreview()
-
+        act.hidePost()
     }
 
     private fun checkIntentData(){
@@ -85,6 +92,40 @@ class FragmentCreateEvent_step3 : BaseFragment() {
         act.setPreviewUnClick()
 
         tv_next_step.setOnClickListener(onClick)
+
+        val startTime = dateSdf.parse(act.dataBody.start_time)
+        val endTime = dateSdf.parse(act.dataBody.end_time)
+        val diffTime = endTime.time - startTime.time
+
+        val diffDay: Int = (diffTime / (1000 * 60 * 60 * 24)).toInt();
+        val diffHour: Int = ((diffTime - diffDay * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toInt()
+        val diffMinute: Int = ((diffTime - diffDay * (1000 * 60 * 60 * 24) - diffHour * (1000 * 60 * 60)) / (1000 * 60)).toInt()
+
+        var diffTimeString = "${diffDay}天 ${diffHour}小時 ${diffMinute}分"
+
+        if(diffDay != 0 && diffHour != 0 && diffMinute != 0){
+            diffTimeString = "${diffDay}天 ${diffHour}小時 ${diffMinute}分"
+        } else if(diffDay != 0 && diffHour != 0 && diffMinute == 0){
+            diffTimeString = "${diffDay}天 ${diffHour}小時"
+
+        } else if(diffDay != 0 && diffHour == 0 && diffMinute == 0){
+            diffTimeString = "${diffDay}天"
+
+        }  else if(diffDay == 0 && diffHour != 0 && diffMinute != 0){
+            diffTimeString = "${diffHour}小時 ${diffMinute}分"
+
+        }  else if(diffDay == 0 && diffHour != 0 && diffMinute == 0){
+            diffTimeString = "${diffHour}小時"
+
+        }  else if(diffDay == 0 && diffHour == 0 && diffMinute != 0){
+            diffTimeString = "${diffMinute}分"
+
+        }
+
+
+        var strFormat = String.format(getMContext().get()?.resources?.getString(R.string.pre_create_event_content)!!,diffTimeString)
+//        ed_event_contain.setText(getMContext().get()?.resources?.getString(R.string.pre_create_event_content))
+        ed_event_contain.setText(strFormat)
         ed_event_contain.addTextChangedListener {
             if(it!!.isNotEmpty()){
                 tv_next_step.isClickable = true

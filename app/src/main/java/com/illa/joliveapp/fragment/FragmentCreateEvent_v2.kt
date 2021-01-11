@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,8 +15,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.CreateEventActivity
@@ -26,13 +32,6 @@ import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_create_event_v2.*
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_end_date
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_end_time
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_restriction_date
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_restriction_time
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_start_date
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_event_start_time
-import kotlinx.android.synthetic.main.fragment_create_event_v2.tv_next_step
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -120,9 +119,7 @@ class FragmentCreateEvent_v2 : BaseFragment() {
         setTitle("建立活動")
         act.stepOne()
         act.hidePreview()
-
-
-
+        act.hidePost()
     }
 
     override fun onStart() {
@@ -468,6 +465,63 @@ class FragmentCreateEvent_v2 : BaseFragment() {
         }
     }
 
+    private fun dealProfilePhoto(url: String){
+        Glide.with(getMContext().get()!!)
+            .asBitmap()
+            .load(url)
+            .into(object : CustomTarget<Bitmap?>() {
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    Log.e("Peter","onLoadCleared  ")
+                }
+
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
+                    Palette.from(resource).generate {
+                        Log.e("Peter","onResourceReady0  ${it?.swatches}")
+
+                        Log.e("Peter","onResourceReady  ${it?.vibrantSwatch}")
+                        Log.e("Peter","onResourceReady  ${it?.darkVibrantSwatch}")
+                        Log.e("Peter","onResourceReady  ${it?.lightVibrantSwatch}")
+                        Log.e("Peter","onResourceReady  ${it?.mutedSwatch}")
+                        Log.e("Peter","onResourceReady  ${it?.darkMutedSwatch}")
+                        Log.e("Peter","onResourceReady  ${it?.lightMutedSwatch}")
+
+                        val vibrantSwatch = it?.vibrantSwatch
+                        val mutedSwatch = it?.mutedSwatch
+                        var swatch: Palette.Swatch? = null
+                        var mainColor = 0
+                        var secondColor = 0
+
+                        if (mutedSwatch == null ) {
+                            if(it?.darkVibrantSwatch == null){
+                                mainColor = vibrantSwatch!!.rgb
+                                secondColor = (it.lightVibrantSwatch)!!.rgb
+                            } else {
+                                mainColor = (it.darkVibrantSwatch)!!.rgb
+                                secondColor = vibrantSwatch!!.rgb
+                            }
+
+                        } else if(vibrantSwatch == null){
+                            if(it.darkMutedSwatch == null){
+                                mainColor = mutedSwatch.rgb
+                                secondColor = (it.lightMutedSwatch)!!.rgb
+                            } else {
+                                mainColor = (it.darkMutedSwatch)!!.rgb
+                                secondColor = mutedSwatch.rgb
+                            }
+
+
+                        } else {
+                            mainColor = vibrantSwatch.rgb
+                            secondColor = mutedSwatch.rgb
+                        }
+//
+
+                        act.dataBody.image_color = java.lang.String.format("#%06X", mainColor)
+                    }
+                }
+            })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -478,6 +532,7 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                 (getMContext().get() as CreateEventActivity).file = Tools.dealCropImage()
                 Tools.deleteCropImage()
                 ImgHelper.loadNormalImg(getMContext().get(), result.uri.toString(), iv_upload_photo)
+                dealProfilePhoto(result.uri.toString())
                 iv_upload_photo_icon.visibility = View.GONE
                 hasPhoto = true
                 checkNextStep()

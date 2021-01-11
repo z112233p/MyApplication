@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -137,8 +138,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.tvOwner.setOnClickListener {
             mOnItemClickListener?.onAvatarClick(data.author.label)
         }
-
-
+        if(TextUtils.isEmpty(data.image_color)){
         Glide.with(mContext)
             .asBitmap()
             .load(BuildConfig.IMAGE_URL+data.image)
@@ -174,6 +174,16 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             })
+        } else {
+            val gd = GradientDrawable()
+
+            gd.colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT, Color.parseColor("#${data.image_color}"))
+            gd.useLevel = false
+            gd.gradientType = GradientDrawable.LINEAR_GRADIENT
+            if(getItemViewType(position) != TYPE_NORMAL){
+                setBackground(holder.ivEventBg, gd)
+            }
+        }
     }
 
     private fun setBackground(ivEvent: ImageView, gd: GradientDrawable?) {

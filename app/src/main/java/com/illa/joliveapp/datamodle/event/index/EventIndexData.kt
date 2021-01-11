@@ -25,5 +25,6 @@ data class EventIndexData(
     val title: String,
     val user_id: Int,
     val users_limit: Int,
+    var image_color: String = "",
     val vip: Any
 )

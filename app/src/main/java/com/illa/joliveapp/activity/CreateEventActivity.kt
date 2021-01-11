@@ -116,6 +116,7 @@ class CreateEventActivity  : AppCompatActivity() {
             }
         })
     }
+
     fun stepOne(){
         v_step_two.setBackgroundColor(this.resources.getColor(R.color.colorGray43))
         v_step_three.setBackgroundColor(this.resources.getColor(R.color.colorGray43))
@@ -152,5 +153,14 @@ class CreateEventActivity  : AppCompatActivity() {
 
     fun setPreviewOnclickListener(onClickListener: View.OnClickListener){
         iv_preview.setOnClickListener(onClickListener)
+    }
+
+    fun setPostOnclickListener(onClickListener: View.OnClickListener){
+        tv_post.setOnClickListener(onClickListener)
+        tv_post.visibility = View.VISIBLE
+    }
+
+    fun hidePost(){
+        tv_post.visibility = View.GONE
     }
 }

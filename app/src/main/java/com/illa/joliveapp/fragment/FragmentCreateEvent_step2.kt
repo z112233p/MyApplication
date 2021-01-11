@@ -69,7 +69,7 @@ class FragmentCreateEvent_step2 : BaseFragment() {
         setTitle("建立活動")
         (getMContext().get() as CreateEventActivity).stepTwo()
         act.hidePreview()
-
+        act.hidePost()
     }
 
     private fun checkIntentData(){

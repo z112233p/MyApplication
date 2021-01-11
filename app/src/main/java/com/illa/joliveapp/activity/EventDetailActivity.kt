@@ -145,6 +145,7 @@ class EventDetailActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     fun dealEventStatus(joinType: Any?, newDate: Long){
         Log.e("Peter","dealEventStatus $joinType")
 

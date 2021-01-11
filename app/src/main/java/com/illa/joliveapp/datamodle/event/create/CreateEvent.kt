@@ -17,4 +17,5 @@ data class CreateEvent(var title: String = "",
                        var budget: String = "",
                        var currency_id: String = "",
                        var review_time: String = "",
-                       var award_count: String = "")
+                       var award_count: String = "",
+                       var image_color: String = "")
