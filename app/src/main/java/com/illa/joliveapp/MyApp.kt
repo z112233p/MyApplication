@@ -25,6 +25,7 @@ class MyApp : Application(){
         location["大阪"] = R.mipmap.ph_osaka_gray
         location["東京"] = R.mipmap.ph_tokyo_gray
         location["香港"] = R.mipmap.ph_hong_kong_gray
+        location["巴黎"] = R.mipmap.ph_paris_gray
         location["其他"] = R.mipmap.ph_other_gray
 
         startKoin {

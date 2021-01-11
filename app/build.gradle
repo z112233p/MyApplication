@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId "com.illa.joliveapp"
         minSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

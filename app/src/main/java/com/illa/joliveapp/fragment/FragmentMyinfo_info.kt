@@ -334,7 +334,9 @@ class FragmentMyinfo_info : BaseFragment() {
                 tv_instagram_disconnect.visibility = View.GONE
 
             }
-
+            /** 暫時先藏 **/
+            ll_instagram.visibility = View.GONE
+            tv_instagram_disconnect.visibility = View.GONE
 
             ImgHelper.loadNormalImgNoCache(getMContext().get(),BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ it.user.label +".jpg", iv_my_photo)
             imageList.clear()
