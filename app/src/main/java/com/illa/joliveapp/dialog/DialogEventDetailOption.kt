@@ -15,13 +15,14 @@ import kotlinx.android.synthetic.main.item_anim_view_btn.view.*
 
 
 @Suppress("UNREACHABLE_CODE")
-class DialogEventDetailOption(context: Context, joinType: Any?) : Dialog(context, R.style.FullScreenDialogStyle) {
+class DialogEventDetailOption(context: Context, joinType: Any?, isOwner: Boolean) : Dialog(context, R.style.FullScreenDialogStyle) {
 
     private var lastX = 0
     private var lastY = 0
     private var upMoveTotal = 0
     private var downMoveTotal = 0
     private var joinType: Any = 0
+    private var isOwner = false
 
     private lateinit var dialogWindow : Window
     private lateinit var dialogWindowManager: WindowManager.LayoutParams
@@ -34,6 +35,7 @@ class DialogEventDetailOption(context: Context, joinType: Any?) : Dialog(context
         if (joinType != null) {
             this.joinType = joinType
         }
+        this.isOwner = isOwner
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,7 +43,13 @@ class DialogEventDetailOption(context: Context, joinType: Any?) : Dialog(context
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_event_detail_option)
         setWindowTransparent()
-        tv_see_detail.tv_btn_text.text = "出席名單"
+        if(isOwner){
+            tv_see_detail.tv_btn_text.text = "報名審核"
+
+        } else {
+            tv_see_detail.tv_btn_text.text = "出席名單"
+
+        }
         tv_event_status.tv_btn_text.text = "前往聊天"
         tv_score.tv_btn_text.text = "檢舉活動"
         tv_report.tv_btn_text.text = "刪除活動"

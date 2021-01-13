@@ -1,9 +1,11 @@
 package com.illa.joliveapp.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -13,6 +15,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
@@ -28,6 +31,7 @@ import com.illa.joliveapp.activity.MapsActivity
 import com.illa.joliveapp.adapter.Adapter_Event_Type
 import com.illa.joliveapp.custom_view.RangeTimePickerDialog
 import com.illa.joliveapp.tools.ImgHelper
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
@@ -120,6 +124,8 @@ class FragmentCreateEvent_v2 : BaseFragment() {
         act.stepOne()
         act.hidePreview()
         act.hidePost()
+
+
     }
 
     override fun onStart() {
@@ -130,6 +136,10 @@ class FragmentCreateEvent_v2 : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun init(){
         act = getMContext().get() as CreateEventActivity
+        getMContext().get()?.let { PermissionsHelper.setContext(it) }
+//
+//        PermissionsHelper.askFineLocation()
+//        PermissionsHelper.askWriteStorage()
         paymentList = ArrayList()
         currencyList = ArrayList()
         eventCategoryList = ArrayList()
@@ -403,11 +413,26 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                 datePicker.show()
             }
 
+            R.id.iv_upload_photo -> {
+                PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                    override fun permissionResult() {
+                        getMContext().get()?.let { ctx ->
+                            CropImage.activity().setAspectRatio(345,224).start(ctx,this@FragmentCreateEvent_v2)
+                        }
+                    }
 
-            R.id.iv_upload_photo -> {//iv_upload_photo//iv_event_photo
-                getMContext().get()?.let { ctx ->
-                    CropImage.activity().setAspectRatio(345,224).start(ctx,this@FragmentCreateEvent_v2)
+                })
+                if(ContextCompat.checkSelfPermission(getMContext().get()!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    PermissionsHelper.askWriteStorage()
+                    PermissionsHelper.startAskPermissions()
+
+                } else {
+                    getMContext().get()?.let { ctx ->
+                        CropImage.activity().setAspectRatio(345,224).start(ctx,this@FragmentCreateEvent_v2)
+                    }
                 }
+
+
             }
             R.id.btn_goto_map_activity -> getMContext().get()?.let { it1 ->
                 val intent = Intent(getMContext().get(), MapsActivity::class.java)
@@ -516,7 +541,8 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                         }
 //
 
-                        act.dataBody.image_color = java.lang.String.format("#%06X", mainColor)
+                        act.dataBody.image_color = java.lang.String.format("#%06X", mainColor).split("#")[1]
+                        Log.e("Peter","CREATEECVENTIMAGECOLOR   ${java.lang.String.format("#%06X", mainColor).split("#")[1]}")
                     }
                 }
             })
@@ -538,5 +564,16 @@ class FragmentCreateEvent_v2 : BaseFragment() {
                 checkNextStep()
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        PermissionsHelper.onResult(requestCode, grantResults[0])
+        Log.e("Peter","FAG onRequestPermissionsResult")
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

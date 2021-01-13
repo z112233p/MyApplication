@@ -2,7 +2,6 @@ package com.illa.joliveapp.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
@@ -21,7 +21,6 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.widget.addTextChangedListener
@@ -29,9 +28,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.google.gson.Gson
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
-import com.illa.joliveapp.interface_class.WebSocketModle
 import com.illa.joliveapp.adapter.Adapter_Chat_Room_Message
 import com.illa.joliveapp.adapter.holder.BaseMessageViewHolder
 import com.illa.joliveapp.adapter.holder.CustomInComingTextMessageViewHolder
@@ -43,10 +42,10 @@ import com.illa.joliveapp.datamodle.chat.text_message.TextMessage
 import com.illa.joliveapp.datamodle.chat.text_message.message_entry.MessageEntry
 import com.illa.joliveapp.datamodle.chat_room.Message
 import com.illa.joliveapp.dialog.DialogChatRoomMenu
+import com.illa.joliveapp.interface_class.WebSocketModle
 import com.illa.joliveapp.network.WebSocketHelper
 import com.illa.joliveapp.tools.*
 import com.illa.joliveapp.viewmodle.ChatRoomActivityVM
-import com.google.gson.Gson
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import com.stfalcon.chatkit.commons.ImageLoader
 import com.stfalcon.chatkit.messages.MessageHolders.ContentChecker
@@ -97,6 +96,10 @@ class ChatRoomActivity : AppCompatActivity(),
     private lateinit var replyMessageEntry: MessageEntry
     private lateinit var imgUrlMap:HashMap<String, String>
 
+    private var countTime = 0
+    private lateinit var handler: Handler
+    private lateinit var timerTask: TimerTask
+    private lateinit var timer: Timer
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -109,6 +112,50 @@ class ChatRoomActivity : AppCompatActivity(),
 //            val intent = Intent(this, MapsActivity::class.java)
 //            startActivity(intent)
         }
+        handler = @SuppressLint("HandlerLeak")
+        object : Handler() {
+            @SuppressLint("HandlerLeak")
+            override fun handleMessage(msg: android.os.Message) {
+                if (msg.what == 1) {
+                    //回到主執行緒執行結束操作
+                    Log.e("=====", "結束計時")
+                }
+            }
+        }
+        timerTask = object : TimerTask() {
+            override fun run() {
+                val message = android.os.Message()
+                countTime++
+                Log.e("PETERCOUNT", "countTime    $countTime")
+
+                var recordMinute = (countTime / 60).toString()
+                var recordSecond = (countTime % 60).toString()
+
+                if((recordMinute.length == 1)){
+                    recordMinute = "0$recordMinute"
+                }
+                if((recordSecond.length == 1)){
+                    recordSecond = "0$recordSecond"
+                }
+                this@ChatRoomActivity.runOnUiThread {
+                    tv_record_time.text = "$recordMinute:$recordSecond"
+
+                }
+                if(countTime == 300){
+                    message.what = 1
+
+                } else {
+                    message.what = 0
+
+                }
+                handler.sendMessage(message)
+            }
+        }
+        timer = Timer(true)
+
+
+
+
         mBlurringView = BlurringView(this)
         title = ""
         tv_toolbar_title.text = "聊天室"
@@ -254,17 +301,17 @@ class ChatRoomActivity : AppCompatActivity(),
         }
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
-        }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+//        }
+//
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+//        }
+//
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
+//        }
         imgUrlMap = HashMap<String,String>()
         dataList = ArrayList()
         getIntentData()
@@ -278,15 +325,30 @@ class ChatRoomActivity : AppCompatActivity(),
 
 
         btn_start_record.setOnClickListener {
-            AudioRecordHelper.startRecord()
+            countTime = 0
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+                PermissionsHelper.askRecordAudio()
+                PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                    override fun permissionResult() {
+                        AudioRecordHelper.startRecord()
+            }
+        })
+                PermissionsHelper.startAskPermissions()
+            } else {
+                AudioRecordHelper.startRecord()
+//                timer = null
+                timer = Timer(true)
+                initTimerTask()
+                timer.schedule(timerTask,1000,1000)
+            }
         }
 
 
         btn_stop_record.setOnClickListener {
+            timer.cancel()
             val file = File(AudioRecordHelper.stopRecord())
             val audioData = Message()
             val messageID = java.util.UUID.randomUUID().toString()
-
             audioData.author.avatar = BuildConfig.CHATROOM_IMAGE_URL+"dating/"+PrefHelper.chatLable +".jpg"
             audioData.setImageUrl(AudioRecordHelper.stopRecord())
             audioData.id = messageID
@@ -296,6 +358,7 @@ class ChatRoomActivity : AppCompatActivity(),
             adapter.addToStart(audioData,true)
             chatRoomActVM.postAudioMessage(file, rId, audioData)
             fl_audio_layout.visibility = View.GONE
+            tv_record_time.text = "00:00"
 
 
         }
@@ -347,10 +410,44 @@ class ChatRoomActivity : AppCompatActivity(),
         }
     }
 
+    fun initTimerTask(){
+        timerTask = object : TimerTask() {
+            override fun run() {
+                val message = android.os.Message()
+                countTime++
+                Log.e("PETERCOUNT", "countTime    $countTime")
+
+                var recordMinute = (countTime / 60).toString()
+                var recordSecond = (countTime % 60).toString()
+
+                if((recordMinute.length == 1)){
+                    recordMinute = "0$recordMinute"
+                }
+                if((recordSecond.length == 1)){
+                    recordSecond = "0$recordSecond"
+                }
+                this@ChatRoomActivity.runOnUiThread {
+                    tv_record_time.text = "$recordMinute:$recordSecond"
+
+                }
+                if(countTime == 300){
+                    message.what = 1
+
+                } else {
+                    message.what = 0
+
+                }
+                handler.sendMessage(message)
+            }
+        }
+    }
+
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray) {
+        PermissionsHelper.onResult(requestCode, grantResults[0])
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.e("Peter","onRequestPermissionsResult")
 
@@ -609,15 +706,28 @@ class ChatRoomActivity : AppCompatActivity(),
 //        }
 
         iv_send_photo.setOnClickListener {
-            CropImage.activity().start(this)
-
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                PermissionsHelper.askWriteStorage()
+                PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                    override fun permissionResult() {
+                        CropImage.activity().start(this@ChatRoomActivity)
+                    }
+                })
+                PermissionsHelper.startAskPermissions()
+            } else {
+                CropImage.activity().start(this)
+            }
         }
 
         iv_send_audio.setOnClickListener {
+
             fl_audio_layout.visibility = View.VISIBLE
         }
 
         iv_close_audio_view.setOnClickListener {
+            countTime = 0
+            tv_record_time.text = "00:00"
+
             fl_audio_layout.visibility = View.GONE
 
         }
@@ -740,6 +850,7 @@ class ChatRoomActivity : AppCompatActivity(),
 
     override fun onResume() {
 //        messagesList.scrollToPosition(0)
+        PermissionsHelper.setContext(this)
 
         super.onResume()
     }
@@ -862,8 +973,6 @@ class ChatRoomActivity : AppCompatActivity(),
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
 
 }
 

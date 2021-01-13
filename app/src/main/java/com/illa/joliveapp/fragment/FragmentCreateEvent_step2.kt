@@ -1,7 +1,9 @@
 package com.illa.joliveapp.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,12 +11,14 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.CreateEventActivity
 import com.illa.joliveapp.activity.MapsActivity
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import kotlinx.android.synthetic.main.fragment_create_event_step_2.*
@@ -67,6 +71,7 @@ class FragmentCreateEvent_step2 : BaseFragment() {
     override fun onResume() {
         super.onResume()
         setTitle("建立活動")
+        getMContext().get()?.let { PermissionsHelper.setContext(it) }
         (getMContext().get() as CreateEventActivity).stepTwo()
         act.hidePreview()
         act.hidePost()
@@ -150,57 +155,94 @@ class FragmentCreateEvent_step2 : BaseFragment() {
                 (getMContext().get() as CreateEventActivity).dataBody.award_count = "1"
             }
 
-            R.id.tv_fix_location -> getMContext().get()?.let { it1 ->
-                Log.e("Peter","ISOPGPS   ${Tools.isGPSEnabled(getMContext().get()!!)}")
-                if(Tools.isGPSEnabled(getMContext().get()!!)){
-                    Log.e("Peter","ISOPGPS   TRUE")
+            R.id.tv_fix_location, R.id.ed_event_location -> {
+                if(ContextCompat.checkSelfPermission(getMContext().get()!!, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    PermissionsHelper.askFineLocation()
+                    PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                        override fun permissionResult() {
+                            getMContext().get()?.let { it1 ->
+                                Log.e("Peter", "ISOPGPS   ${Tools.isGPSEnabled(getMContext().get()!!)}")
+                                if (Tools.isGPSEnabled(getMContext().get()!!)) {
+                                    Log.e("Peter", "ISOPGPS   TRUE")
 
 //                    return@OnClickListener
 
+                                } else {
+                                    Log.e("Peter", "ISOPGPS   FALSE")
+
+                                    Tools.checkGPS(getMContext().get()!!)
+                                    return
+                                }
+                                val intent = Intent(getMContext().get(), MapsActivity::class.java)
+
+                                val b = Bundle()
+                                b.putString("Latitude", getLatitude)
+                                b.putString("Longitude", getLongitude)
+                                b.putString("Location", getLocation)
+                                intent.putExtras(b)
+
+                                startActivityForResult(intent, MAP_ACTIVITY_RESULT_OK)
+                            }
+                        }
+
+                    })
+                    PermissionsHelper.startAskPermissions()
+                    
                 } else {
-                    Log.e("Peter","ISOPGPS   FALSE")
 
-                    Tools.checkGPS(getMContext().get()!!)
-                    return@OnClickListener
-                }
-                val intent = Intent(getMContext().get(), MapsActivity::class.java)
-
-                val b = Bundle()
-                b.putString("Latitude", getLatitude)
-                b.putString("Longitude", getLongitude)
-                b.putString("Location", getLocation)
-                intent.putExtras(b)
-
-                startActivityForResult(intent, MAP_ACTIVITY_RESULT_OK)
-            }
-            R.id.ed_event_location -> getMContext().get()?.let { it1 ->
-                if(edEventLocationClickable){
-                    if(Tools.isGPSEnabled(getMContext().get()!!)){
-                        Log.e("Peter","ISOPGPS   TRUE")
+                    getMContext().get()?.let { it1 ->
+                        Log.e("Peter", "ISOPGPS   ${Tools.isGPSEnabled(getMContext().get()!!)}")
+                        if (Tools.isGPSEnabled(getMContext().get()!!)) {
+                            Log.e("Peter", "ISOPGPS   TRUE")
 
 //                    return@OnClickListener
 
-                    } else {
-                        Log.e("Peter","ISOPGPS   FALSE")
+                        } else {
+                            Log.e("Peter", "ISOPGPS   FALSE")
 
-                        Tools.checkGPS(getMContext().get()!!)
-                        return@OnClickListener
+                            Tools.checkGPS(getMContext().get()!!)
+                            return@OnClickListener
+                        }
+                        val intent = Intent(getMContext().get(), MapsActivity::class.java)
+
+                        val b = Bundle()
+                        b.putString("Latitude", getLatitude)
+                        b.putString("Longitude", getLongitude)
+                        b.putString("Location", getLocation)
+                        intent.putExtras(b)
+
+                        startActivityForResult(intent, MAP_ACTIVITY_RESULT_OK)
                     }
-
-
-                    val intent = Intent(getMContext().get(), MapsActivity::class.java)
-
-                    val b = Bundle()
-                    b.putString("Latitude", getLatitude)
-                    b.putString("Longitude", getLongitude)
-                    b.putString("Location", getLocation)
-                    intent.putExtras(b)
-
-
-                    startActivityForResult(intent, MAP_ACTIVITY_RESULT_OK)
-                    ed_event_location.isClickable = false
                 }
             }
+//            R.id.ed_event_location -> getMContext().get()?.let { it1 ->
+//                if(edEventLocationClickable){
+//                    if(Tools.isGPSEnabled(getMContext().get()!!)){
+//                        Log.e("Peter","ISOPGPS   TRUE")
+//
+////                    return@OnClickListener
+//
+//                    } else {
+//                        Log.e("Peter","ISOPGPS   FALSE")
+//
+//                        Tools.checkGPS(getMContext().get()!!)
+//                        return@OnClickListener
+//                    }
+//
+//
+//                    val intent = Intent(getMContext().get(), MapsActivity::class.java)
+//
+//                    val b = Bundle()
+//                    b.putString("Latitude", getLatitude)
+//                    b.putString("Longitude", getLongitude)
+//                    b.putString("Location", getLocation)
+//                    intent.putExtras(b)
+//
+//
+//                    startActivityForResult(intent, MAP_ACTIVITY_RESULT_OK)
+//                    ed_event_location.isClickable = false
+//                }
+//            }
         }
     }
     private fun initObserve(){

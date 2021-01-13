@@ -46,13 +46,13 @@ class  LaunchActivity: AppCompatActivity() {
 
         object : CountDownTimer(2000, 1000) {
             override fun onFinish() {
-                Log.e("Peter","CountDownTimer   ${PrefHelper.chatName}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.apiHeader}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.chatId}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.chatLable}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.chatToken}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.userID}         ")
-                Log.e("Peter","CountDownTimer   ${PrefHelper.userPhone}         ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatName}")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.apiHeader} ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatId}")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatLable}")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.chatToken} ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.userID} ")
+                Log.e("Peter","CountDownTimer   ${PrefHelper.userPhone} ")
 
                 if(checkSession()){
 

@@ -23,6 +23,7 @@ import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.index.EventIndexData
 import com.illa.joliveapp.tools.ImgHelper
+import java.lang.Exception
 import java.text.SimpleDateFormat
 
 
@@ -153,7 +154,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         val mutedSwatch = it?.mutedSwatch
                         var swatch: Swatch? = null
 
-                        setBackground2(holder.ivEvent, resource)
+                        setBackgroundBitmap(holder.ivEvent, resource)
 
                         if (vibrantSwatch != null) {
                             swatch = vibrantSwatch
@@ -175,14 +176,25 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             })
         } else {
-            val gd = GradientDrawable()
+            try {
 
-            gd.colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT, Color.parseColor("#${data.image_color}"))
-            gd.useLevel = false
-            gd.gradientType = GradientDrawable.LINEAR_GRADIENT
-            if(getItemViewType(position) != TYPE_NORMAL){
-                setBackground(holder.ivEventBg, gd)
+                val gd = GradientDrawable()
+                //#FF485050
+//                Log.e("Peter","TESTCOLOR   ${Color.parseColor("##FF485050")}")
+                gd.colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT, Color.parseColor("#${data.image_color}"))
+//                gd.colors = intArrayOf(Color.TRANSPARENT, Color.TRANSPARENT, Color.parseColor("#FF485050"))
+
+                gd.useLevel = false
+                gd.gradientType = GradientDrawable.LINEAR_GRADIENT
+                if(getItemViewType(position) != TYPE_NORMAL){
+                    setBackground(holder.ivEventBg, gd)
+                }
+
+            } catch (e:Exception){
+                Log.e("Peter","TESTCOLOR   CONODIODA")
+
             }
+
         }
     }
 
@@ -190,7 +202,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         ivEvent.background = gd
     }
 
-    private fun setBackground2(ivEvent: ImageView, bitmap: Bitmap?) {
+    private fun setBackgroundBitmap(ivEvent: ImageView, bitmap: Bitmap?) {
         ivEvent.setImageBitmap(bitmap)
 
     }

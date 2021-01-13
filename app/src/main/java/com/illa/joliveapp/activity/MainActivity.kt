@@ -52,18 +52,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun askPermissions(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && !hasAskWRITE_STORAGE){
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_REQUEST_READ_STORAGE)
+            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_REQUEST_WRITE_STORAGE)
 
-        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && !hasAskREAD_STORAGE){
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_WRITE_STORAGE)
+//        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && !hasAskREAD_STORAGE){
+//            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_READ_STORAGE)
 
         }  else if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED && !hasAskRECORD_AUDIO){
             ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.RECORD_AUDIO), PERMISSION_REQUEST_RECORD_AUDIO)
 
-        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && !hasAskCOARSE_LOCATION){
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_RECORD_AUDIO)
+//        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && !hasAskCOARSE_LOCATION){
+//            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_ACCESS_COARSE_LOCATION)
+
         } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && !hasAskFINE_LOCATION){
-            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_RECORD_AUDIO)
+            ActivityCompat.requestPermissions((this as Activity?)!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_ACCESS_FINE_LOCATION)
         }
     }
 
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             PERMISSION_REQUEST_RECORD_AUDIO -> hasAskRECORD_AUDIO = true
             PERMISSION_REQUEST_WRITE_STORAGE -> hasAskWRITE_STORAGE = true
             PERMISSION_ACCESS_COARSE_LOCATION -> hasAskCOARSE_LOCATION = true
-            PERMISSION_REQUEST_WRITE_STORAGE -> hasAskFINE_LOCATION = true
+            PERMISSION_ACCESS_FINE_LOCATION -> hasAskFINE_LOCATION = true
 
         }
 

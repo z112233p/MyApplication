@@ -1,8 +1,10 @@
 package com.illa.joliveapp.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -14,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.palette.graphics.Palette
@@ -24,10 +27,7 @@ import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.ProfileActivity
 import com.illa.joliveapp.dialog.DialogChooseGender
-import com.illa.joliveapp.tools.ImgHelper
-import com.illa.joliveapp.tools.IntentHelper
-import com.illa.joliveapp.tools.PrefHelper
-import com.illa.joliveapp.tools.Tools
+import com.illa.joliveapp.tools.*
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_3.*
@@ -186,9 +186,18 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                 chooseGender?.show()
             }
             R.id.iv_profile_photo -> {
-//                v2.setColor("#1778f2")
-//                v1.setColor("#ec663c")
-                getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentCreateProfile_step3) }
+//
+                if(ContextCompat.checkSelfPermission(getMContext().get()!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    PermissionsHelper.askWriteStorage()
+                    PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                        override fun permissionResult() {
+                            getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentCreateProfile_step3) }
+                        }
+                    })
+                    PermissionsHelper.startAskPermissions()
+                } else {
+                    getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentCreateProfile_step3) }
+                }
 
             }
             R.id.ed_user_birth -> {

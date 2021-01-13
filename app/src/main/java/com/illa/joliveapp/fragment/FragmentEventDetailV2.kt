@@ -27,6 +27,7 @@ import com.illa.joliveapp.datamodle.event.detailv2.Data
 import com.illa.joliveapp.dialog.DialogEventDetailOption
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.IntentHelper
+import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.EventDetailActivityVM
 import kotlinx.android.synthetic.main.fragment_event_main_v2.*
@@ -203,6 +204,7 @@ class FragmentEventDetailV2 : BaseFragment() {
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
 
             act.setOwnerData(eventDetailData.author)
+            act.userLabel = eventDetailData.author.label
             Log.e("Peter"," getEventDetailV2  eventDetailData.joins up")
 
             eventDetailData.joins.forEach {
@@ -212,6 +214,9 @@ class FragmentEventDetailV2 : BaseFragment() {
 
                 ll_participant.addView(joins)
 
+            }
+            if(eventDetailData.joins.isEmpty()){
+                ll_participant.visibility = View.GONE
             }
         })
 
@@ -250,7 +255,9 @@ class FragmentEventDetailV2 : BaseFragment() {
         Log.e("Peter","onOptionsItemSelected FRA")
         return when (item.itemId) {
             R.id.action_option -> {
-                val dialog = getMContext().get()?.let { DialogEventDetailOption(it, joinType) }
+                val dialog = getMContext().get()?.let {
+                    DialogEventDetailOption(it, joinType, act.userLabel == PrefHelper.chatLable)
+                }
                 dialog?.setSeeDetailOnclick(View.OnClickListener {
 
                     val bundle = bundleOf("eventID" to act.eventID)

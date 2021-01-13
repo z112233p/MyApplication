@@ -3,6 +3,7 @@ package com.illa.joliveapp.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.index.EventIndexData
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.PrefHelper
+import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 
 
@@ -26,7 +28,7 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var dataList: MutableList<EventIndexData>
     private lateinit var mContext: Context
     private var sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    private var customDateFormat: SimpleDateFormat = SimpleDateFormat("MM月dd日 hh:mm(E)")
+    private lateinit var customDateFormat: SimpleDateFormat
     private var holderType: Int = TYPE_GOING
     private var mOnItemClickListener: OnItemClickListener? = null
 
@@ -37,6 +39,14 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (context != null) {
             mContext = context
         }
+        val symbols = DateFormatSymbols()
+        val modifiedAmPm = arrayOf("am", "pm")
+        symbols.setAmPmStrings(modifiedAmPm)
+        symbols.shortWeekdays =  arrayOf("", "日", "一", "二", "三", "四", "五", "六")
+
+        customDateFormat = SimpleDateFormat("MM月dd日 hh:mma(E)", symbols)
+        Log.e("Peter","amPmStrings   ${customDateFormat.dateFormatSymbols.shortWeekdays[0]}")
+
     }
 
     interface OnItemClickListener {
@@ -110,6 +120,11 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.tvEventTitle.text = data.title
         holder.tvEventDescription.text = data.description
         holder.tvEventLocation.text = data.location_title
+        Log.e("Peter","amPmStrings2   ${customDateFormat.dateFormatSymbols.shortWeekdays[0]}")
+        Log.e("Peter","amPmStrings2   ${customDateFormat.dateFormatSymbols.shortWeekdays.get(7)}")
+
+        customDateFormat.dateFormatSymbols.amPmStrings = arrayOf("am", "pm")
+
         val startTime = customDateFormat.format(sdf.parse(data.start_time))
         holder.tvEventTime.text = startTime
 

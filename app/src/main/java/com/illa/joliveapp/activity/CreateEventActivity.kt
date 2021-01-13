@@ -13,8 +13,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.create.CreateEvent
-import com.illa.joliveapp.datamodle.event.detail.EventDetail
 import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import kotlinx.android.synthetic.main.activity_creat_event.*
@@ -68,6 +68,7 @@ class CreateEventActivity  : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        PermissionsHelper.setContext(this)
         Log.e("Peter","MainActivity onResume")
         ProgressDialogController.setContext(this)
     }
@@ -143,7 +144,6 @@ class CreateEventActivity  : AppCompatActivity() {
     fun setPreviewClick(){
         iv_preview.setColorFilter(this.resources.getColor(R.color.colorWhite))
         iv_preview.isClickable = true
-
     }
 
     fun setPreviewUnClick(){
@@ -162,5 +162,16 @@ class CreateEventActivity  : AppCompatActivity() {
 
     fun hidePost(){
         tv_post.visibility = View.GONE
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Log.e("Peter","ACT onRequestPermissionsResult")
+        PermissionsHelper.onResult(requestCode, grantResults[0])
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

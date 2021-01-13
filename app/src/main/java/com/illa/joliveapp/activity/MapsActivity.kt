@@ -257,7 +257,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.Co
 
 
         placesClient.findAutocompletePredictions(request).addOnCompleteListener {
-            Log.e("peter","placesClient     ${it.result.autocompletePredictions[0].placeId}")
+//            Log.e("peter","placesClient     ${it.result.autocompletePredictions[0].placeId}")
             searchDataList.clear()
             placeIdList.clear()
             it.result.autocompletePredictions.forEach {

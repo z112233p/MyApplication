@@ -257,7 +257,7 @@
         </LinearLayout>
         <FrameLayout
             android:id="@+id/fl_audio_layout"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -275,6 +275,14 @@
                 android:layout_margin="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"/>
+            <TextView
+                android:id="@+id/tv_record_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textSize="14sp"
+                android:text="00:00"/>
             <Button
                 android:id="@+id/btn_stop_record"
                 android:text="STOP"

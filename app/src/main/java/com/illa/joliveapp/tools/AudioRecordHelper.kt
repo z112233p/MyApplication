@@ -146,6 +146,8 @@ object AudioRecordHelper{
 
     fun startRecord(){
         isRecording = true
+        audioRecord = MediaRecorder()
+
         Log.e("Peter","startRecord")
         try {
             audioRecord?.setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -157,10 +159,11 @@ object AudioRecordHelper{
             }
             filePath = audioSaveDir+ fileName
             audioRecord?.setOutputFile(filePath)
+            Log.e("Peter","record filePath    $filePath")
             audioRecord?.prepare()
             audioRecord?.start()
-
-            countThread.start()
+//            countThread = CountTread()
+//            countThread.start()
 
         } catch (e:IllegalStateException){
             LogUtil.e("call startAmr(File mRecAudioFile) failed!",""+e.message)
@@ -172,7 +175,7 @@ object AudioRecordHelper{
 
     fun stopRecord(): String{
         isRecording = false
-        countThread.exit()
+//        countThread.exit()
         return try {
             audioRecord?.stop()
             audioRecord?.release()

@@ -1,8 +1,10 @@
 package com.illa.joliveapp.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -25,6 +28,7 @@ import com.illa.joliveapp.activity.EditMyInfoActivity
 import com.illa.joliveapp.adapter.Adapter_Profile_PhotoV2
 import com.illa.joliveapp.datamodle.profile.delete_photo.DeleteMyPhoto
 import com.illa.joliveapp.datamodle.profile.sort_photo.SortPhotoDataBody
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.RZItemTouchHelperCallback
 import com.illa.joliveapp.tools.Tools
@@ -81,6 +85,7 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         Log.e("Peter","FragmentEditMyInfoV2  onResume ")
 
         super.onResume()
+        getMContext().get()?.let { PermissionsHelper.setContext(it) }
         setTitle("編輯個人檔案")
         initObserve()
         callApis()
@@ -147,7 +152,19 @@ class FragmentEditMyInfoV2 : BaseFragment() {
         adapter.setOnItemClickListener(object : Adapter_Profile_PhotoV2.OnItemClickListener{
             override fun onItemClick(view: View?, position: Int, url: String) {
                 photoPosition = position
-                getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentEditMyInfoV2) }
+                if(ContextCompat.checkSelfPermission(getMContext().get()!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    PermissionsHelper.askWriteStorage()
+                    PermissionsHelper.setCallBack(object : PermissionsHelper.onResultCallback{
+                        override fun permissionResult() {
+                            getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentEditMyInfoV2) }
+                        }
+
+                    })
+                    PermissionsHelper.startAskPermissions()
+                } else {
+                    getMContext().get()?.let { ctx -> CropImage.activity().setAspectRatio(150,150).start(ctx,this@FragmentEditMyInfoV2) }
+
+                }
             }
 
             override fun onDeletePhoto(view: View?, position: Int, url: String) {

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.illa.joliveapp.R
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
@@ -36,6 +37,10 @@ class EditMyInfoActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        PermissionsHelper.setContext(this)
+    }
 
     private fun initObserve(){
         profileActivityVM.getProgressStatus().observe(this, Observer {
@@ -78,6 +83,17 @@ class EditMyInfoActivity : AppCompatActivity() {
 
         }
         return false
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Log.e("Peter","ACT onRequestPermissionsResult")
+        PermissionsHelper.onResult(requestCode, grantResults[0])
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
 }

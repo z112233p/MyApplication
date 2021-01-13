@@ -1,10 +1,12 @@
 package com.illa.joliveapp.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.illa.joliveapp.R
+import com.illa.joliveapp.tools.PermissionsHelper
 import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -30,6 +32,11 @@ class ProfileActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PermissionsHelper.setContext(this)
     }
 
     fun setSubTitle(subtitle: String){
@@ -83,5 +90,16 @@ class ProfileActivity : AppCompatActivity() {
                 ProgressDialogController.showProgress()
             }
         })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Log.e("Peter","ACT onRequestPermissionsResult")
+        PermissionsHelper.onResult(requestCode, grantResults[0])
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
