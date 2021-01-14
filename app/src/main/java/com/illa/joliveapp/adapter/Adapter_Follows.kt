@@ -49,6 +49,7 @@ class Adapter_Follows() :RecyclerView.Adapter<Adapter_Follows.ViewHolder>() {
         viewHolder.ivProfilePhoto = cell.findViewById(R.id.iv_profile_photo)
         viewHolder.tvUserName = cell.findViewById(R.id.tv_user_name)
         viewHolder.tvReview = cell.findViewById(R.id.tv_review)
+        viewHolder.ivGender = cell.findViewById(R.id.iv_gender)
         return viewHolder
     }
 
@@ -65,6 +66,15 @@ class Adapter_Follows() :RecyclerView.Adapter<Adapter_Follows.ViewHolder>() {
 
         holder.tvUserName.text = data.nickname
         holder.tvReview.visibility = View.GONE
+//        if(data.gender == 0){
+//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_woman))
+//        } else if(data.gender == 1){
+//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_man))
+//
+//        } else {
+//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_close))
+//
+//        }
 
         holder.ivProfilePhoto.setOnClickListener {
             mOnItemClickListener?.omAvatarClick(data.label)
@@ -76,6 +86,8 @@ class Adapter_Follows() :RecyclerView.Adapter<Adapter_Follows.ViewHolder>() {
         lateinit var ivProfilePhoto: ImageView
         lateinit var tvUserName: TextView
         lateinit var tvReview: TextView
+        lateinit var ivGender: ImageView
+
     }
 
 }

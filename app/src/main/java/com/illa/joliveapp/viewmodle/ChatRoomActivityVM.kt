@@ -65,6 +65,12 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
 
             override fun onNext(t: ChatHistory) {
                 chatHistory.value = t.messages
+                t.messages.forEach {
+                    LogUtil.e("PetergetChatHistory", "getChatHistoryTTT onNextTTT:  ${it.t}     ${it.u.name}")
+//                    LogUtil.e("PetergetChatHistory", "getChatHistoryTTT onNextTTT msg :  ${it.msg}")
+
+                }
+
                 for ((f, i) in t.messages.withIndex()){
                     LogUtil.e("PetergetChatHistory", "getChatHistory onNext:  ${i.u.name}"+"     "+i.t+"   "+i.msg)
                 }

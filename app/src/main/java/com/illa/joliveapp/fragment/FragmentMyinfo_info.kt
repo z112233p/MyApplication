@@ -41,6 +41,7 @@ class FragmentMyinfo_info : BaseFragment() {
     private lateinit var myEventAdapter: Adapter_Events
     private lateinit var imageList: ArrayList<String>
     private lateinit var adapter: Adapter_Instagram_Photo
+    private lateinit var act: MyInfoActivity
 
     private var bannerController: BannerController ?= null
     private var interestMap: ArrayList<Int> = ArrayList<Int>()
@@ -70,6 +71,7 @@ class FragmentMyinfo_info : BaseFragment() {
             bannerController!!.stopSwipe()
             bannerController!!.stopLooper()
         }
+        act = getMContext().get() as MyInfoActivity
         callApis()
         Log.e("peter","FragmentMyinfo_info    onResume")
 
@@ -119,6 +121,7 @@ class FragmentMyinfo_info : BaseFragment() {
         tv_follow_btn.setOnClickListener(onClick)
         ll_instagram.setOnClickListener(onClick)
         tv_instagram_disconnect.setOnClickListener(onClick)
+        ll_events_count.setOnClickListener(onClick)
 
 
         if((getMContext().get() as MyInfoActivity).userLabel == PrefHelper.chatLable){
@@ -185,6 +188,7 @@ class FragmentMyinfo_info : BaseFragment() {
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
         when (it.id) {
+            R.id.ll_events_count -> act.setCurrentPage(1)
             R.id.tv_instagram_disconnect -> profileActivityVM.igDisconnect()
 
             R.id.ll_instagram -> {

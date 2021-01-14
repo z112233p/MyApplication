@@ -62,6 +62,8 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         viewHolder.ivProfilePhoto = cell.findViewById(R.id.iv_profile_photo)
         viewHolder.tvUserName = cell.findViewById(R.id.tv_user_name)
         viewHolder.tvReview = cell.findViewById(R.id.tv_review)
+        viewHolder.ivGender = cell.findViewById(R.id.iv_gender)
+
         return viewHolder
     }
 
@@ -81,6 +83,16 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
 
         ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+ data.photos[0].url, holder.ivProfilePhoto)
         holder.tvUserName.text = data.nickname
+        holder.ivGender.visibility = View.VISIBLE
+        if(data.gender == 0){
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_woman))
+        } else if(data.gender == 1){
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_man))
+
+        } else {
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_close))
+
+        }
 
 //        when(data.status){
 //            0 -> holder.tvReview.text = "未審核"
@@ -118,6 +130,8 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
         lateinit var ivProfilePhoto: ImageView
         lateinit var tvUserName: TextView
         lateinit var tvReview: TextView
+        lateinit var ivGender: ImageView
+
     }
 
 }

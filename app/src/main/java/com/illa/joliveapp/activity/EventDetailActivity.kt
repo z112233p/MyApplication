@@ -1,6 +1,7 @@
 package com.illa.joliveapp.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -100,7 +101,22 @@ class EventDetailActivity : AppCompatActivity() {
     private val onClick = View.OnClickListener {
         when(it.id){
             R.id.tv_event_join_btn -> eventDetailActVM.joinEvent(eventID.toString())
-            R.id.tv_event_cancel_btn -> eventDetailActVM.cancelJoinEvent(eventID.toString())
+            R.id.tv_event_cancel_btn -> {
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder.setMessage("要取消報名此活動？")
+                builder.setPositiveButton("確定") {
+                        p0, p1 -> eventDetailActVM.cancelJoinEvent(eventID.toString())
+                }
+                builder.setNegativeButton("再想想") {
+                        p0, p1 -> Log.e("Peter","dialog cancel")
+                }
+                val dialog = builder.create()
+                dialog.show()
+
+
+
+            }
             R.id.ll_event_owner -> {
                 IntentHelper.gotoMyInfoActivity(this,userLabel)
                 this.finish()

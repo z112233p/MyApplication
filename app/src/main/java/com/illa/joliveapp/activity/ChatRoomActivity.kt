@@ -808,6 +808,7 @@ class ChatRoomActivity : AppCompatActivity(),
             list.forEach { it ->
                 if(!TextUtils.isEmpty(it.u.name)){
                     val data = Message()
+
                     data.author.name = it.u.name
                     data.author.avatar = BuildConfig.CHATROOM_IMAGE_URL+"dating/"+it.u.username+".jpg"
                     data.createdAt = it._updatedAt

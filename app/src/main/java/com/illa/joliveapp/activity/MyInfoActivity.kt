@@ -59,6 +59,11 @@ class MyInfoActivity : AppCompatActivity() {
 
     }
 
+    fun setCurrentPage(pagePosition: Int){
+        vp_my_info.currentItem = pagePosition
+
+    }
+
     private fun init(){
         Log.e("Peter","MyInfoActivity init")
 

@@ -50,6 +50,10 @@ class FragmentPreviewEvent : BaseFragment() {
         Log.e("Peter","FragmentEventDetailV2 onResume")
         super.onResume()
         act.hidePreview()
+        v_divider_line.visibility = View.INVISIBLE
+        tv_you_may_like.visibility = View.INVISIBLE
+        rv_events.visibility = View.INVISIBLE
+
     }
 
 

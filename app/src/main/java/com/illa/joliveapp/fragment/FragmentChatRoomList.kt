@@ -119,6 +119,7 @@ class FragmentChatRoomList : BaseFragment() {
                             tv_recycle_view_title.visibility = View.GONE
                             ll_no_chat_room.visibility = View.VISIBLE
                         }
+                        tv_recycle_view_title.visibility = View.VISIBLE
                     }
 
                     override fun onSuccess(t: List<Update>) {
@@ -132,6 +133,7 @@ class FragmentChatRoomList : BaseFragment() {
                             tv_recycle_view_title.visibility = View.GONE
                             ll_no_chat_room.visibility = View.VISIBLE
                         }
+                        tv_recycle_view_title.visibility = View.VISIBLE
 
                     }
                 })
