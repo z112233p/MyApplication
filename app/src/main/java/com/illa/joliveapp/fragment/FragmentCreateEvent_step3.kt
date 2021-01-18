@@ -153,9 +153,16 @@ class FragmentCreateEvent_step3 : BaseFragment() {
 
                 Log.e("Peter","CreateEvent dataBody :   $(getMContext().get() as CreateEventActivity).dataBody")
 
-                val dataclassAsMap =
+                val dataclassAsMap: MutableMap<String, String> =
                     ObjectMapper().convertValue<Map<String, String>>((getMContext().get() as CreateEventActivity).dataBody, object:
-                    TypeReference<Map<String, String>>() {})
+                        TypeReference<Map<String, String>>() {}).toMutableMap()
+                dataclassAsMap["is_need_approved"] = act.dataBody.is_need_approved
+//                dataclassAsMap["1"] = act.dataBody.is_need_approved
+//                dataclassAsMap["2"] = act.dataBody.is_need_approved
+//                dataclassAsMap["4"] = act.dataBody.is_need_approved
+//                dataclassAsMap["image_color5"] = act.dataBody.is_need_approved
+
+
                 val ketSet = dataclassAsMap.keys.toTypedArray()
 
                 Log.e("Peter","dataclassAsMap:   $dataclassAsMap")

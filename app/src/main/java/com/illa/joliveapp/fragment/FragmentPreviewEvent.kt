@@ -11,8 +11,10 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.CreateEventActivity
+import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.CreateEventsActivityVM
 import kotlinx.android.synthetic.main.fragment_create_event_step_3.*
@@ -60,6 +62,7 @@ class FragmentPreviewEvent : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private fun init(){
+        iv_event_status.visibility = View.GONE
         act = getMContext().get() as CreateEventActivity
         act.setPostOnclickListener(View.OnClickListener {
 
@@ -97,9 +100,25 @@ class FragmentPreviewEvent : BaseFragment() {
         tv_event_content.text = act.dataBody.description
 
         val myBitmap = BitmapFactory.decodeFile(act.file.getAbsolutePath())
+        Log.e("Peter","CreateEventEDIT myBitmap:   $myBitmap")
+        Log.e("Peter","CreateEventEDIT myBitmap:   $myBitmap")
 
+        if(myBitmap != null){
+            Log.e("Peter","CreateEventEDIT myBitmap:   FILE")
 
-        iv_event_photo.setImageBitmap(myBitmap)
+            iv_event_photo.setImageBitmap(myBitmap)
+
+        } else {
+            Log.e("Peter","CreateEventEDIT myBitmap:  URL")
+
+            ImgHelper.loadNormalImg(getMContext().get(),
+                BuildConfig.IMAGE_URL+act.intentDataBody.data.image, iv_event_photo)
+        }
+        if(act.intentDataBody.data.is_need_approved == 0){
+            iv_event_status.visibility = View.VISIBLE
+            iv_event_status.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_event_come))
+
+        }
 
     }
 

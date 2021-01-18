@@ -65,6 +65,18 @@ class EventReviewActivity : AppCompatActivity() {
 
     }
 
+    fun hideInformationIcon(){
+        iv_information.visibility = View.GONE
+    }
+
+    fun showInformationIcon(){
+        iv_information.visibility = View.VISIBLE
+    }
+
+    fun setInformationClick(onClick: View.OnClickListener){
+        iv_information.setOnClickListener(onClick)
+    }
+
     private fun getIntentData(){
         Log.e("Peter","EventReviewActivity")
         val b = intent.extras

@@ -8,9 +8,7 @@ data class CreateEvent(var title: String = "",
                        var location_address: String = "",
                        var location_gps_latitude: String = "",
                        var location_gps_longitude: String = "",
-//                       var meeting_title: String = "",
-//                       var metting_gps_latitude: String = "",
-//                       var metting_gps_longitude: String = "",
+
                        var users_limit: String = "",
                        var start_time: String = "",
                        var end_time: String = "",
@@ -18,4 +16,6 @@ data class CreateEvent(var title: String = "",
                        var currency_id: String = "",
                        var review_time: String = "",
                        var award_count: String = "",
-                       var image_color: String = "")
+                       var image_color: String = "",
+
+                       var is_need_approved: String = "0")

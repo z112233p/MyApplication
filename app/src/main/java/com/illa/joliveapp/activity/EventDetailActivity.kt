@@ -330,6 +330,18 @@ class EventDetailActivity : AppCompatActivity() {
         actionItem.isVisible = false
     }
 
+    fun hideInformationIcon(){
+        iv_information.visibility = View.GONE
+    }
+
+    fun showInformationIcon(){
+        iv_information.visibility = View.VISIBLE
+    }
+
+    fun setInformationClick(onClick: View.OnClickListener){
+        iv_information.setOnClickListener(onClick)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_event_detail, menu)
         return true

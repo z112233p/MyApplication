@@ -10,7 +10,7 @@ import android.view.*
 import com.illa.joliveapp.R
 import kotlinx.android.synthetic.main.dialog_choose_gender.*
 
-class DialogChooseGender(context: Context) : Dialog(context) {
+class DialogReviewInformation(context: Context) : Dialog(context) {
     private lateinit var dialogWindow : Window
     private lateinit var dialogWindowManager: WindowManager.LayoutParams
 
@@ -23,6 +23,7 @@ class DialogChooseGender(context: Context) : Dialog(context) {
             Log.e("Peter","onMaleClick")
         }
 
+
     }
 
     interface OnItemClickListener {
@@ -32,10 +33,10 @@ class DialogChooseGender(context: Context) : Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.setContentView(R.layout.dialog_choose_gender)
+        this.setContentView(R.layout.dialog_review_information)
         setWindowTransparent()
-        tv_female.setOnClickListener(onClick)
-        tv_male.setOnClickListener(onClick)
+//        tv_female.setOnClickListener(onClick)
+//        tv_male.setOnClickListener(onClick)
     }
 
     private fun setWindowTransparent(){

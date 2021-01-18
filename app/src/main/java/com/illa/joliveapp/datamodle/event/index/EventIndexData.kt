@@ -26,5 +26,7 @@ data class EventIndexData(
     val user_id: Int,
     val users_limit: Int,
     var image_color: String = "",
-    val vip: Any
+    val vip: Any,
+    val is_need_approved: Int,
+    val is_full_join: Int
 )

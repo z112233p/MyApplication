@@ -65,14 +65,16 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
 
             override fun onNext(t: ChatHistory) {
                 chatHistory.value = t.messages
+                Log.e("PetergetChatHistory", "getChatHistoryTTT t.messages.size:   ${t.messages.size}")
+
                 t.messages.forEach {
-                    LogUtil.e("PetergetChatHistory", "getChatHistoryTTT onNextTTT:  ${it.t}     ${it.u.name}")
+                    Log.e("PetergetChatHistory", "getChatHistoryTTT onNextTTT:  ${it.t}     ${it.u.name}   三小啦")
 //                    LogUtil.e("PetergetChatHistory", "getChatHistoryTTT onNextTTT msg :  ${it.msg}")
 
                 }
 
                 for ((f, i) in t.messages.withIndex()){
-                    LogUtil.e("PetergetChatHistory", "getChatHistory onNext:  ${i.u.name}"+"     "+i.t+"   "+i.msg)
+                    Log.e("PetergetChatHistory", "getChatHistory onNext:  ${i.u.name}"+"     "+i.t+"   "+i.msg)
                 }
             }
         }
@@ -207,7 +209,7 @@ class ChatRoomActivityVM (application: Application) : AndroidViewModel(applicati
             }
 
             override fun onNext(t: UserInfo) {
-                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
+//                Log.e("Peter2", "getMyInfo  onNext:  "+t.data.user.photos)
                 userInfo.value = t
             }
 

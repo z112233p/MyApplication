@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -58,6 +60,10 @@ class FragmentInputPhone : BaseFragment() {
         Tools.hideSoftKeyboard(getMContext().get() as Activity)
         when (it.id){
             R.id.ll_send_code_btn -> {
+                if(ed_phone_number.text.length < 10){
+                    Tools.toast(getMContext().get(), "請輸入完整10碼電話號碼")
+                    return@OnClickListener
+                }
                 Log.e("Peter","ed_phone_number   ${ed_phone_number.text}")
 
                 if(TextUtils.isEmpty(ed_phone_number.text)){

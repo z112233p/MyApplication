@@ -91,7 +91,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.tvEventDescription = cell.findViewById(R.id.tv_event_description)
         viewHolder.tvOwner = cell.findViewById(R.id.tv_owner)
         viewHolder.ivOwner = cell.findViewById(R.id.iv_owner)
-
+        viewHolder.ivEventStatus = cell.findViewById(R.id.iv_event_status)
         return viewHolder
     }
 
@@ -114,7 +114,17 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val data = dataList[position]
         setBackground((holder as ViewHolder).ivEventBg, null)
         ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+data.image, holder.ivEvent)
+        holder.ivEventStatus.visibility = View.INVISIBLE
+        if(data.is_full_join == 1){
+            holder.ivEventStatus.setImageDrawable(mContext.getDrawable(R.mipmap.ic_event_full))
+            holder.ivEventStatus.visibility = View.VISIBLE
 
+        } else {
+            if(data.is_need_approved == 0){
+                holder.ivEventStatus.setImageDrawable(mContext.getDrawable(R.mipmap.ic_event_come))
+                holder.ivEventStatus.visibility = View.VISIBLE
+            }
+        }
 
         holder.tvEventTitle.text = data.title
         holder.tvEventDescription.text = data.description
@@ -216,6 +226,7 @@ class Adapter_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         lateinit var tvEventDescription: TextView
         lateinit var tvOwner: TextView
         lateinit var ivOwner: ImageView
+        lateinit var ivEventStatus: ImageView
     }
 
 }

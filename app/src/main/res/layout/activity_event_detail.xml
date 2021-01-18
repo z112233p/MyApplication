@@ -61,6 +61,13 @@
                 android:textSize="20sp"
                 android:layout_gravity="center"
                 tools:text="標題"/>
+            <ImageView
+                android:id="@+id/iv_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:src="@mipmap/ic_information"/>
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

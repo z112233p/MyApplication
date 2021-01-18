@@ -9,6 +9,16 @@
     android:gravity="bottom"
     android:paddingBottom="10dp">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_message_main"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:layout_constraintBottom_toBottomOf="parent">
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/card_owner"
             android:layout_width="42dp"
@@ -173,6 +183,20 @@
             android:visibility="invisible"
             tool:ignore="SmallSp"
             android:text="12345" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_new_member"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

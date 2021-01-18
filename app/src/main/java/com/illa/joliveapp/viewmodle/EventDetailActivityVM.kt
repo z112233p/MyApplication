@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.event.detailv2.EventDetailV2
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.review.EventReview
+import com.illa.joliveapp.datamodle.event.review_cancel.PostReviewCancel
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody
 import com.illa.joliveapp.network.ApiMethods
 import com.illa.joliveapp.tools.SingleLiveEvent
 import io.reactivex.Observer
@@ -30,6 +32,8 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     private val postEventReviewResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
     private val closeEventResponse: SingleLiveEvent<String> = SingleLiveEvent<String>()
     private val events: MutableLiveData<EventList> = MutableLiveData<EventList>()
+    private val reviewCancelResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val fullJoinResponse: MutableLiveData<String> = MutableLiveData<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private val errorMsg: SingleLiveEvent<String> = SingleLiveEvent<String>()
@@ -72,7 +76,14 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
     fun getProgressStatus(): LiveData<Boolean> {
         return progressStatus
     }
+    //setFullJoinResponse
+    fun getFullJoinResponse(): LiveData<String> {
+        return fullJoinResponse
+    }
 
+    fun getReviewCancelResponse(): LiveData<String> {
+        return reviewCancelResponse
+    }
 
     fun joinEvent(id: String){
         val joinEventObserver = object : Observer<String>{
@@ -291,6 +302,80 @@ class EventDetailActivityVM (application: Application) : AndroidViewModel(applic
         ApiMethods.getEvents(getEventsObserver,label, eventsCategorysId)
     }
 
+    fun cancelReview(dataBody: PostReviewCancel){
+        val cancelReviewObserver = object : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onNext(t: String) {
+
+
+                val jsonData = JSONObject(t)
+
+                if (jsonData.get("code") != 0){
+                    errorMsg.value = jsonData.get("errors").toString()
+                }
+                else {
+
+                }
+
+
+                reviewCancelResponse.value = t
+                Log.e("Peter","cancelReview  onNext    $t")
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter","cancelReview  onError    "+e.message)
+            }
+
+        }
+        ApiMethods.cancelReview(cancelReviewObserver, dataBody)
+    }
+
+
+    fun setFullJoin(eventId: String, dataBody: SetFullJoinDataBody){
+        val setFullJoinObserver = object : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onNext(t: String) {
+
+
+                val jsonData = JSONObject(t)
+
+                if (jsonData.get("code") != 0){
+                    errorMsg.value = jsonData.get("errors").toString()
+                }
+                else {
+
+                }
+                fullJoinResponse.value = t
+                Log.e("Peter","setFullJoin  data    $eventId    ${dataBody.full_join}")
+
+                Log.e("Peter","setFullJoin  onNext    $t")
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter","cancelReview  onError    "+e.message)
+            }
+
+        }
+        ApiMethods.setFullJoin(setFullJoinObserver, eventId, dataBody)
+    }
 
     fun postEventRollCall(dataBody: ReviewMember){
         val eventReviewObserver = object : Observer<String>{

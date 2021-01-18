@@ -1,5 +1,6 @@
 package com.illa.joliveapp.datamodle.chat_room
 
+import android.view.ViewGroup
 import com.stfalcon.chatkit.commons.models.IMessage
 import com.stfalcon.chatkit.commons.models.MessageContentType
 import java.util.*
@@ -15,7 +16,7 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
     private var audioUrl: String? = null
     private var fileType: String? = ""
     private var fileDownload: String = ""
-
+    private var isSystemMessage: Boolean = false
 
 
     fun setId(id: String) {
@@ -48,6 +49,10 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
 
     fun setFileDownload(fileDownload: String){
         this.fileDownload = fileDownload
+    }
+
+    fun setIsSystemMessage(params: Boolean){
+        this.isSystemMessage = params
     }
 
     override fun getImageUrl(): String? {
@@ -86,5 +91,9 @@ class Message : IMessage ,MessageContentType.Image, MessageContentType{
 
     fun getFileDownload(): String{
         return fileDownload
+    }
+
+    fun getIsSystemMessage(): Boolean{
+        return isSystemMessage
     }
 }

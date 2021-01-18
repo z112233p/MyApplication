@@ -94,6 +94,8 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.cvEventMemberOne = cell.findViewById(R.id.cv_event_member_one)
         viewHolder.cvEventMemberTwo = cell.findViewById(R.id.cv_event_member_two)
         viewHolder.cvEventMemberThree = cell.findViewById(R.id.cv_event_member_three)
+        viewHolder.ivEventStatus = cell.findViewById(R.id.iv_event_status)
+
         return viewHolder
     }
 
@@ -108,6 +110,21 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(dataList.size == 0){return}
         val data = dataList[position]
         setBackground((holder as ViewHolder).ivEventBg, null)
+
+
+        holder.ivEventStatus.visibility = View.INVISIBLE
+
+        if(data.is_full_join == 1){
+            holder.ivEventStatus.setImageDrawable(mContext.getDrawable(R.mipmap.ic_event_full))
+            holder.ivEventStatus.visibility = View.VISIBLE
+
+        } else {
+            if(data.is_need_approved == 0){
+                holder.ivEventStatus.setImageDrawable(mContext.getDrawable(R.mipmap.ic_event_come))
+                holder.ivEventStatus.visibility = View.VISIBLE
+            }
+        }
+
 
         if(getItemViewType(position) == TYPE_GOING){
             ImgHelper.loadNormalImg(mContext, BuildConfig.IMAGE_URL+data.image, holder.ivEvent)
@@ -189,6 +206,8 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.cvEventMemberThree.visibility = View.GONE
             holder.tvEventMemberCount.visibility = View.GONE
         }
+        holder.ivEventStatus.bringToFront()
+
     }
 
     private fun setBackground(ivEvent: ImageView, gd: GradientDrawable?) {
@@ -214,6 +233,7 @@ class Adapter_My_Events() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         lateinit var cvEventMemberOne: CardView
         lateinit var cvEventMemberTwo: CardView
         lateinit var cvEventMemberThree: CardView
+        lateinit var ivEventStatus: ImageView
 
 
     }

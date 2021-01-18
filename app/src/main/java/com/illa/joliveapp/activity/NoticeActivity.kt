@@ -1,9 +1,11 @@
 package com.illa.joliveapp.activity
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.illa.joliveapp.R
@@ -45,13 +47,17 @@ class NoticeActivity : AppCompatActivity() {
     fun setActionReadDisClickable(){
         actionReadDisClickable = false
         actionItem.isCheckable = false
-
+        val icon = actionItem.icon
+        icon.mutate().setColorFilter(this.resources.getColor(R.color.colorGray43), PorterDuff.Mode.SRC_IN)
+        actionItem.icon = icon
     }
 
     fun setActionReadClickable(){
         actionReadDisClickable = true
         actionItem.isCheckable = true
-
+        val icon = actionItem.icon
+        icon.mutate().setColorFilter(this.resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN)
+        actionItem.icon = icon
     }
 
 
@@ -73,6 +79,7 @@ class NoticeActivity : AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         actionItem = menu!!.findItem(R.id.action_read)
         actionItem.isCheckable = false
+        setActionReadDisClickable()
 
         return true
     }

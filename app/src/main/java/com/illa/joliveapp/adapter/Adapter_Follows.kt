@@ -66,15 +66,15 @@ class Adapter_Follows() :RecyclerView.Adapter<Adapter_Follows.ViewHolder>() {
 
         holder.tvUserName.text = data.nickname
         holder.tvReview.visibility = View.GONE
-//        if(data.gender == 0){
-//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_woman))
-//        } else if(data.gender == 1){
-//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_man))
-//
-//        } else {
-//            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_close))
-//
-//        }
+        if(data.gender == 0){
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_woman))
+        } else if(data.gender == 1){
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_gender_man))
+
+        } else {
+            holder.ivGender.setImageDrawable(mContext.resources.getDrawable(R.mipmap.ic_close))
+
+        }
 
         holder.ivProfilePhoto.setOnClickListener {
             mOnItemClickListener?.omAvatarClick(data.label)

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="@drawable/ripple_gray_color"
     android:layout_marginTop="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -65,7 +66,7 @@
             android:id="@+id/iv_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             android:src="@mipmap/ic_gender_man"/>
     </LinearLayout>
 

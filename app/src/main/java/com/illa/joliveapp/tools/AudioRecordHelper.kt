@@ -38,7 +38,9 @@ object AudioRecordHelper{
     private lateinit var mContext: Context
     private lateinit var fileName: String
     private lateinit var filePath: String
-    private lateinit var localFilePath: String
+    private var lastFilePath: String = ""
+
+    private var localFilePath: String = ""
 
     class CountTread : Thread() {
         @Volatile  var exit: Boolean = false
@@ -145,6 +147,7 @@ object AudioRecordHelper{
     }
 
     fun startRecord(){
+        lastFilePath = ""
         isRecording = true
         audioRecord = MediaRecorder()
 
@@ -158,6 +161,7 @@ object AudioRecordHelper{
                 FileUtils.makeFolders(audioSaveDir);
             }
             filePath = audioSaveDir+ fileName
+            lastFilePath = audioSaveDir+ fileName
             audioRecord?.setOutputFile(filePath)
             Log.e("Peter","record filePath    $filePath")
             audioRecord?.prepare()
@@ -187,7 +191,7 @@ object AudioRecordHelper{
             audioRecord?.release()
             audioRecord = null
             val file = File(filePath)
-            if (file.exists()) file.delete()
+//            if (file.exists()) file.delete()
             ""
     //            filePath = ""
         }
@@ -199,9 +203,12 @@ object AudioRecordHelper{
             audioPlayer?.stop()
         }
         Log.e("Peter","audioPlayer play ININ    $url")
+        Log.e("Peter","audioPlayer play ININ22    ${Tools.getLocalSavedAudioPath()+filePath.substring(filePath.lastIndexOf("/") + 1)}")
+
 
         val file = File(Tools.getLocalSavedAudioPath()+filePath.substring(filePath.lastIndexOf("/") + 1))
         if(file.exists()){
+            Log.e("Peter","audioPlayer ININ exists")
 
             localFilePath = Tools.getLocalSavedAudioPath()+filePath.substring(filePath.lastIndexOf("/") + 1)
             playLocalRecord()
@@ -213,7 +220,9 @@ object AudioRecordHelper{
             url.contains("https://") -> {
                 Log.e("Peter","audioPlayer ININ play0")
 
-                playRecord()
+//                playRecord()
+                playLocalRecord2()
+
             }
             url.contains(Environment.getExternalStorageDirectory().toString()) -> {
                 Log.e("Peter","audioPlayer ININ play1")
@@ -257,6 +266,43 @@ object AudioRecordHelper{
 
         } catch (e: IOException){
             e.printStackTrace()
+            Log.e("Peter","audioPlayer LocalRecord in7   ${e.message}")
+
+        }
+    }
+
+    fun playLocalRecord2() {
+        Log.e("Peter","audioPlayer playLocalRecord2  $lastFilePath")
+
+        try {
+            //如果正在播放，然后在播放其他文件就直接崩溃了
+            if(audioPlayer?.isPlaying!!){
+                Log.e("Peter","audioPlayer return")
+                return;
+            }
+            if(hadDataFirstSet){
+                audioPlayer?.reset()
+            } else {
+                hadDataFirstSet = true
+            }
+            audioPlayer?.setDataSource(lastFilePath)
+            audioPlayer?.prepare()
+            audioPlayer?.setOnPreparedListener(OnPreparedListener { mp ->
+                Log.e("Peter ", "audioPlayer   setOnPreparedListener  LOCAL 开始播放1"+audioPlayer?.duration)
+                Log.e("Peter ", "audioPlayer   setOnPreparedListener LOCAL 开始播放2"+mp.duration)
+                callbacks?.setAudioDuration(mp.duration)
+                mp.start()
+            })
+            audioPlayer?.setOnCompletionListener { mp ->
+                Log.e("Peter","audioPlayer in5  reset")
+
+            }
+            Log.e("Peter","audioPlayer LocalRecord in6   $localFilePath")
+
+        } catch (e: IOException){
+            e.printStackTrace()
+            Log.e("Peter","audioPlayer LocalRecord in7   ${e.message}")
+
         }
     }
 
@@ -274,6 +320,8 @@ object AudioRecordHelper{
             }else{
                 Uri.parse(filePath)
             }
+            Log.e("Peter","audioPlayer ininin AFTER  $uri1" )
+
             val headers: HashMap<String, String> = HashMap()
             headers["X-Auth-Token"] = PrefHelper.chatToken
             headers["X-User-Id"] = PrefHelper.chatId

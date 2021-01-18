@@ -24,6 +24,7 @@ import com.illa.joliveapp.activity.EventDetailActivity
 import com.illa.joliveapp.adapter.Adapter_Events
 import com.illa.joliveapp.custom_view.ItemJoins
 import com.illa.joliveapp.datamodle.event.detailv2.Data
+import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody
 import com.illa.joliveapp.dialog.DialogEventDetailOption
 import com.illa.joliveapp.tools.ImgHelper
 import com.illa.joliveapp.tools.IntentHelper
@@ -61,6 +62,7 @@ class FragmentEventDetailV2 : BaseFragment() {
 
     private var nowTime =  Date()
     private var joinType:Any = 0.0
+    private var isNeedApproved = 1
 
 
     override fun getLayoutId(): Int {
@@ -89,6 +91,7 @@ class FragmentEventDetailV2 : BaseFragment() {
         initObserve()
         callApis()
         act.showEventOwnerLayout()
+        act.hideInformationIcon()
         super.onResume()
 
     }
@@ -159,13 +162,37 @@ class FragmentEventDetailV2 : BaseFragment() {
         eventDetailActVM.getEventDetailV2().observe(viewLifecycleOwner, Observer {
             eventDetailData = it.data
             ChatId = eventDetailData.chat_rid
+            joinType = eventDetailData.join_type
+            isNeedApproved = eventDetailData.is_need_approved
+
             Log.e("Peter","getEventDetailV2 eventDetailData.join_type    ${eventDetailData.join_type} ")
 
             act.eventID = eventDetailData.id
             locationLatitude = eventDetailData.location_gps_latitude
             locationLongitude = eventDetailData.location_gps_longitude
 
-            tv_event_location.text = eventDetailData.location_title
+
+
+            iv_event_status.visibility = View.INVISIBLE
+
+            if(eventDetailData.is_full_join == 1){
+                iv_event_status.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_event_full))
+                iv_event_status.visibility = View.VISIBLE
+
+            } else {
+                if(eventDetailData.is_need_approved == 0){
+                    iv_event_status.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_event_come))
+                    iv_event_status.visibility = View.VISIBLE
+                }
+            }
+
+            if(eventDetailData.is_need_approved == 0){
+                tv_event_free.visibility = View.VISIBLE
+            } else {
+                tv_event_free.visibility = View.GONE
+            }
+
+                tv_event_location.text = eventDetailData.location_title
             tv_location_detail.text = eventDetailData.location_address
             tv_event_title.text = eventDetailData.title
             tv_event_budget.text = eventDetailData.budget.toString()
@@ -199,7 +226,6 @@ class FragmentEventDetailV2 : BaseFragment() {
             Log.e("Peter"," getEventDetailV2  diffTime !  $diffDay    $diffHour   $diffMinute")
 
             act.dealEventStatus(eventDetailData.join_type, newDate)
-            joinType = eventDetailData.join_type
 
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
 
@@ -227,6 +253,9 @@ class FragmentEventDetailV2 : BaseFragment() {
             mayLikeEventAdapter.setData(it.data.event)
         })
 
+        eventDetailActVM.getFullJoinResponse().observe(viewLifecycleOwner, Observer {
+            callApis()
+        })
     }
 
 
@@ -256,7 +285,7 @@ class FragmentEventDetailV2 : BaseFragment() {
         return when (item.itemId) {
             R.id.action_option -> {
                 val dialog = getMContext().get()?.let {
-                    DialogEventDetailOption(it, joinType, act.userLabel == PrefHelper.chatLable)
+                    DialogEventDetailOption(it, joinType, act.userLabel == PrefHelper.chatLable, eventDetailData)
                 }
                 dialog?.setSeeDetailOnclick(View.OnClickListener {
 
@@ -279,17 +308,13 @@ class FragmentEventDetailV2 : BaseFragment() {
 
                 })
                 dialog?.setReportOnclick(View.OnClickListener {
-                    val builder: AlertDialog.Builder = AlertDialog.Builder(getMContext().get())
-                    builder.setMessage("確定要檢舉？")
-                    builder.setPositiveButton("確定") {
-                            p0, p1 -> Log.e("Peter","dialog ok")
-                    }
-                    builder.setNegativeButton("取消") {
-                            p0, p1 -> Log.e("Peter","dialog cancel")
-                    }
-                    val dialog = builder.create()
+                    val param = (eventDetailData.is_full_join+1) % 2
+                    Log.e("Peter","dialog setReportOnclick1  ${eventDetailData.is_full_join}")
 
-                    dialog.show()
+                    Log.e("Peter","dialog setReportOnclick2  $param")
+                    eventDetailActVM.setFullJoin(eventDetailData.id.toString(), SetFullJoinDataBody(param.toString()
+                    ))
+                    dialog.dismiss()
                 })
 
                 dialog?.setCloseEventClick(View.OnClickListener {

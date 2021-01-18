@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.illa.joliveapp.MyApp
 import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.Adapter_Chat_Room_Message
@@ -42,6 +43,8 @@ abstract class BaseMessageViewHolder(itemView: View) :
     val tvReplyText = itemView.findViewById<TextView>(R.id.tv_reply_text)
     val vDividerLine = itemView.findViewById<View>(R.id.v_divider_line)
     val tvStatus = itemView.findViewById<TextView>(R.id.tv_status)
+    val clMessageMain = itemView.findViewById<ConstraintLayout>(R.id.cl_message_main)
+    val tvNewMember = itemView.findViewById<TextView>(R.id.tv_new_member)
 
     var width = 0
 
@@ -100,6 +103,21 @@ abstract class BaseMessageViewHolder(itemView: View) :
         image.visibility = View.GONE
         llAudioLayout.visibility = View.GONE
 //        voicePlayerView
+
+        if(message.getIsSystemMessage()){
+
+            tvNewMember.visibility = View.VISIBLE
+            clMessageMain.visibility = View.GONE
+            tvNewMember.text = message.text
+            return
+        } else {
+            tvNewMember.visibility = View.GONE
+            clMessageMain.visibility = View.VISIBLE
+        }
+
+
+
+
 
         name.text = message.author.name
 

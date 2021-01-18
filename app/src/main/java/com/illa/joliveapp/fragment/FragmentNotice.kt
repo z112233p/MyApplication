@@ -116,6 +116,8 @@ class FragmentNotice : BaseFragment() {
 
     private fun initObserve(){
         mainActVM.getNoticeData().observe(viewLifecycleOwner, Observer {
+            (getMContext().get() as NoticeActivity).setActionReadDisClickable()
+
             it.data.forEach {
                 if(!it.is_read){
                     (getMContext().get() as NoticeActivity).setActionReadClickable()

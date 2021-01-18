@@ -115,11 +115,12 @@ class FragmentChatRoomList : BaseFragment() {
                         Log.e("Peter", "FragmentChatRoom getChatRoom FINISH2 ERR $e")
                         adapter.setData(it.update)
                         adapterAll.setData(it.update)
+                        tv_recycle_view_title.visibility = View.VISIBLE
+
                         if(it.update.isEmpty()){
                             tv_recycle_view_title.visibility = View.GONE
                             ll_no_chat_room.visibility = View.VISIBLE
                         }
-                        tv_recycle_view_title.visibility = View.VISIBLE
                     }
 
                     override fun onSuccess(t: List<Update>) {
@@ -129,11 +130,12 @@ class FragmentChatRoomList : BaseFragment() {
                         }
                         adapter.setData(dataList)
                         adapterAll.setData(t)
+                        tv_recycle_view_title.visibility = View.VISIBLE
+
                         if(t.isEmpty()){
                             tv_recycle_view_title.visibility = View.GONE
                             ll_no_chat_room.visibility = View.VISIBLE
                         }
-                        tv_recycle_view_title.visibility = View.VISIBLE
 
                     }
                 })

@@ -103,6 +103,10 @@ class FragmentCreateEvent_step2 : BaseFragment() {
     private fun init(){
         act = getMContext().get() as CreateEventActivity
 
+        if(act.isEditMode){
+            tv_event_open.visibility = View.GONE
+            ll_no_review.visibility = View.GONE
+        }
         ed_event_location.setOnClickListener(onClick)
         tv_fix_location.setOnClickListener(onClick)
         tv_next_step.setOnClickListener(onClick)
@@ -119,6 +123,9 @@ class FragmentCreateEvent_step2 : BaseFragment() {
                 hasCost = true
                 checkNextStep()
             }
+            if(it.toString().toInt() >= 1000000){
+                ed_event_budget.setText("999999")
+            }
         }
         ed_event_users_limit.addTextChangedListener {
             if(it!!.isNotEmpty()){
@@ -130,6 +137,19 @@ class FragmentCreateEvent_step2 : BaseFragment() {
             if(it!!.isNotEmpty()){
                 hasReward = true
                 checkNextStep()
+            }
+        }
+
+        approved_switch.setOnCheckedChangeListener { compoundButton, b ->
+            Log.e("Peter","approved_switch   $b")
+            if(b){
+                Log.e("Peter","approved_switch   0")
+
+                act.dataBody.is_need_approved = "0"
+            } else {
+                Log.e("Peter","approved_switch   0")
+
+                act.dataBody.is_need_approved = "1"
             }
         }
 
@@ -153,6 +173,9 @@ class FragmentCreateEvent_step2 : BaseFragment() {
                 (getMContext().get() as CreateEventActivity).dataBody.budget = ed_event_budget.text.toString()
 //                (getMContext().get() as CreateEventActivity).dataBody.award_count = ed_award_count.text.toString()
                 (getMContext().get() as CreateEventActivity).dataBody.award_count = "1"
+
+                Log.e("Peter","approved_switch in  ${act.dataBody.is_need_approved}")
+
             }
 
             R.id.tv_fix_location, R.id.ed_event_location -> {

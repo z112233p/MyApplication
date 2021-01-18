@@ -12,8 +12,12 @@ import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.EventDetailActivity
 import com.illa.joliveapp.adapter.Adapter_Event_Review
 import com.illa.joliveapp.datamodle.event.review.User
+import com.illa.joliveapp.datamodle.event.review_cancel.PostReviewCancel
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.dialog.DialogChooseGender
+import com.illa.joliveapp.dialog.DialogReviewInformation
 import com.illa.joliveapp.tools.IntentHelper
+import com.illa.joliveapp.tools.Tools
 import com.illa.joliveapp.viewmodle.EventDetailActivityVM
 import kotlinx.android.synthetic.main.fragment_event_review.*
 
@@ -45,6 +49,12 @@ class FragmentEventReview : BaseFragment(){
 
         act.hideEventStatusLayout()
         act.hideMenu()
+        act.showInformationIcon()
+        act.setInformationClick(View.OnClickListener {
+            val dialog = getMContext().get()?.let { it1 -> DialogReviewInformation(it1) }
+            dialog?.show()
+        })
+
 
         setTitle("參加者名單")
 //        eventID = arguments?.get("eventID").toString()
@@ -65,6 +75,19 @@ class FragmentEventReview : BaseFragment(){
 
             override fun omAvatarClick(label: String) {
                 getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it, label, 0) }
+            }
+
+            override fun onLongClick(id: Int) {
+                val builder: AlertDialog.Builder = AlertDialog.Builder(getMContext().get())
+                builder.setMessage("確認要取消他的活動參與資格嗎？")
+                builder.setPositiveButton("確定") {
+                        p0, p1 -> eventDetailActVM.cancelReview(PostReviewCancel(id.toString(), eventID))
+                }
+                builder.setNegativeButton("再想想") {
+                        p0, p1 -> Log.e("Peter","dialog cancel")
+                }
+                val dialog = builder.create()
+                dialog.show()
             }
 
         })
@@ -91,6 +114,11 @@ class FragmentEventReview : BaseFragment(){
             override fun omAvatarClick(label: String) {
                 getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it, label) }
             }
+
+            override fun onLongClick(id: Int) {
+                Log.e("Peter","Adapter_Event_Review onLongClick")
+
+            }
         })
     }
 
@@ -100,9 +128,9 @@ class FragmentEventReview : BaseFragment(){
             memberHasChecked.clear()
             memberNotCheck.clear()
             it.data.users.forEach {
-                if(it.status == 0 ){
+                if(it.status == 0){
                     memberNotCheck.add(it)
-                } else if(it.status != 9){
+                } else if(it.status == 1 || it.status == 9){
                     memberHasChecked.add(it)
                 }
             }
@@ -111,5 +139,15 @@ class FragmentEventReview : BaseFragment(){
             adapterNotCheck.setData(memberNotCheck, it.data.event.start_time)
         })
 
+        eventDetailActVM.getErrorMsg().observe(viewLifecycleOwner, Observer {
+            Tools.toast(getMContext().get(),it)
+        })
+
+        eventDetailActVM.getReviewCancelResponse().observe(viewLifecycleOwner, Observer {
+            Log.e("getReviewCancelResponse","review  ")
+
+            eventDetailActVM.getReviewList(eventID)
+
+        })
     }
 }

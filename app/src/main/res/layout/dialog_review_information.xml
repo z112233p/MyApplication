@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:background="@drawable/bg_radius20_83"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_female"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:foreground="@drawable/ripple_gray_color"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="說明"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_male"/>
+
+    <TextView
+        android:id="@+id/tv_male"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/ripple_gray_color"
+        android:layout_marginTop="15dp"
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:gravity="left"
+        android:textColor="@color/white"
+        android:text="👉  點擊頭像，可以查看該用戶個人檔案。\n\n👉  需審核類型的活動，僅有主揪能看到所有的報名者名單，在『待審核名單中』自行挑選適合的報名者，給予通過審核，該用戶即獲得出席活動資格。\n\n👉  主揪必須在『活動開始前』完成審核。\n\n👉  在『活動成員』區塊，代表是可以出席活動的報名者。\n\n👉  所有報名通過的使用者，可在聊天室功能裡面，與其他參與者互動。\n\n👉  主揪在活動開始前，擁有取消審核通過的權利。操作方式：長壓該行，會跳出對應的取消訊息。"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_female"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

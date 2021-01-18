@@ -58,7 +58,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-
+        <TextView
+            android:id="@+id/tv_chat_room_delete_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@color/colorGray43"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="@color/colorYellowD1"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -71,6 +79,7 @@
             android:background="@color/colorMainBackground"
             android:layout_height="match_parent"
             app:textAutoLink="all"/>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_click_to_bottom"
@@ -257,7 +266,7 @@
         </LinearLayout>
         <FrameLayout
             android:id="@+id/fl_audio_layout"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -271,7 +280,7 @@
                 android:layout_marginEnd="5dp" />
             <Button
                 android:id="@+id/btn_start_record"
-                android:text="START"
+                android:text="開始"
                 android:layout_margin="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"/>
@@ -285,7 +294,7 @@
                 android:text="00:00"/>
             <Button
                 android:id="@+id/btn_stop_record"
-                android:text="STOP"
+                android:text="結束"
                 android:layout_margin="25dp"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"

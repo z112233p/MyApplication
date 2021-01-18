@@ -35,5 +35,7 @@ data class Data(
     val updated_at: String,
     val user_id: Int,
     val users_limit: Int,
-    val vip: Any
+    val vip: Any,
+    val is_need_approved: Int,
+    val is_full_join: Int
 )

@@ -72,6 +72,8 @@ class ChatRoomActivity : AppCompatActivity(),
     private var updateOption: Boolean = true
     private var latest: Date? = null
     private var customDateFormat: SimpleDateFormat = SimpleDateFormat("MM月dd日 E")
+    private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
     private lateinit var dialog :DialogChatRoomMenu
     private lateinit var optionLayout: LinearLayout
     private lateinit var animLayout: MenuItemLayout3
@@ -100,6 +102,8 @@ class ChatRoomActivity : AppCompatActivity(),
     private lateinit var handler: Handler
     private lateinit var timerTask: TimerTask
     private lateinit var timer: Timer
+
+    private var memberMap: HashMap<String, String> = HashMap()
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -317,7 +321,6 @@ class ChatRoomActivity : AppCompatActivity(),
         getIntentData()
         init()
         initObserve()
-        chatRoomActVM.getChatHistory(rId)
         if(!TextUtils.isEmpty(eventId)){
             chatRoomActVM.getEventDetailById(eventId)
         }
@@ -781,6 +784,18 @@ class ChatRoomActivity : AppCompatActivity(),
 
     private fun initObserve(){
         chatRoomActVM.getEventDetailData().observe(this, Observer {
+            chatRoomActVM.getChatHistory(rId)
+
+
+            val rightNow = Calendar.getInstance()
+            rightNow.time = formatter.parse(it.data.start_time)
+            rightNow.add(Calendar.DAY_OF_YEAR, 4);
+            val deleteDate = formatter.format(rightNow.time)
+            tv_chat_room_delete_time.text = "\uD83D\uDCE2 本活動聊天室將於 $deleteDate 關閉"//deleteDate
+
+            it.data.joins.forEach {
+                memberMap[it.label] = it.nickname
+            }
             Log.e("Peter","getEventDetailData INCHAT  $it")
             eventDataLayout.setData(it)
             eventLabel = it.data.label
@@ -805,6 +820,7 @@ class ChatRoomActivity : AppCompatActivity(),
 
             }
             dataList.clear()
+
             list.forEach { it ->
                 if(!TextUtils.isEmpty(it.u.name)){
                     val data = Message()
@@ -832,6 +848,20 @@ class ChatRoomActivity : AppCompatActivity(),
                         it.file.type?.let { it1 -> data.setFileType(it1) }
                     }
                     dataList.add(0 ,data)
+                } else if(it.t == "au" && !TextUtils.isEmpty(memberMap[it.msg]) && it.msg != "null"){
+                    val data = Message()
+
+                    data.setIsSystemMessage(true)
+                    data.text = memberMap[it.msg].toString()+"加入聊天室囉～"
+                    dataList.add(0 ,data)
+
+                } else if(it.t == "ru" && !TextUtils.isEmpty(it.msg) && it.msg != "null"){
+//                    val data = Message()
+//
+//                    data.setIsSystemMessage(true)
+//                    data.text = memberMap[it.msg].toString()+"離開聊天室"
+//                    dataList.add(0 ,data)
+
                 }
             }
             if (updateOption){

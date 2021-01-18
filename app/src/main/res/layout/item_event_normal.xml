@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,15 @@
     android:background="@color/transparent"
     android:layout_marginEnd="20dp"
     android:layout_width="160dp"
+    android:layout_height="220dp">
+
+<androidx.cardview.widget.CardView
+    android:foreground="@drawable/ripple_gray_color"
+    android:background="@color/transparent"
+    android:layout_marginEnd="20dp"
+    android:layout_width="160dp"
     android:layout_height="209dp"
+    android:layout_gravity="bottom"
     app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="15dp"
     app:cardElevation="0dp">
@@ -138,3 +146,11 @@
 
 </androidx.cardview.widget.CardView>
 
+    <ImageView
+        android:id="@+id/iv_event_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="5dp"
+        android:layout_gravity="end"
+        android:src="@mipmap/ic_event_full"/>
+</FrameLayout>

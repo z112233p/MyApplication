@@ -18,7 +18,9 @@ import com.illa.joliveapp.datamodle.event.index.EventIndex
 import com.illa.joliveapp.datamodle.event.list.TypeLists
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.event.review.EventReview
+import com.illa.joliveapp.datamodle.event.review_cancel.PostReviewCancel
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody
 import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
@@ -234,6 +236,14 @@ interface ApiService {
     //Delete Firebase Id
     @POST("fcm/logout ")
     fun deleteFcmToken(@Body dataBody: SetFCM?):Observable<String>
+
+    //Cancel Review
+    @POST("event/cancel_review")
+    fun cancelReview(@Body dataBody: PostReviewCancel?):Observable<String>
+
+    //Set Full Join
+    @POST("event/full_join/{eventId}")
+    fun setFullJoin(@Path ("eventId") eventId: String, @Body dataBody: SetFullJoinDataBody?): Observable<String>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

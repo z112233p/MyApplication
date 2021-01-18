@@ -12,6 +12,7 @@ import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.event.review.User
 import com.illa.joliveapp.tools.ImgHelper
+import com.illa.joliveapp.tools.PrefHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,6 +34,7 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
     interface OnItemClickListener {
         fun onItemClick(view: View?, status: Int, userId: Int)
         fun omAvatarClick(label: String)
+        fun onLongClick(id: Int)
     }
 
     fun setOnItemClickListener(listener: Adapter_Event_Review.OnItemClickListener) {
@@ -122,6 +124,14 @@ class Adapter_Event_Review() :RecyclerView.Adapter<Adapter_Event_Review.ViewHold
 
         holder.ivProfilePhoto.setOnClickListener {
             mOnItemClickListener?.omAvatarClick(data.label)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            if(PrefHelper.chatLable != data.label){
+                mOnItemClickListener?.onLongClick(data.id)
+
+            }
+            true
         }
 
     }

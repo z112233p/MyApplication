@@ -226,6 +226,7 @@
                 android:id="@+id/ed_event_budget"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:digits="0123456789"
                 android:inputType="phone"
                 android:gravity="center"
                 android:textStyle="normal"
@@ -286,6 +287,59 @@
                 android:background="@drawable/bg_editview_search"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_no_review"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ll_event_cost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_blue_fire"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="7dp"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingExtra="6sp"
+                android:text="不需審核" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"/>
+
+            <Switch
+                android:id="@+id/approved_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:track="@drawable/bg_chat_message_main"
+                android:theme="@style/SCBSwitch"
+                app:layout_constraintHorizontal_bias="1"
+                android:checked="false"
+                android:visibility="visible"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_event_open"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/ll_no_review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/colorYellowD1"
+            android:paddingTop="5dp"
+            android:text="* 活動建立後，無法修改『不需審核』設定" />
 
         <TextView
             android:id="@+id/tv_next_step"
