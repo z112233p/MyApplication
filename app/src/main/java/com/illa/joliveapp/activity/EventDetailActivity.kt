@@ -140,7 +140,7 @@ class EventDetailActivity : AppCompatActivity() {
                 Log.e("Peter","getJoinEventResponse IN  $it")
 
                 Tools.toast(this, "報名成功")
-                dealEventStatus(0.0, newDate.toLong())
+//                dealEventStatus(0.0, newDate.toLong(), 0)
 
             }
         })
@@ -152,7 +152,7 @@ class EventDetailActivity : AppCompatActivity() {
                 Log.e("Peter","getCancelJoinEventResponse IN  $it")
 
                 Tools.toast(this, "已取消報名")
-               dealEventStatus(1.0, newDate.toLong())
+//               dealEventStatus(1.0, newDate.toLong(), 0)
             }
         })
 
@@ -162,7 +162,7 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    fun dealEventStatus(joinType: Any?, newDate: Long){
+    fun dealEventStatus(joinType: Any?, newDate: Long, isFullJoin: Int){
         Log.e("Peter","dealEventStatus $joinType")
 
         this.newDate = newDate
@@ -190,6 +190,12 @@ class EventDetailActivity : AppCompatActivity() {
                     tv_event_cancel_btn.visibility = View.GONE
                     tv_event_join_btn.visibility = View.GONE
 
+                } else if(isFullJoin == 1){
+                    ll_event_status.visibility = View.VISIBLE
+                    tv_event_status.text = getString(R.string.event_join_full)
+                    tv_event_status.visibility = View.VISIBLE
+                    tv_event_cancel_btn.visibility = View.GONE
+                    tv_event_join_btn.visibility = View.GONE
                 } else {
                     ll_event_status.visibility = View.VISIBLE
                     tv_event_cancel_btn.visibility = View.VISIBLE

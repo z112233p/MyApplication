@@ -225,7 +225,7 @@ class FragmentEventDetailV2 : BaseFragment() {
 
             Log.e("Peter"," getEventDetailV2  diffTime !  $diffDay    $diffHour   $diffMinute")
 
-            act.dealEventStatus(eventDetailData.join_type, newDate)
+            act.dealEventStatus(eventDetailData.join_type, newDate, eventDetailData.is_full_join)
 
             ImgHelper.loadNormalImg(getMContext().get(), BuildConfig.IMAGE_URL+eventDetailData.image, iv_event_photo)
 

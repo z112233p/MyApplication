@@ -319,6 +319,7 @@ class FragmentMyinfo_info : BaseFragment() {
                 iv_gender.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_gender_man))
 
             }
+            iv_gender.visibility = View.VISIBLE
             tv_about_me_data.text = it.user.about
             tv_follow.text = it.user.follows_count.toString()
             tv_fans_count.text = it.user.fans_count.toString()
@@ -339,8 +340,8 @@ class FragmentMyinfo_info : BaseFragment() {
 
             }
             /** 暫時先藏 **/
-            ll_instagram.visibility = View.GONE
-            tv_instagram_disconnect.visibility = View.GONE
+//            ll_instagram.visibility = View.GONE
+//            tv_instagram_disconnect.visibility = View.GONE
 
             ImgHelper.loadNormalImgNoCache(getMContext().get(),BuildConfig.CHATROOM_IMAGE_URL+"dating/"+ it.user.label +".jpg", iv_my_photo)
             imageList.clear()

@@ -6,7 +6,7 @@
     <color name="colorSecondPrimary">#D17512</color>
 
     <color name="colorBlack">#000000</color>
-    <color name="colorGrayAA">#dddddd</color>
+    <color name="colorGrayDD">#dddddd</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorWhiteF8">#f8f8f8</color>
     <color name="colorMainBackground">#171818</color>
@@ -40,6 +40,7 @@
     <color name="colorBlack10">#101010</color>
     <color name="colorBlack2B">#2b2b2b</color>
     <color name="colorGray414040">#414040</color>
+    <color name="colorGrayAA">#aaaaaa</color>
     <color name="test">#FF485050</color>
 
 

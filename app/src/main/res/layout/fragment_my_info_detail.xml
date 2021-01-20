@@ -130,6 +130,7 @@
             android:id="@+id/iv_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="2dp"
             android:src="@mipmap/ic_gender_man"/>
         <TextView
@@ -443,7 +444,6 @@ importance and wonderful aspects of life …more"
         android:textSize="16sp"
         android:textColor="@color/colorYellowD1"
         android:lineSpacingExtra="1sp"
-        android:visibility="gone"
         android:text="Instagram"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

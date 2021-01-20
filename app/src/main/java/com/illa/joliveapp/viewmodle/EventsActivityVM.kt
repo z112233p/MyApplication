@@ -18,6 +18,7 @@ import com.illa.joliveapp.datamodle.event.index.EventIndex
 import com.illa.joliveapp.datamodle.event.list.TypeLists
 import com.illa.joliveapp.datamodle.event.review.EventReview
 import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
+import com.illa.joliveapp.datamodle.jomie.Jomie
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.network.ApiMethods
 import com.illa.joliveapp.tools.SingleLiveEvent
@@ -41,6 +42,7 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     private val chatRoomList: MutableLiveData<ChatRoomList> = MutableLiveData<ChatRoomList>()
     private val chatRoomToken: MutableLiveData<ChatRoomToken> = MutableLiveData<ChatRoomToken>()
     private val notice: MutableLiveData<Notice> = MutableLiveData<Notice>()
+    private val jomie: MutableLiveData<Jomie> = MutableLiveData<Jomie>()
 
     private val progressStatus: SingleLiveEvent<Boolean> = SingleLiveEvent<Boolean>()
 
@@ -80,6 +82,9 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
     }
     fun getNoticeData(): LiveData<Notice> {
         return notice
+    }
+    fun getJomieData(): LiveData<Jomie> {
+        return jomie
     }
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
@@ -519,5 +524,32 @@ class EventsActivityVM (application: Application) : AndroidViewModel(application
 
         }
         ApiMethods.getNotice(noticeObserver)
+    }
+
+    fun getJomie(){
+        val jomieObserver: Observer<Jomie> = object : Observer<Jomie>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+
+                Log.e("Peter2", "getJomie onError:  $e")
+
+            }
+
+            override fun onNext(t: Jomie) {
+                Log.e("Peter2", "getJomie onNext:  $t")
+
+                jomie.value = t
+            }
+
+        }
+        ApiMethods.getJomie(jomieObserver)
     }
 }

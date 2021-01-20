@@ -11,10 +11,12 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.Adapter_Event_Type_Main_Page
 import com.illa.joliveapp.adapter.Adapter_Events
+import com.illa.joliveapp.adapter.Adapter_Jomie
 import com.illa.joliveapp.adapter.CircleViewPager
 import com.illa.joliveapp.controller.BannerController
 import com.illa.joliveapp.dialog.DialogChooseCountry
@@ -40,6 +42,8 @@ class FragmentMain : BaseFragment() {
 
     private lateinit var eventTypeAdapter: Adapter_Event_Type_Main_Page
     private lateinit var eventCategoryList: ArrayList<String>
+
+    private lateinit var jomieAdapter: Adapter_Jomie
 
     private lateinit var ivChooseCountry: ImageView
     private lateinit var ivCreateEvent: ImageView
@@ -119,7 +123,7 @@ class FragmentMain : BaseFragment() {
         eventsActivityVM.getEventsApi(null, null)
         eventsActivityVM.getEventCategory()
         eventsActivityVM.getEventIndex()
-
+        eventsActivityVM.getJomie()
     }
 
     fun init(){
@@ -161,7 +165,8 @@ class FragmentMain : BaseFragment() {
         eventTypeAdapter = Adapter_Event_Type_Main_Page(getMContext().get())
         comingEventAdapter = Adapter_Events(getMContext().get(), 1, true)
         mayLikeEventAdapter = Adapter_Events(getMContext().get(), 2, true)
-        this.hotEventAdapter = Adapter_Events(getMContext().get(), 2, true)
+        hotEventAdapter = Adapter_Events(getMContext().get(), 2, true)
+        jomieAdapter = Adapter_Jomie(getMContext().get())
 
         eventTypeAdapter.setOnItemClickListener(object :Adapter_Event_Type_Main_Page.OnItemClickListener{
             override fun onItemClick(Id: String, name: String) {
@@ -171,11 +176,21 @@ class FragmentMain : BaseFragment() {
 
         })
 
+        jomieAdapter.setOnItemClickListener(object : Adapter_Jomie.OnItemClickListener{
+            override fun onItemClick(label: String) {
+                getMContext().get()?.let { IntentHelper.gotoMyInfoActivity(it,label) }
+            }
+
+        })
+
 
         val layoutManager =  GridLayoutManager(getMContext().get(), 2)//, LinearLayoutManager.HORIZONTAL, false)
         rv_event_type.layoutManager = layoutManager
         rv_event_type.adapter = eventTypeAdapter
 
+        val layoutManagerNew =  LinearLayoutManager(getMContext().get(), LinearLayoutManager.HORIZONTAL, false)
+        rv_new_jomie.layoutManager = layoutManagerNew
+        rv_new_jomie.adapter = jomieAdapter
     }
 
     private fun initHotEvents(){
@@ -264,7 +279,7 @@ class FragmentMain : BaseFragment() {
 
     private fun initObserve(){
         eventsActivityVM.getEventIndexData().observe(viewLifecycleOwner, Observer {
-            Log.e("Peter","getEventIndexData popular Size   ")
+            Log.e("Peter","initObserve   getEventIndexData")
             Collections.shuffle(it.data.popular)
             hotEventAdapter.setData(it.data.popular)
             comingEventAdapter.setData(it.data.incoming )
@@ -273,6 +288,8 @@ class FragmentMain : BaseFragment() {
         })
 
         eventsActivityVM.getEventCategoryData().observe(viewLifecycleOwner, Observer {
+            Log.e("Peter","initObserve   getEventCategoryData")
+
             eventCategoryList.clear()
             it.data.forEach {
                 Log.e("Peter","getEventCategory22  eventCategoryList    $eventCategoryList")
@@ -280,6 +297,12 @@ class FragmentMain : BaseFragment() {
                 eventCategoryList.add(it.i18n)
             }
             eventTypeAdapter.setData(it.data)
+        })
+
+        eventsActivityVM.getJomieData().observe(viewLifecycleOwner, Observer {
+            Log.e("Peter","initObserve   getJomieData")
+
+            jomieAdapter.setData(it.data)
         })
     }
 

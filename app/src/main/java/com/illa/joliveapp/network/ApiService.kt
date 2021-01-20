@@ -24,6 +24,7 @@ import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody
 import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.datamodle.follows.Follows
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
+import com.illa.joliveapp.datamodle.jomie.Jomie
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate
 import com.illa.joliveapp.datamodle.profile.MyInfo
@@ -244,6 +245,10 @@ interface ApiService {
     //Set Full Join
     @POST("event/full_join/{eventId}")
     fun setFullJoin(@Path ("eventId") eventId: String, @Body dataBody: SetFullJoinDataBody?): Observable<String>
+
+    //Get Jomie
+    @GET("jomie")
+    fun getJomie(): Observable<Jomie>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

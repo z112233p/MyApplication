@@ -20,7 +20,7 @@ class DialogIGLogin(context: Context, themeResId: Int) : Dialog(context, themeRe
     private lateinit var webView: WebView
     private val request_url = "https://api.instagram.com/oauth/authorize" +
             "?app_id=778792922655851" +
-            "&redirect_uri=https://dev.illa.me/ig_redirect" +
+            "&redirect_uri=https://api.illa.me/ig_redirect" +
             "&scope=" + "user_profile,user_media" +
             "&response_type=code"
 

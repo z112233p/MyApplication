@@ -114,7 +114,7 @@ class FragmentPreviewEvent : BaseFragment() {
             ImgHelper.loadNormalImg(getMContext().get(),
                 BuildConfig.IMAGE_URL+act.intentDataBody.data.image, iv_event_photo)
         }
-        if(act.intentDataBody.data.is_need_approved == 0){
+        if(act.dataBody.is_need_approved == "0"){
             iv_event_status.visibility = View.VISIBLE
             iv_event_status.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_event_come))
 

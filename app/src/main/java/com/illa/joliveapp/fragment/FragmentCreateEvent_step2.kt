@@ -122,10 +122,11 @@ class FragmentCreateEvent_step2 : BaseFragment() {
             if(it!!.isNotEmpty()){
                 hasCost = true
                 checkNextStep()
+                if(it.toString().toInt() >= 1000000){
+                    ed_event_budget.setText("999999")
+                }
             }
-            if(it.toString().toInt() >= 1000000){
-                ed_event_budget.setText("999999")
-            }
+
         }
         ed_event_users_limit.addTextChangedListener {
             if(it!!.isNotEmpty()){

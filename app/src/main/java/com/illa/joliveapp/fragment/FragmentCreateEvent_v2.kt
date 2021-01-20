@@ -165,6 +165,11 @@ class FragmentCreateEvent_v2 : BaseFragment() {
         iv_upload_photo.setOnClickListener(onClick)
         tv_next_step.setOnClickListener(onClick)
         tv_next_step.isClickable = false
+
+        if(act.isEditMode){
+            iv_upload_photo_icon.visibility = View.GONE
+
+        }
     }
 
 

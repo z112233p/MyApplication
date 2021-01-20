@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.android.billingclient.api.*
 import com.illa.joliveapp.R
 import com.illa.joliveapp.adapter.AdapterPager
 import com.illa.joliveapp.fragment.*
@@ -18,9 +19,10 @@ import com.illa.joliveapp.tools.ProgressDialogController
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import kotlinx.android.synthetic.main.activity_myinfo.*
 import kotlinx.android.synthetic.main.activity_myinfo.toolbar
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MyInfoActivity : AppCompatActivity() {
+class MyInfoActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     val profileActivityVM: ProfileActivityVM by viewModel()
 
     private var f1 = FragmentMyinfo_info()
@@ -32,6 +34,10 @@ class MyInfoActivity : AppCompatActivity() {
     private var currentPosition = 0
     var userLabel = ""
 
+    private lateinit var purchasesUpdateListener: PurchasesUpdatedListener
+
+    private lateinit var billingClient: BillingClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,7 @@ class MyInfoActivity : AppCompatActivity() {
         title = ""
         getIntentData()
         init()
+        connectPlayStore()
         initObserve()
         toolbar.setNavigationOnClickListener {
             onBackPressed()
@@ -50,6 +57,57 @@ class MyInfoActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         ProgressDialogController.setContext(this)
+    }
+
+    private fun connectPlayStore(){
+        purchasesUpdateListener =
+        PurchasesUpdatedListener { billingResult, purchases ->
+            // To be implemented in a later section.
+        }
+        billingClient = BillingClient.newBuilder(this)
+            .setListener(purchasesUpdateListener)
+            .enablePendingPurchases()
+            .build()
+
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e("Peter","billingClient.startConnection   OK")//product_black_chocolate_90
+                    launch(Dispatchers.Main) {
+                        querySkuDetails()
+                    }
+                }
+            }
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
+    }
+
+    suspend fun querySkuDetails() {
+        val skuList = ArrayList<String>()
+        skuList.add("product_black_chocolate_90")
+        val params = SkuDetailsParams.newBuilder()
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+        withContext(Dispatchers.IO) {
+            billingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
+                // Process the result.
+                Log.e("Peter","billingClient.querySkuDetails   OK   billingResult   $billingResult.")
+                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.price}")
+                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.description}")
+                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.title}")
+                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)}")
+
+                val flowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetailsList?.get(0)!!)
+                    .build()
+
+//                val responseCode = billingClient.launchBillingFlow(this@MyInfoActivity, flowParams).responseCode
+
+            }
+        }
     }
 
     private fun getIntentData(){
