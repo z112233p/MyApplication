@@ -107,6 +107,13 @@
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:src="@mipmap/ic_create_event_v2"/>
+                    <TextView
+                        android:id="@+id/tv_create_event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#E98734"
+                        android:text="開始揪團"/>
 
                 </LinearLayout>
                 </LinearLayout>

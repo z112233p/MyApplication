@@ -84,10 +84,10 @@ class FragmentMyinfo_info : BaseFragment() {
     private fun init(){
         imageList = ArrayList()
 
-        imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
-        imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
-        imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
-        imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
+//        imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
+//        imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
+//        imageList.add("https://dev.illa.me/images/f67b208659af9a031e9f6c6091e07557.jpg")
+//        imageList.add("https://dev.illa.me/images/39f2a851b051e1b6a7c5feb9258cc8b4.png")
 //        tv_follow_btn.setOnClickListener(onClick)
         tv_follow_btn
 
@@ -269,11 +269,14 @@ class FragmentMyinfo_info : BaseFragment() {
 
             }
 
-            ImgHelper.loadNormalImg(getMContext().get(),BuildConfig.IMAGE_URL+ it.user.photos!![0].url, iv_my_photo)
-            imageList.clear()
-            it.user.photos!!.forEach {
-                imageList.add(BuildConfig.IMAGE_URL+ it.url)
+            if(it.user.photos?.isNotEmpty()!!){
+                ImgHelper.loadNormalImg(getMContext().get(),BuildConfig.IMAGE_URL+ it.user.photos!![0].url, iv_my_photo)
+                imageList.clear()
+                it.user.photos!!.forEach {
+                    imageList.add(BuildConfig.IMAGE_URL+ it.url)
+                }
             }
+
             Log.e("Peter","FRAG OB CircleViewPager   $imageList")
             initUserPhoto()
 

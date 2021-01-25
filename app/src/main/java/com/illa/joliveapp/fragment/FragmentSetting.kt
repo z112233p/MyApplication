@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.tools.IntentHelper
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.item_setting.view.*
 class FragmentSetting : BaseFragment() {
 
     val mainActVM: MainActivityVM by activityViewModels()
-
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_setting
@@ -71,6 +71,7 @@ class FragmentSetting : BaseFragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initMenuButtons(){
         cl_push.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_setting_push))
         cl_push.tv_title.text = getString(R.string.notice_push)
@@ -104,7 +105,15 @@ class FragmentSetting : BaseFragment() {
 
         cl_facebook_website.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_facebook_website))
         cl_facebook_website.tv_title.text = getString(R.string.facebook_website)
-        cl_facebook_website.v_divider_line.visibility = View.INVISIBLE
+
+        cl_app_update.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_app_update))
+        cl_app_update.tv_title.text = "Ver${BuildConfig.VERSION_NAME}"
+        cl_app_update.tv_value.text = "更新"
+        cl_app_update.tv_value.background = getMContext().get()?.resources?.getDrawable(R.drawable.bg_clickable_btn)
+
+        cl_app_update.v_divider_line.visibility = View.INVISIBLE
+
+
     }
 
 

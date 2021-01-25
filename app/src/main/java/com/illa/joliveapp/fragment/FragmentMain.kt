@@ -22,7 +22,10 @@ import com.illa.joliveapp.controller.BannerController
 import com.illa.joliveapp.dialog.DialogChooseCountry
 import com.illa.joliveapp.tools.IntentHelper
 import com.illa.joliveapp.viewmodle.EventsActivityVM
+import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.iv_choose_country
+import kotlinx.android.synthetic.main.fragment_main.iv_create_event
 import kotlinx.android.synthetic.main.layout_input_rv.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -48,6 +51,7 @@ class FragmentMain : BaseFragment() {
     private lateinit var ivChooseCountry: ImageView
     private lateinit var ivCreateEvent: ImageView
     private lateinit var tvChoseCountry: TextView
+    private lateinit var tvCreateEvent: TextView
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_main
@@ -61,6 +65,8 @@ class FragmentMain : BaseFragment() {
         ivChooseCountry = requireActivity().findViewById(R.id.iv_choose_country)
         ivCreateEvent = requireActivity().findViewById(R.id.iv_create_event)
         tvChoseCountry = requireActivity().findViewById(R.id.tv_chose_country)
+        tvCreateEvent = requireActivity().findViewById(R.id.tv_create_event)
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -95,6 +101,9 @@ class FragmentMain : BaseFragment() {
             getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
         }
         iv_create_event.setOnClickListener {
+            getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
+        }
+        tvCreateEvent.setOnClickListener {
             getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
         }
     }
@@ -284,7 +293,7 @@ class FragmentMain : BaseFragment() {
             hotEventAdapter.setData(it.data.popular)
             comingEventAdapter.setData(it.data.incoming )
             mayLikeEventAdapter.setData(it.data.latest)
-
+            eventTypeAdapter.setData(it.data.categorys)
         })
 
         eventsActivityVM.getEventCategoryData().observe(viewLifecycleOwner, Observer {
@@ -296,7 +305,7 @@ class FragmentMain : BaseFragment() {
 
                 eventCategoryList.add(it.i18n)
             }
-            eventTypeAdapter.setData(it.data)
+//            eventTypeAdapter.setData(it.data)
         })
 
         eventsActivityVM.getJomieData().observe(viewLifecycleOwner, Observer {

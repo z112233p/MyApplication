@@ -79,6 +79,8 @@
     <string name="female">女</string>
     <string name="male">男</string>
     <string name="no_join_event">目前沒有參與任何活動</string>
+    <string name="no_event">目前沒有任何活動紀錄</string>
+
     <string name="event_incoming">活動即將開始</string>
     <string name="sign_up_deadline">報名已截止</string>
     <string name="invite_friend">邀請朋友來參加</string>
@@ -98,5 +100,6 @@
  3.請保持社交禮儀，並留意個人安全。
 </string>
     <string name="event_join_full">報名人數額滿</string>
+    <string name="no_notice">目前沒有任何訊息</string>
 
 </resources>

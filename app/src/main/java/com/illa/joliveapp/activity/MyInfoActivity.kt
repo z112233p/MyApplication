@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_myinfo.toolbar
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MyInfoActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+class MyInfoActivity : AppCompatActivity(), PurchasesUpdatedListener,CoroutineScope by MainScope() {
     val profileActivityVM: ProfileActivityVM by viewModel()
 
     private var f1 = FragmentMyinfo_info()
@@ -63,9 +63,12 @@ class MyInfoActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         purchasesUpdateListener =
         PurchasesUpdatedListener { billingResult, purchases ->
             // To be implemented in a later section.
+            Log.e("Peter","onPurchasesUpdated2 IN   ${billingResult.debugMessage}")
+            Log.e("Peter","onPurchasesUpdated2 IN   ${billingResult.responseCode}")
+
         }
         billingClient = BillingClient.newBuilder(this)
-            .setListener(purchasesUpdateListener)
+            .setListener(this)
             .enablePendingPurchases()
             .build()
 
@@ -89,25 +92,67 @@ class MyInfoActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     suspend fun querySkuDetails() {
         val skuList = ArrayList<String>()
         skuList.add("product_black_chocolate_90")
+        skuList.add("test1")
+
         val params = SkuDetailsParams.newBuilder()
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
         withContext(Dispatchers.IO) {
             billingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
                 // Process the result.
-                Log.e("Peter","billingClient.querySkuDetails   OK   billingResult   $billingResult.")
-                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.price}")
-                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.description}")
-                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.title}")
-                Log.e("Peter","billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)}")
+                Log.e(
+                    "Peter",
+                    "billingClient.querySkuDetails   OK   billingResult   $billingResult."
+                )
+                Log.e(
+                    "Peter",
+                    "billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.price}"
+                )
+                Log.e(
+                    "Peter",
+                    "billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.description}"
+                )
+                Log.e(
+                    "Peter",
+                    "billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(0)?.title}"
+                )
+                Log.e(
+                    "Peter",
+                    "billingClient.querySkuDetails   OK   skuDetailsList   ${skuDetailsList?.get(1)}"
+                )
 
                 val flowParams = BillingFlowParams.newBuilder()
                     .setSkuDetails(skuDetailsList?.get(0)!!)
                     .build()
 
 //                val responseCode = billingClient.launchBillingFlow(this@MyInfoActivity, flowParams).responseCode
-
+//                Log.e("Peter","billingClient.querySkuDetails   OK   launchBillingFlow   ${responseCode}")
+                billingClient.queryPurchases("product_black_chocolate_90")
+                queryPurchases()
             }
         }
+    }
+
+    fun queryPurchases() {
+        if (!billingClient.isReady) {
+            return
+        }
+
+        val result = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
+
+        Log.e("Peter","queryPurchases1   ${result.billingResult}")
+        Log.e("Peter","queryPurchases2   ${result.purchasesList}")
+        Log.e("Peter","queryPurchases3   ${result.responseCode}")
+
+
+        if (result == null) {
+            return
+        }
+
+        if (result.purchasesList == null) {
+            return
+        }
+
+//        processPurchases(result.purchasesList!!)
     }
 
     private fun getIntentData(){
@@ -204,6 +249,32 @@ class MyInfoActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 false
             }
             else -> false
+        }
+    }
+
+    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
+        Log.e("Peter","onPurchasesUpdated IN")
+
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+//                handlePurchase(purchase)
+                Log.e("Peter","onPurchasesUpdated OK  ${purchases[0].purchaseToken}")
+                Log.e("Peter","onPurchasesUpdated OK  ${purchases}")
+
+            }
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // Handle an error caused by a user cancelling the purchase flow.
+            Log.e("Peter","onPurchasesUpdated err  ${billingResult.responseCode}")
+            Log.e("Peter","onPurchasesUpdated err  ${billingResult.debugMessage}")
+            Log.e("Peter","onPurchasesUpdated err  ${purchases}")
+
+        } else {
+            // Handle any other error codes.
+            Log.e("Peter","onPurchasesUpdated err  ${billingResult.responseCode}")
+            Log.e("Peter","onPurchasesUpdated err  ${billingResult.debugMessage}")
+            Log.e("Peter","onPurchasesUpdated err  ${purchases}")
+
+
         }
     }
 }

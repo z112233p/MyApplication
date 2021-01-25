@@ -59,6 +59,9 @@ class BannerController (private val context: Context,
     }
 
     fun startSwipe() {
+        if(listSize < 2){
+            return
+        }
         Log.d("SWIPECHECK", "START")
         isAutoPlay = true
         handler.removeCallbacks(runnable!!)
@@ -66,6 +69,9 @@ class BannerController (private val context: Context,
     }
 
     fun stopSwipe() {
+        if(listSize < 2){
+            return
+        }
         Log.d("SWIPECHECK", "STOP")
         if (isAutoPlay) {
             isAutoPlay = false
@@ -74,6 +80,9 @@ class BannerController (private val context: Context,
     }
 
     fun stopLooper() {
+        if(listSize < 2){
+            return
+        }
         handler.removeCallbacks(runnable!!)
         handler.looper.quit()
     }

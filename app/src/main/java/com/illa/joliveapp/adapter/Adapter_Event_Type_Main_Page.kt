@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.illa.joliveapp.R
+import com.illa.joliveapp.datamodle.event.index.Category
 import com.illa.joliveapp.datamodle.event.list.Data
 
 class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Main_Page.ViewHolder>() {
-    private lateinit var dataList: ArrayList<Data>
+    private lateinit var dataList: ArrayList<Category>
     private lateinit var mContext: Context
     private var mOnItemClickListener: OnItemClickListener? = null
     private var currentPosition: Int = -1
@@ -38,7 +39,7 @@ class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Ma
 
     }
 
-    fun setData(dealData: List<Data>) {
+    fun setData(dealData: List<Category>) {
         if (dealData == null || dealData.isEmpty()) {
             return
         }
@@ -51,6 +52,7 @@ class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Ma
         val cell = LayoutInflater.from(mContext).inflate(R.layout.item_event_type_main_page, parent, false)
         val viewHolder = ViewHolder(cell)
         viewHolder.tvEventType = cell.findViewById(R.id.iv_event_type)
+        viewHolder.tvEventCount = cell.findViewById(R.id.tv_event_count)
 //        viewHolder.clMain = cell.findViewById(R.id.cl_main)
 
         return viewHolder
@@ -64,7 +66,7 @@ class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Ma
         if(dataList.size == 0){return}
         val data = dataList[position]
         holder.tvEventType.text = data.i18n
-
+        holder.tvEventCount.text = data.count.toString()
 //        if(position == currentPosition){
 //            holder.tvEventType.background = mContext.resources.getDrawable(R.drawable.bg_event_type_btn_selected)
 ////            holder.tvEventType.setTextColor(mContext.resources.getColor(R.color))
@@ -92,6 +94,8 @@ class Adapter_Event_Type_Main_Page() :RecyclerView.Adapter<Adapter_Event_Type_Ma
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         lateinit var tvEventType: TextView
+        lateinit var tvEventCount: TextView
+
 //        lateinit var clMain: ConstraintLayout
 
     }

@@ -33,7 +33,7 @@ class Adapter_Event_Type() :RecyclerView.Adapter<Adapter_Event_Type.ViewHolder>(
 
     }
 
-    fun setOnItemClickListener(listener: Adapter_Event_Type.OnItemClickListener) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         mOnItemClickListener = listener
 
     }

@@ -218,13 +218,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_official_website"/>
 
+        <include
+            android:id="@+id/cl_app_update"
+            layout="@layout/item_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_facebook_website"/>
+
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="#4DFFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_facebook_website"/>
+            app:layout_constraintTop_toBottomOf="@+id/cl_app_update"/>
 
 
         <LinearLayout
@@ -237,7 +246,7 @@
             android:background="@color/colorMainBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_facebook_website">
+            app:layout_constraintTop_toBottomOf="@+id/cl_app_update">
 
             <View
                 android:layout_width="match_parent"

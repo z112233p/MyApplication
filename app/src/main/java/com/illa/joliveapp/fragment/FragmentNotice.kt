@@ -125,6 +125,11 @@ class FragmentNotice : BaseFragment() {
                 }
             }
             adapter.setData(it.data)
+            ll_no_notice.visibility = View.GONE
+            if(it.data.isEmpty()){
+                ll_no_notice.visibility = View.VISIBLE
+
+            }
         })
 
         mainActVM.getNoticeTemplateData().observe(viewLifecycleOwner, Observer {

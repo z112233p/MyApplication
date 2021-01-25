@@ -12,8 +12,8 @@ android {
     defaultConfig {
         applicationId "com.illa.joliveapp"
         minSdkVersion 23
-        versionCode 4
-        versionName "1.0"
+        versionCode 14
+        versionName "1.0.5"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        buildConfigField "String", 'RESTFUL_URL', '"https://dev.illa.me/api/"'

@@ -145,6 +145,11 @@ class FragmentMyinfo_event : BaseFragment() {
             tv_event_history_count.text = it.data.history.size.toString()
             tv_event_join_count.text = it.data.signing.size.toString()
 
+            ll_no_event.visibility = View.GONE
+
+            if(it.data.processing.isEmpty() && it.data.history.isEmpty() && it.data.signing.isEmpty()){
+                ll_no_event.visibility = View.VISIBLE
+            }
         })
     }
 
