@@ -11,6 +11,10 @@ import androidx.lifecycle.MutableLiveData
 import com.illa.joliveapp.datamodle.event.event_list.EventList
 import com.illa.joliveapp.datamodle.event.my_events.MyEvents
 import com.illa.joliveapp.datamodle.follows.Follows
+import com.illa.joliveapp.datamodle.friend_status.FriendAgree
+import com.illa.joliveapp.datamodle.friend_status.FriendCancel
+import com.illa.joliveapp.datamodle.friend_status.FriendRefuse
+import com.illa.joliveapp.datamodle.friend_status.FriendRequest
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.profile.MyInfo
 import com.illa.joliveapp.datamodle.profile.MyInfoData
@@ -25,6 +29,7 @@ import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse
 import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.illa.joliveapp.datamodle.profile.user_info.UserInfo
+import com.illa.joliveapp.datamodle.wallet.Wallet
 import com.illa.joliveapp.network.ApiMethods
 import com.illa.joliveapp.tools.SingleLiveEvent
 import io.reactivex.Observer
@@ -55,6 +60,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val setIgTokenResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val igDisconnectResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val sortMyPhotoResponse: MutableLiveData<SortMyPhoto> = MutableLiveData<SortMyPhoto>()
+    private val friendResponse: MutableLiveData<String> = MutableLiveData<String>()
+    private val wallet:MutableLiveData<Wallet> = MutableLiveData<Wallet>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -107,7 +114,12 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     fun getSortMyPhotoResponse(): LiveData<SortMyPhoto> {
     return sortMyPhotoResponse
     }
-
+    fun getFriendResponse(): LiveData<String> {
+        return friendResponse
+    }
+    fun getWalletResponse(): LiveData<Wallet> {
+        return wallet
+    }
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
         val getEventsObserver = object : Observer<EventList>{
@@ -548,5 +560,125 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
         }
         ApiMethods.sortMyPhoto(sortMyPhotoObserver, dataBody)
+    }
+
+    fun friendRequest(dataBody: FriendRequest){
+        val friendObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                friendResponse.value = t
+                Log.e("Peter2", "friendRequest  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "friendRequest  onError:  "+e.message)
+            }
+        }
+        ApiMethods.friendRequest(friendObserver, dataBody)
+    }
+
+    fun friendAgree(dataBody: FriendAgree){
+        val friendObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                friendResponse.value = t
+                Log.e("Peter2", "friendAgree  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "friendAgree  onError:  "+e.message)
+            }
+        }
+        ApiMethods.friendAgree(friendObserver, dataBody)
+    }
+
+    fun friendRefuse(dataBody: FriendRefuse){
+        val friendObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                friendResponse.value = t
+                Log.e("Peter2", "friendRefuse  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "friendRefuse  onError:  "+e.message)
+            }
+        }
+        ApiMethods.friendRefuse(friendObserver, dataBody)
+    }
+
+    fun friendCancel(dataBody: FriendCancel){
+        val friendObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                friendResponse.value = t
+                Log.e("Peter2", "friendCancel  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "friendCancel  onError:  "+e.message)
+            }
+        }
+        ApiMethods.friendCancel(friendObserver, dataBody)
+    }
+
+    fun getWallet(){
+        val friendObserver: Observer<Wallet> = object  : Observer<Wallet>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: Wallet) {
+                wallet.value = t
+                Log.e("Peter2", "getWallet  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "getWallet  onError:  "+e.message)
+            }
+        }
+        ApiMethods.getWallet(friendObserver)
     }
 }

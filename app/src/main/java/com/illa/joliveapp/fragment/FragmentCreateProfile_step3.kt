@@ -211,6 +211,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                     myCalendar[Calendar.DAY_OF_MONTH]
                 )
                 picker.updateDate(1990,month,day)
+                picker.datePicker.maxDate = Date().time
                 picker.show()
             }
             R.id.tv_next_step -> {

@@ -31,6 +31,10 @@ import com.illa.joliveapp.datamodle.event.review_member.ReviewMember;
 import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody;
 import com.illa.joliveapp.datamodle.firebase.SetFCM;
 import com.illa.joliveapp.datamodle.follows.Follows;
+import com.illa.joliveapp.datamodle.friend_status.FriendAgree;
+import com.illa.joliveapp.datamodle.friend_status.FriendCancel;
+import com.illa.joliveapp.datamodle.friend_status.FriendRefuse;
+import com.illa.joliveapp.datamodle.friend_status.FriendRequest;
 import com.illa.joliveapp.datamodle.instagram.IgDataBody;
 import com.illa.joliveapp.datamodle.jomie.Jomie;
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice;
@@ -46,6 +50,7 @@ import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse;
 import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo;
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse;
 import com.illa.joliveapp.datamodle.profile.user_info.UserInfo;
+import com.illa.joliveapp.datamodle.wallet.Wallet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -342,5 +347,25 @@ public class ApiMethods {
 
     public static void getJomie(Observer< Jomie > pbObserver ){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getJomie()), pbObserver);
+    }
+
+    public static void friendRequest(Observer< String > pbObserver, FriendRequest dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).friendRequest(dataBody)), pbObserver);
+    }
+
+    public static void friendAgree(Observer< String > pbObserver, FriendAgree dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).friendAgree(dataBody)), pbObserver);
+    }
+
+    public static void friendRefuse(Observer< String > pbObserver, FriendRefuse dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).friendRefuse(dataBody)), pbObserver);
+    }
+
+    public static void friendCancel(Observer< String > pbObserver, FriendCancel dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).friendCancel(dataBody)), pbObserver);
+    }
+
+    public static void getWallet(Observer< Wallet > pbObserver){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getWallet()), pbObserver);
     }
 }

@@ -8,79 +8,6 @@
     android:background="@color/colorMainBackground"
     tools:context=".activity.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingStart="40dp"
-        android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/transparent"
-            android:textColor="@color/colorWhite"
-            android:visibility="gone"
-            android:gravity="center"
-            android:textSize="18sp"/>
-        <com.lijiankun24.shadowlayout.ShadowLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            app:shadowColor="#D2F69F27"
-            app:shadowShape="oval"
-            app:shadowRadius="10dp"
-            app:shadowSide="all">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:src="@mipmap/ic_black_chocolate"/>
-        </com.lijiankun24.shadowlayout.ShadowLayout>
-
-        <TextView
-            android:id="@+id/tv_black_chocolate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center_vertical"
-            android:background="@color/transparent"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            android:text="0"/>
-
-        <com.lijiankun24.shadowlayout.ShadowLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            app:shadowColor="#D2F4F4F3"
-            app:shadowShape="oval"
-            app:shadowRadius="10dp"
-            app:shadowSide="all">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_white_chocolat"/>
-        </com.lijiankun24.shadowlayout.ShadowLayout>
-
-        <TextView
-            android:id="@+id/tv_white_chocolate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center_vertical"
-            android:background="@color/transparent"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            android:text="0"/>
-    </LinearLayout>
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -116,6 +43,83 @@
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="40dp"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/transparent"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="18sp"/>
+        <com.lijiankun24.shadowlayout.ShadowLayout
+            android:id="@+id/sl_black_chocolate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:shadowColor="#D2F69F27"
+            app:shadowShape="oval"
+            app:shadowRadius="10dp"
+            app:shadowSide="all">
+            <ImageView
+                android:id="@+id/iv_black_chocolate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_black_chocolate"/>
+        </com.lijiankun24.shadowlayout.ShadowLayout>
+
+        <TextView
+            android:id="@+id/tv_black_chocolate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical"
+            android:background="@color/transparent"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:text="錢包"/>
+
+        <com.lijiankun24.shadowlayout.ShadowLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:shadowColor="#D2F4F4F3"
+            app:shadowShape="oval"
+            app:shadowRadius="10dp"
+            app:shadowSide="all">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_white_chocolat"/>
+        </com.lijiankun24.shadowlayout.ShadowLayout>
+
+        <TextView
+            android:id="@+id/tv_white_chocolate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical"
+            android:background="@color/transparent"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:text="0"/>
+    </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_my_info"
         android:layout_width="match_parent"

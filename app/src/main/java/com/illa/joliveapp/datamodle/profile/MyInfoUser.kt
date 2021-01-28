@@ -29,4 +29,6 @@ data class MyInfoUser(
     var follows_count: Int = 0,
     var fans_count: Int = 0,
     var is_follow: Boolean = false,
+    var friend_status: Int = 0, 
+    var chat_rid: String = "",
     var interests:ArrayList<MyInfoInterest>? = null)

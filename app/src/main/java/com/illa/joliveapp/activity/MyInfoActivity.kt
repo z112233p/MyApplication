@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -183,6 +184,11 @@ class MyInfoActivity : AppCompatActivity(), PurchasesUpdatedListener,CoroutineSc
         tab_my_info.setupWithViewPager(vp_my_info)
 
 
+        tv_black_chocolate.setOnClickListener {
+            IntentHelper.gotoMyWalletActivity(this)
+            Log.e("Peter","MyInfoActivity  tv_black_chocolate.setOnClickListener")
+
+        }
     }
 
     private fun initObserve(){
@@ -196,6 +202,10 @@ class MyInfoActivity : AppCompatActivity(), PurchasesUpdatedListener,CoroutineSc
         })
     }
 
+    fun setChocolateData(){
+
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         actionItem = menu!!.findItem(R.id.action_edit)
         optionItem = menu.findItem(R.id.action_option)
@@ -205,10 +215,15 @@ class MyInfoActivity : AppCompatActivity(), PurchasesUpdatedListener,CoroutineSc
             actionItem.isVisible = true
             optionItem.isVisible = true
             reportItem.isVisible = false
+            sl_black_chocolate.visibility = View.VISIBLE
+            tv_black_chocolate.visibility = View.VISIBLE
+
         } else {
             actionItem.isVisible = false
             optionItem.isVisible = false
             reportItem.isVisible = true
+            sl_black_chocolate.visibility = View.GONE
+            tv_black_chocolate.visibility = View.GONE
         }
         return true
     }

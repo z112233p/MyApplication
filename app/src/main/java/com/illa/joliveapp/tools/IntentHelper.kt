@@ -169,4 +169,10 @@ object IntentHelper {
         intent.flags =  Intent.FLAG_ACTIVITY_NEW_TASK
         ctx.startActivity(intent)
     }
+
+    fun gotoMyWalletActivity(ctx: Context){
+        val intent = Intent(ctx, MyWalletActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.startActivity(intent)
+    }
 }

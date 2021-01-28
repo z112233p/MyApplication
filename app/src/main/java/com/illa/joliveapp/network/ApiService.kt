@@ -23,6 +23,10 @@ import com.illa.joliveapp.datamodle.event.review_member.ReviewMember
 import com.illa.joliveapp.datamodle.event.set_full_join.SetFullJoinDataBody
 import com.illa.joliveapp.datamodle.firebase.SetFCM
 import com.illa.joliveapp.datamodle.follows.Follows
+import com.illa.joliveapp.datamodle.friend_status.FriendAgree
+import com.illa.joliveapp.datamodle.friend_status.FriendCancel
+import com.illa.joliveapp.datamodle.friend_status.FriendRefuse
+import com.illa.joliveapp.datamodle.friend_status.FriendRequest
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
 import com.illa.joliveapp.datamodle.jomie.Jomie
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
@@ -38,6 +42,7 @@ import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.illa.joliveapp.datamodle.profile.update.UpdateMtInfo
 import com.illa.joliveapp.datamodle.profile.update.UpdateMyInfoResponse
 import com.illa.joliveapp.datamodle.profile.user_info.UserInfo
+import com.illa.joliveapp.datamodle.wallet.Wallet
 import com.illa.joliveapp.tools.PrefHelper
 import io.reactivex.Observable
 import okhttp3.*
@@ -249,6 +254,26 @@ interface ApiService {
     //Get Jomie
     @GET("jomie")
     fun getJomie(): Observable<Jomie>
+
+    //Request Friend
+    @POST("payment/jomie/request")
+    fun friendRequest(@Body dataBody: FriendRequest): Observable<String>
+
+    //Agree Friend
+    @POST("payment/jomie/agree")
+    fun friendAgree(@Body dataBody: FriendAgree): Observable<String>
+
+    //Refuse Friend
+    @POST("payment/jomie/refuse")
+    fun friendRefuse(@Body dataBody: FriendRefuse): Observable<String>
+
+    //Cancel Friend
+    @POST("payment/jomie/cancel")
+    fun friendCancel(@Body dataBody: FriendCancel): Observable<String>
+
+    //Wallet
+    @GET("wallet")
+    fun getWallet():Observable<Wallet>
 
     companion object {
         fun create(addHeader: Boolean): ApiService {
