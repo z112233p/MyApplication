@@ -36,6 +36,7 @@ import com.illa.joliveapp.datamodle.friend_status.FriendCancel;
 import com.illa.joliveapp.datamodle.friend_status.FriendRefuse;
 import com.illa.joliveapp.datamodle.friend_status.FriendRequest;
 import com.illa.joliveapp.datamodle.instagram.IgDataBody;
+import com.illa.joliveapp.datamodle.invitation.InvitationDataBody;
 import com.illa.joliveapp.datamodle.jomie.Jomie;
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice;
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate;
@@ -367,5 +368,9 @@ public class ApiMethods {
 
     public static void getWallet(Observer< Wallet > pbObserver){
         ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).getWallet()), pbObserver);
+    }
+
+    public static void postInvitation(Observer< String > pbObserver, InvitationDataBody dataBody){
+        ApiSubscribe(Objects.requireNonNull(ApiService.Companion.create(true).postInvitation(dataBody)), pbObserver);
     }
 }

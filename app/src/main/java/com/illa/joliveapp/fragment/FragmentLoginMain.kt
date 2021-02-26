@@ -106,12 +106,12 @@ class FragmentLoginMain : BaseFragment() {
             }
             R.id.tv_terms_of_Service -> {
                 val myIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://jolive.illa.me/zhTW/others/userterms"))
+                    Uri.parse("https://pearl.jo-club.com/zhTW/others/userterms"))
                 this.startActivity(myIntent)
             }
             R.id.tv_privacy_policy -> {
                 val myIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://jolive.illa.me/zhTW/others/policy"))
+                    Uri.parse("https://pearl.jo-club.com/zhTW/others/policy"))
                 this.startActivity(myIntent)
             }
 

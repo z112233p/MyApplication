@@ -126,11 +126,28 @@
             android:paddingEnd="14dp"
             android:paddingTop="14dp"
             android:paddingBottom="8dp"
-            android:gravity="top"
             app:layout_constraintTop_toBottomOf="@+id/ll_may_like_events"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_new_jomie"
+            app:layout_constraintBottom_toTopOf="@+id/ll_new_jomie"
             android:text="最新Jomie"/>
+
+        <ImageView
+            android:id="@+id/iv_new_jomie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="8dp"
+            android:src="@mipmap/ic_reset"
+            app:layout_constraintTop_toBottomOf="@+id/ll_may_like_events"
+            app:layout_constraintStart_toEndOf="@+id/tv_new_jomie"
+            app:layout_constraintBottom_toTopOf="@+id/ll_new_jomie"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <LinearLayout
             android:id="@+id/ll_new_jomie"

@@ -26,11 +26,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.illa.joliveapp.BuildConfig
 import com.illa.joliveapp.R
 import com.illa.joliveapp.activity.ProfileActivity
+import com.illa.joliveapp.datamodle.invitation.InvitationDataBody
 import com.illa.joliveapp.dialog.DialogChooseGender
 import com.illa.joliveapp.tools.*
 import com.illa.joliveapp.viewmodle.ProfileActivityVM
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_creat_profile_step_3.*
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.forEach
@@ -215,11 +217,15 @@ class FragmentCreateProfile_step3 : BaseFragment() {
                 picker.show()
             }
             R.id.tv_next_step -> {
-                act.dataBody["nickname"] = ed_user_name.text.toString()
-                act.dataBody["birthday"] = ed_user_birth.text.toString()
-                act.dataBody["gender"] = selectedGender.toString()
-                Log.e("Peter","profileActivityVM.updateMyInfo(act.dataBody)   ${act.dataBody}")
-                profileActivityVM.updateMyInfo(act.dataBody)
+                if(TextUtils.isEmpty(ed_code.text)){
+                    act.dataBody["nickname"] = ed_user_name.text.toString()
+                    act.dataBody["birthday"] = ed_user_birth.text.toString()
+                    act.dataBody["gender"] = selectedGender.toString()
+                    Log.e("Peter","profileActivityVM.updateMyInfo(act.dataBody)   ${act.dataBody}")
+                    profileActivityVM.updateMyInfo(act.dataBody)
+                } else {
+                    profileActivityVM.postInvitation(InvitationDataBody(ed_code.text.toString()))
+                }
 
             }
         }
@@ -259,6 +265,7 @@ class FragmentCreateProfile_step3 : BaseFragment() {
         act.dataBody["birthday"] = ed_user_birth.text.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObserve(){
 
         profileActivityVM.getMyInfoData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -286,6 +293,20 @@ class FragmentCreateProfile_step3 : BaseFragment() {
 
                 act.finish()
                 getMContext().get()?.let { it1 -> IntentHelper.gotoEventActivity(it1) }
+            }
+        })
+
+        profileActivityVM.getInvitation().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            val jsonData = JSONObject(it)
+            if (jsonData.get("code") == 0){
+                act.dataBody["nickname"] = ed_user_name.text.toString()
+                act.dataBody["birthday"] = ed_user_birth.text.toString()
+                act.dataBody["gender"] = selectedGender.toString()
+                Log.e("Peter","profileActivityVM.updateMyInfo(act.dataBody)   INININININCODE${act.dataBody}")
+                profileActivityVM.updateMyInfo(act.dataBody)
+
+            } else {
+                Tools.toast(getMContext().get(),"邀請碼錯誤")
             }
         })
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JoLive</string>
+    <string name="app_name">Jo-club</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -62,10 +62,10 @@
     <string name="official_website">前往官方網站</string>
     <string name="facebook_website">前往Facebook粉絲專頁</string>
 
-    <string name="service_provision_url">https://jolive.illa.me/zhTW/others/userterms</string>
-    <string name="official_website_url">https://jolive.illa.me/</string>
+    <string name="service_provision_url">https://pearl.jo-club.com/zhTW/others/userterms</string>
+    <string name="official_website_url">https://pearl.jo-club.com</string>
     <string name="facebook_website_url">https://www.facebook.com/JoLive.official/</string>
-    <string name="privacy_policy_url"> https://jolive.illa.me/zhTW/others/policy</string>
+    <string name="privacy_policy_url">https://pearl.jo-club.com/zhTW/others/policy</string>
 
 
 

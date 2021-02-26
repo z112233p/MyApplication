@@ -16,6 +16,7 @@ import com.illa.joliveapp.datamodle.friend_status.FriendCancel
 import com.illa.joliveapp.datamodle.friend_status.FriendRefuse
 import com.illa.joliveapp.datamodle.friend_status.FriendRequest
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
+import com.illa.joliveapp.datamodle.invitation.InvitationDataBody
 import com.illa.joliveapp.datamodle.profile.MyInfo
 import com.illa.joliveapp.datamodle.profile.MyInfoData
 import com.illa.joliveapp.datamodle.profile.MyInfoPhoto
@@ -31,6 +32,7 @@ import com.illa.joliveapp.datamodle.profile.update_photo.UpdatePhotoResponse
 import com.illa.joliveapp.datamodle.profile.user_info.UserInfo
 import com.illa.joliveapp.datamodle.wallet.Wallet
 import com.illa.joliveapp.network.ApiMethods
+import com.illa.joliveapp.tools.PrefHelper
 import com.illa.joliveapp.tools.SingleLiveEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
@@ -62,6 +64,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     private val sortMyPhotoResponse: MutableLiveData<SortMyPhoto> = MutableLiveData<SortMyPhoto>()
     private val friendResponse: MutableLiveData<String> = MutableLiveData<String>()
     private val wallet:MutableLiveData<Wallet> = MutableLiveData<Wallet>()
+    private val invitation: MutableLiveData<String> = MutableLiveData<String>()
 
     private val progressStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
@@ -119,6 +122,9 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     }
     fun getWalletResponse(): LiveData<Wallet> {
         return wallet
+    }
+    fun getInvitation(): LiveData<String> {
+        return invitation
     }
 
     fun getEventsApi(label: String?, eventsCategorysId: String?){
@@ -201,6 +207,8 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
     }
 
     fun getMyInfo(){
+        Log.e("Peter2", "getMyInfo  userLabel:  ${PrefHelper.chatLable}")
+
         val myInfoObserver: Observer<MyInfo> = object  : Observer<MyInfo>{
             override fun onComplete() {
                 progressStatus.value = true
@@ -336,7 +344,7 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
 
 
     fun getUserInfo(userLabel: String){
-        Log.e("Peter2", "getMyInfo  userLabel:  $userLabel")
+        Log.e("Peter2", "getUserInfo  userLabel:  $userLabel")
 
         val myInfoObserver: Observer<UserInfo> = object  : Observer<UserInfo>{
             override fun onComplete() {
@@ -349,12 +357,12 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
             }
 
             override fun onNext(t: UserInfo) {
-                Log.e("Peter2", "getMyInfo22  onNext:  "+t.data.user.instargam_images)
+                Log.e("Peter2", "getUserInfo  onNext:  "+t.data.user.instargam_images)
                 userInfo.value = t
             }
 
             override fun onError(e: Throwable) {
-                Log.e("Peter2", "getMyInfo  onError:  "+e.message)
+                Log.e("Peter2", "getUserInfo  onError:  "+e.message)
 
                 progressStatus.value = true
             }
@@ -681,4 +689,29 @@ class ProfileActivityVM (application: Application) : AndroidViewModel(applicatio
         }
         ApiMethods.getWallet(friendObserver)
     }
+
+    fun postInvitation(dataBody: InvitationDataBody){
+        val friendObserver: Observer<String> = object  : Observer<String>{
+            override fun onComplete() {
+                progressStatus.value = true
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                progressStatus.value = false
+                disContainer.add(d)
+            }
+
+            override fun onNext(t: String) {
+                invitation.value = t
+                Log.e("Peter2", "postInvitation  onNext:  "+t)
+            }
+
+            override fun onError(e: Throwable) {
+                progressStatus.value = true
+                Log.e("Peter2", "postInvitation  onError:  "+e.message)
+            }
+        }
+        ApiMethods.postInvitation(friendObserver, dataBody)
+    }
+
 }

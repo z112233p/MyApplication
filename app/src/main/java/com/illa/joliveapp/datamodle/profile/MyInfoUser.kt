@@ -5,7 +5,7 @@ data class MyInfoUser(
     var name:String = "",
     var nickname: String = "",
     var phone: String = "",
-    var code:Int = 0,
+    var code:String = "",
     var gender:Int = 0,
     var birthday: String = "",
     var about:String = "",

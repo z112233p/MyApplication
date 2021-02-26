@@ -28,6 +28,7 @@ import com.illa.joliveapp.datamodle.friend_status.FriendCancel
 import com.illa.joliveapp.datamodle.friend_status.FriendRefuse
 import com.illa.joliveapp.datamodle.friend_status.FriendRequest
 import com.illa.joliveapp.datamodle.instagram.IgDataBody
+import com.illa.joliveapp.datamodle.invitation.InvitationDataBody
 import com.illa.joliveapp.datamodle.jomie.Jomie
 import com.illa.joliveapp.datamodle.notice.notice_data.Notice
 import com.illa.joliveapp.datamodle.notice.template.NoticeTemplate
@@ -274,6 +275,11 @@ interface ApiService {
     //Wallet
     @GET("wallet")
     fun getWallet():Observable<Wallet>
+
+    //Invitation
+    @POST("invitation")
+    fun postInvitation(@Body dataBody: InvitationDataBody): Observable<String>
+
 
     companion object {
         fun create(addHeader: Boolean): ApiService {

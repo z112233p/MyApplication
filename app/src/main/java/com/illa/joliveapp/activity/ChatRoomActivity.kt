@@ -104,6 +104,9 @@ class ChatRoomActivity : AppCompatActivity(),
     private lateinit var timer: Timer
 
     private var memberMap: HashMap<String, String> = HashMap()
+    private lateinit var actionItem: MenuItem
+    private lateinit var optionItem: MenuItem
+
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -786,7 +789,12 @@ class ChatRoomActivity : AppCompatActivity(),
         chatRoomActVM.getEventDetailData().observe(this, Observer {
             chatRoomActVM.getChatHistory(rId)
 
-
+            if(it.code != 0){
+                tv_chat_room_delete_time.visibility = View.GONE
+                actionItem.isVisible = false
+                optionItem.isVisible = false
+                return@Observer
+            }
             val rightNow = Calendar.getInstance()
             rightNow.time = formatter.parse(it.data.start_time)
             rightNow.add(Calendar.DAY_OF_YEAR, 4);
@@ -971,6 +979,12 @@ class ChatRoomActivity : AppCompatActivity(),
 
             }
         }.start()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        actionItem = menu!!.findItem(R.id.action_option)
+        optionItem = menu.findItem(R.id.action_member)
+        return true
     }
 
     @SuppressLint("Range")

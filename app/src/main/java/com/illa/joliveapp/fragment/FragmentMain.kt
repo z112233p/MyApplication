@@ -106,6 +106,9 @@ class FragmentMain : BaseFragment() {
         tvCreateEvent.setOnClickListener {
             getMContext().get()?.let { it1 -> IntentHelper.gotoCreateEventActivity(it1) }
         }
+        iv_new_jomie.setOnClickListener {
+            eventsActivityVM.getJomie()
+        }
     }
 
     override fun onResume() {

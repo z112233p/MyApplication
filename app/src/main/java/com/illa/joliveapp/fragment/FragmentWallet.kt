@@ -61,7 +61,6 @@ class FragmentWallet : BaseFragment() {
         setTitle("錢包")
     }
 
-
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
     private fun init(){
@@ -73,7 +72,6 @@ class FragmentWallet : BaseFragment() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n", "ShowToast")
     private val onClick = View.OnClickListener {
@@ -81,7 +79,6 @@ class FragmentWallet : BaseFragment() {
 
         }
     }
-
 
     private fun callApis(){
         profileActivityVM.getWallet()
@@ -93,6 +90,5 @@ class FragmentWallet : BaseFragment() {
             tv_amount.text = it.data.COIN_1.total.toString()
         })
     }
-
 
 }

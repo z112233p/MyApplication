@@ -3,12 +3,16 @@ package com.illa.joliveapp.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import com.illa.joliveapp.BuildConfig
@@ -69,6 +73,7 @@ class FragmentSetting : BaseFragment() {
         cl_official_website.setOnClickListener(onClick)
         cl_facebook_website.setOnClickListener(onClick)
 
+        tv_invitation.text = PrefHelper.chatLable
     }
 
     @SuppressLint("SetTextI18n")
@@ -106,16 +111,27 @@ class FragmentSetting : BaseFragment() {
         cl_facebook_website.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_facebook_website))
         cl_facebook_website.tv_title.text = getString(R.string.facebook_website)
 
-        cl_app_update.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_app_update))
+        cl_app_update.iv_title.setImageDrawable(getMContext().get()?.resources?.getDrawable(R.mipmap.ic_app_update_new))
         cl_app_update.tv_title.text = "Ver${BuildConfig.VERSION_NAME}"
         cl_app_update.tv_value.text = "更新"
         cl_app_update.tv_value.background = getMContext().get()?.resources?.getDrawable(R.drawable.bg_clickable_btn)
-
+        cl_app_update.tv_value.visibility = View.INVISIBLE
         cl_app_update.v_divider_line.visibility = View.INVISIBLE
+
+        ll_invitation.setOnLongClickListener {
+            val clipBoard: ClipboardManager = getMContext().get()!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val myClip = ClipData.newPlainText("text", tv_invitation.text);
+            clipBoard.setPrimaryClip(myClip)
+            Tools.toast(getMContext().get(),"已複製邀請碼")
+            true
+        }
 
 
     }
 
+    fun ProgressBar.startJobOrCancel(){
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n", "ShowToast")

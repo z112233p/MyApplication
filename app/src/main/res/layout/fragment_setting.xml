@@ -271,6 +271,59 @@
                 android:background="#4DFFFFFF"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_invitation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@color/colorMainBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_buy_back">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="15dp"
+                android:background="#4DFFFFFF"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="normal"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorWhite"
+                    android:lineSpacingExtra="3sp"
+                    android:paddingStart="15dp"
+                    android:text="邀請碼" />
+                <TextView
+                    android:id="@+id/tv_invitation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:layout_weight="1"
+                    android:textStyle="normal"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorWhite"
+                    android:lineSpacingExtra="3sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:text="+886 902 537 839" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="#4DFFFFFF"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_logout"
@@ -282,7 +335,7 @@
             android:background="@color/colorMainBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_buy_back">
+            app:layout_constraintTop_toBottomOf="@+id/ll_invitation">
 
             <View
                 android:layout_width="match_parent"
